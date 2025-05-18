@@ -499,282 +499,121 @@
     ];
 
     // Track used passages
-    let usedPassages = JSON.parse(localStorage.getItem('usedPassages')) || [];
-    let isGenerating = false;
+let usedPassages = JSON.parse(localStorage.getItem('usedPassages')) || [];
+let isGenerating = false;
+let voices = [];
 
-    // Create sacred geometry patterns
-    function createSacredPattern(type = 'flower') {
-      const canvas = document.createElement('canvas');
-      const ctx = canvas.getContext('2d');
-      canvas.width = 600;
-      canvas.height = 600;
-      canvas.style.position = 'fixed';
-      canvas.style.top = '50%';
-      canvas.style.left = '50%';
-      canvas.style.transform = 'translate(-50%, -50%)';
-      canvas.style.pointerEvents = 'none';
-      canvas.style.zIndex = '1';
-      canvas.style.opacity = '0';
-      
-      ctx.strokeStyle = 'rgba(139, 90, 43, 0.3)';
-      ctx.lineWidth = 2;
-      
-      if (type === 'flower') {
-        // Flower of Life pattern
-        const centerX = 300;
-        const centerY = 300;
-        const radius = 100;
-        const circles = 6;
-        
-        // Draw center circle
-        ctx.beginPath();
-        ctx.arc(centerX, centerY, radius, 0, 2 * Math.PI);
-        ctx.stroke();
-        
-        // Draw surrounding circles
-        for (let i = 0; i < circles; i++) {
-          const angle = (i * 2 * Math.PI) / circles;
-          const x = centerX + Math.cos(angle) * radius;
-          const y = centerY + Math.sin(angle) * radius;
-          
-          ctx.beginPath();
-          ctx.arc(x, y, radius, 0, 2 * Math.PI);
-          ctx.stroke();
-        }
-      } else if (type === 'seed') {
-        // Seed of Life pattern
-        const centerX = 300;
-        const centerY = 300;
-        const radius = 100;
-        const circles = 6;
-        
-        for (let i = 0; i < circles; i++) {
-          const angle = (i * 2 * Math.PI) / circles;
-          const x = centerX + Math.cos(angle) * radius;
-          const y = centerY + Math.sin(angle) * radius;
-          
-          ctx.beginPath();
-          ctx.arc(x, y, radius, 0, 2 * Math.PI);
-          ctx.stroke();
-        }
-      } else if (type === 'metatron') {
-        // Metatron's Cube pattern (simplified)
-        const centerX = 300;
-        const centerY = 300;
-        const radius = 150;
-        
-        // Draw central hexagon
-        ctx.beginPath();
-        for (let i = 0; i < 6; i++) {
-          const angle = (i * 2 * Math.PI) / 6;
-          const x = centerX + Math.cos(angle) * radius;
-          const y = centerY + Math.sin(angle) * radius;
-          
-          if (i === 0) {
-            ctx.moveTo(x, y);
-          } else {
-            ctx.lineTo(x, y);
-          }
-        }
-        ctx.closePath();
-        ctx.stroke();
-        
-        // Draw connecting lines
-        for (let i = 0; i < 6; i++) {
-          const angle1 = (i * 2 * Math.PI) / 6;
-          const x1 = centerX + Math.cos(angle1) * radius;
-          const y1 = centerY + Math.sin(angle1) * radius;
-          
-          for (let j = i + 1; j < 6; j++) {
-            const angle2 = (j * 2 * Math.PI) / 6;
-            const x2 = centerX + Math.cos(angle2) * radius;
-            const y2 = centerY + Math.sin(angle2) * radius;
-            
-            ctx.beginPath();
-            ctx.moveTo(x1, y1);
-            ctx.lineTo(x2, y2);
-            ctx.stroke();
-          }
-        }
-      }
-      
-      return canvas;
-    }
+// Initialize speech synthesis
+function initializeVoices() {
+  voices = window.speechSynthesis.getVoices();
+  window.speechSynthesis.onvoiceschanged = () => {
+    voices = window.speechSynthesis.getVoices();
+  };
+}
+initializeVoices();
 
-    function animateSacredGeometry() {
-      const patterns = ['flower', 'seed', 'metatron'];
-      const patternType = patterns[Math.floor(Math.random() * patterns.length)];
-      const pattern = createSacredPattern(patternType);
-      
-      document.body.appendChild(pattern);
-      
-      gsap.to(pattern, {
-        duration: 2,
-        opacity: 0.7,
-        scale: 0.8,
-        rotation: 360,
-        ease: "power2.out",
-        onComplete: () => {
-          gsap.to(pattern, {
-            duration: 3,
-            opacity: 0,
-            scale: 1.2,
-            onComplete: () => pattern.remove()
-          });
-        }
-      });
-    }
+// Enhanced text-to-speech function
+function generateAudio(text) {
+  const audioPlayer = document.getElementById('audioPlayer');
+  audioPlayer.innerHTML = '';
+  window.speechSynthesis.cancel();
 
-    // Fetch additional quotes from Quotable API
-    async function fetchQuotes(limit = 5) {
-      try {
-        const response = await fetch(`https://api.quotable.io/quotes?tags=inspirational,spirituality&limit=${limit}`);
-        const data = await response.json();
-        return data.results.map((quote, index) => ({
-          text: quote.content,
-          id: `api-${index + 100}`,
-          source: quote.author || "Quotable API"
-        }));
-      } catch (error) {
-        console.error('Error fetching quotes:', error);
-        document.getElementById('passageOutput').innerHTML = '<p>Unable to fetch new quotes. Please try again later.</p>';
-        return [];
-      }
-    }
+  const utterance = new SpeechSynthesisUtterance(text);
+  utterance.lang = 'en-US';
+  utterance.pitch = 0.9;
+  utterance.rate = 1;
+  utterance.volume = 1;
 
-    // Update passages with fetched quotes
-    async function updatePassages() {
-      const newQuotes = await fetchQuotes();
-      passages = [...passages, ...newQuotes];
-      localStorage.setItem('passages', JSON.stringify(passages));
-    }
+  // Select preferred voice
+  const preferredVoices = ['Microsoft David', 'Google UK English Male', 'Alex'];
+  utterance.voice = voices.find(v => 
+    preferredVoices.some(name => v.name.includes(name)) || voices[0];
 
-    // Ensure voices are loaded
-    let voicesLoaded = false;
-    window.speechSynthesis.onvoiceschanged = () => {
-      voicesLoaded = true;
-    };
+  // Error handling
+  utterance.onerror = (event) => {
+    console.error('Speech error:', event);
+    audioPlayer.innerHTML = '<p class="error">Audio unavailable. Try Chrome/Edge browser.</p>';
+  };
 
-    // Generate audio using Web Speech API
-    function generateAudio(text, autoPlay = false) {
-      const audioPlayer = document.getElementById('audioPlayer');
-      audioPlayer.innerHTML = '';
+  // Create play button
+  const playButton = document.createElement('button');
+  playButton.textContent = 'Play Wisdom';
+  playButton.onclick = () => {
+    window.speechSynthesis.cancel();
+    window.speechSynthesis.speak(utterance);
+  };
 
-      const utterance = new SpeechSynthesisUtterance(text);
-      utterance.lang = 'en-US';
-      utterance.pitch = 0.9;
-      utterance.rate = 1;
+  // Auto-play with user gesture
+  try {
+    window.speechSynthesis.speak(utterance);
+  } catch (error) {
+    console.log('Auto-play blocked, showing manual play button');
+    playButton.textContent = 'Play Audio (Required)';
+  }
 
-      // Select a voice
-      if (voicesLoaded) {
-        const voices = window.speechSynthesis.getVoices();
-        const preferredVoice = voices.find(voice => 
-          voice.name.includes('Daniel') || 
-          voice.name.includes('Google UK English Male') ||
-          voice.name.includes('Microsoft David Desktop')
-        );
-        if (preferredVoice) {
-          utterance.voice = preferredVoice;
-        }
-      }
+  audioPlayer.appendChild(playButton);
+  document.getElementById('promptMessage').textContent = 
+    "May the light of this sacred word fill your heart with hope and guide your path today.";
+}
 
-      // Add prompt message
-      const promptMessage = document.getElementById('promptMessage');
-      promptMessage.textContent = "May the light of this sacred word fill your heart with hope and guide your path today.";
+// Enhanced quote fetching with error handling
+async function fetchQuotes(limit = 5) {
+  try {
+    const response = await fetch(`https://api.quotable.io/quotes?tags=spirituality&limit=${limit}`);
+    if (!response.ok) throw new Error('Network response was not ok');
+    
+    const data = await response.json();
+    return data.results.map((quote, index) => ({
+      text: quote.content,
+      id: `api-${Date.now()}-${index}`,
+      source: quote.author || "Quotable API"
+    }));
+  } catch (error) {
+    console.error('Fetch error:', error);
+    return [];
+  }
+}
 
-      // Auto-play if triggered by button click
-      if (autoPlay) {
-        window.speechSynthesis.speak(utterance);
-      }
+// Improved passage generation
+function generatePassage() {
+  if (isGenerating) return;
+  isGenerating = true;
 
-      // Add manual play button
-      const playButton = document.createElement('button');
-      playButton.textContent = 'Play Verse Again';
-      playButton.onclick = () => {
-        window.speechSynthesis.speak(utterance);
-        promptMessage.textContent = "May the light of this sacred word fill your heart with hope and guide your path today.";
-      };
-      audioPlayer.appendChild(playButton);
-    }
+  // Reset animation if already running
+  const button = document.getElementById('crossButton');
+  button.classList.remove('active');
+  void button.offsetWidth; // Trigger reflow
 
-    // Generate sharing buttons
-    function generateShareButtons(text) {
-      const shareButtons = document.getElementById('shareButtons');
-      shareButtons.innerHTML = '';
+  // Animate elements
+  button.classList.add('active');
+  animateSacredGeometry();
 
-      const encodedText = encodeURIComponent(text);
-      const shareData = {
-        title: 'Sacred Wisdom',
-        text: text,
-        url: window.location.href
-      };
+  // Get available passages
+  let available = passages.filter(p => !usedPassages.includes(p.id));
+  if (available.length === 0) {
+    localStorage.removeItem('usedPassages');
+    usedPassages = [];
+    available = passages;
+  }
 
-      if (navigator.share) {
-        const shareBtn = document.createElement('button');
-        shareBtn.textContent = 'Share This Wisdom';
-        shareBtn.onclick = () => navigator.share(shareData);
-        shareButtons.appendChild(shareBtn);
-      }
+  // Select and display passage
+  const passage = available[Math.floor(Math.random() * available.length)];
+  usedPassages.push(passage.id);
+  localStorage.setItem('usedPassages', JSON.stringify(usedPassages));
 
-      const platforms = [
-        { name: 'X', url: `https://x.com/intent/post?text=${encodedText}` },
-        { name: 'Facebook', url: `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareData.url)}&quote=${encodedText}` },
-        { name: 'WhatsApp', url: `https://api.whatsapp.com/send?text=${encodedText}` },
-        { name: 'Email', url: `mailto:?subject=${encodeURIComponent(shareData.title)}&body=${encodedText}%0A${shareData.url}` }
-      ];
+  document.getElementById('passageOutput').innerHTML = 
+    `<p>"${passage.text}"<br><small>— ${passage.source}</small></p>`;
 
-      platforms.forEach(platform => {
-        const btn = document.createElement('a');
-        btn.href = platform.url;
-        btn.textContent = `Share on ${platform.name}`;
-        btn.target = '_blank';
-        btn.rel = 'noopener noreferrer';
-        shareButtons.appendChild(btn);
-      });
-    }
+  // Generate audio and sharing
+  generateAudio(passage.text);
+  generateShareButtons(passage.text);
 
-    // Generate a non-repeating random passage
-    function generatePassage() {
-      if (isGenerating) return;
-      isGenerating = true;
-
-      // Trigger glow animation
-      const button = document.getElementById('crossButton');
-      button.classList.add('active');
-      
-      // Animate sacred geometry
-      animateSacredGeometry();
-      
-      setTimeout(() => {
-        button.classList.remove('active');
-        isGenerating = false;
-      }, 4000);
-
-      let availablePassages = passages.filter(p => !usedPassages.includes(p.id));
-
-      if (availablePassages.length === 0) {
-        usedPassages = [];
-        availablePassages = passages;
-      }
-
-      const randomPassage = availablePassages[Math.floor(Math.random() * availablePassages.length)];
-      usedPassages.push(randomPassage.id);
-      localStorage.setItem('usedPassages', JSON.stringify(usedPassages));
-
-      document.getElementById('passageOutput').innerHTML = `<p>"${randomPassage.text}"${randomPassage.source ? `<br><small>— ${randomPassage.source}</small>` : ''}</p>`;
-      generateAudio(randomPassage.text, true);
-      generateShareButtons(randomPassage.text);
-    }
-
-    // Add keyboard navigation
-    document.getElementById('crossButton').addEventListener('keydown', (event) => {
-      if (event.key === 'Enter' || event.key === ' ') {
-        generatePassage();
-      }
-    });
-
-    // Initialize by fetching quotes
-    updatePassages();
+  // Reset state
+  setTimeout(() => {
+    button.classList.remove('active');
+    isGenerating = false;
+  }, 4000);
+}
   </script>
 </body>
 </html>
