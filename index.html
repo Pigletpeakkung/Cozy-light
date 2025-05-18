@@ -1,0 +1,671 @@
+
+<html>
+<head>
+  <meta charset="UTF-8"></meta>
+  <meta content="width=device-width, initial-scale=1.0" name="viewport"></meta>
+  <title>Master Light Spot</title>
+  <style>
+    .cross-button-container {
+      text-align: center;
+      margin: 20px;
+    }
+    .cross-button {
+      position: relative;
+      width: 60px;
+      height: 60px;
+      background: linear-gradient(135deg, #f0f0f0, #d9d9d9);
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+      transition: background 0.3s;
+    }
+    .cross-vertical {
+      position: absolute;
+      top: 15px;
+      left: 50%;
+      width: 12px;
+      height: 30px;
+      background: #333;
+      border-radius: 4px;
+      transform: translateX(-50%);
+    }
+    .cross-horizontal {
+      position: absolute;
+      top: 50%;
+      left: 15px;
+      width: 30px;
+      height: 12px;
+      background: #333;
+      border-radius: 4px;
+      transform: translateY(-50%);
+    }
+    .cross-button:hover {
+      background: linear-gradient(135deg, #e6e6e6, #cccccc);
+    }
+    .cross-button:hover .cross-vertical,
+    .cross-button:hover .cross-horizontal {
+      background: #007bff;
+    }
+    .cross-button.active {
+      animation: warmGlow 4s ease-in-out;
+    }
+    @keyframes warmGlow {
+      0% { box-shadow: 0 0 10px #FFD700, 0 0 20px #FFD700; }
+      25% { box-shadow: 0 0 10px #FFA500, 0 0 20px #FFA500; }
+      50% { box-shadow: 0 0 10px #FF6347, 0 0 20px #FF6347; }
+      75% { box-shadow: 0 0 10px #FF4500, 0 0 20px #FF4500; }
+      100% { box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); }
+    }
+    #passageOutput {
+      margin: 20px;
+      font-style: italic;
+      color: #333;
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    #audioPlayer {
+      margin: 10px;
+    }
+    #shareButtons a {
+      padding: 8px 12px;
+      background: #f1f1f1;
+      text-decoration: none;
+      color: #333;
+      border-radius: 4px;
+      margin: 5px;
+      display: inline-block;
+    }
+    #shareButtons button {
+      padding: 8px 12px;
+      background: #f1f1f1;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      margin: 5px;
+    }
+    #credit {
+      font-size: 10px;
+      color: #888;
+      text-align: center;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+  <div class="cross-button-container">
+    <button aria-label="Generate a new inspirational quote" class="cross-button" id="crossButton" onclick="generatePassage()">
+      <span class="cross-vertical"></span>
+      <span class="cross-horizontal"></span>
+    </button>
+    <div id="passageOutput"></div>
+    <div id="audioPlayer"></div>
+    <div id="shareButtons"></div>
+  </div>
+  <div id="credit">Quotes sourced from Conversations with God, Seth Speaks, Rumi, Alan Watts, Florence Scovel Shinn, Lao Tzu, Law of One, Emerald Tablet, Buddha, and Quotable API.</div>
+
+  <script>
+    // Passages array with all requested quotes plus new Seth Speaks quotes
+    let passages = [
+      // Conversations with God
+      { text: "There is no such thing as 'wrong,' only what does not serve you. You cannot make a mistake, you can only make a choice.", id: 1, source: "Conversations with God" },
+      { text: "The purpose of life is to know yourself, create yourself, and experience yourself as Who You Really Are.", id: 2, source: "Conversations with God" },
+      { text: "Life is an ongoing process of creation. You are creating your reality with every thought, word, and action.", id: 3, source: "Conversations with God" },
+      { text: "Fear is the opposite of love. Every thought, word, or deed is founded in one or the other.", id: 4, source: "Conversations with God" },
+      { text: "You are not here to learn lessons; you are here to remember who you are.", id: 5, source: "Conversations with God" },
+      { text: "The highest purpose of any soul is to be fully self-expressed in its divinity.", id: 6, source: "Conversations with God" },
+      { text: "God is not a singular super-being, but the energy of life, and you are part of it.", id: 7, source: "Conversations with God" },
+      // Seth Speaks
+      { text: "You create your own reality. There are no limitations to the self except those you believe in.", id: 8, source: "Seth Speaks" },
+      { text: "The universe is a multidimensional school, and you are here to learn and explore your own consciousness.", id: 9, source: "Seth Speaks" },
+      { text: "Your beliefs form your experience, as surely as clay shapes a pot.", id: 10, source: "Seth Speaks" },
+      { text: "There is no separation between you and All That Is; you are an eternal portion of it.", id: 11, source: "Seth Speaks" },
+      { text: "The present is the point of power, where all realities intersect.", id: 12, source: "Seth Speaks" },
+      { text: "Your inner self knows its purpose, and it guides you through every moment.", id: 13, source: "Seth Speaks" },
+      { text: "Consciousness creates form, not the other way around.", id: 14, source: "Seth Speaks" },
+      { text: "You are not a puppet of fate, but a creator of your own destiny.", id: 64, source: "Seth Speaks" },
+      { text: "The soul is not bound by time or space, but dances through both.", id: 65, source: "Seth Speaks" },
+      { text: "Every moment is a new creation, born of your inner thoughts.", id: 66, source: "Seth Speaks" },
+      { text: "Your reality is a canvas, and your beliefs are the brush.", id: 67, source: "Seth Speaks" },
+      { text: "There is no end to the self, only new beginnings in consciousness.", id: 68, source: "Seth Speaks" },
+      // Rumi
+      { text: "Out beyond ideas of wrongdoing and rightdoing, there is a field. I'll meet you there.", id: 15, source: "Rumi" },
+      { text: "The wound is the place where the Light enters you.", id: 16, source: "Rumi" },
+      { text: "Do not feel lonely, the entire universe is inside you.", id: 17, source: "Rumi" },
+      { text: "Let the beauty we love be what we do.", id: 18, source: "Rumi" },
+      { text: "What you seek is seeking you.", id: 19, source: "Rumi" },
+      { text: "Stop acting so small. You are the universe in ecstatic motion.", id: 20, source: "Rumi" },
+      { text: "The heart has its own language; the heart knows a hundred thousand ways to speak.", id: 21, source: "Rumi" },
+      // Alan Watts
+      { text: "You are the universe experiencing itself.", id: 22, source: "Alan Watts" },
+      { text: "The only way to make sense out of change is to plunge into it, move with it, and join the dance.", id: 23, source: "Alan Watts" },
+      { text: "Trying to define yourself is like trying to bite your own teeth.", id: 24, source: "Alan Watts" },
+      { text: "The meaning of life is just to be alive. It is so plain and so obvious and so simple.", id: 25, source: "Alan Watts" },
+      { text: "You don’t look out there for God, something in the sky; you look in here.", id: 26, source: "Alan Watts" },
+      { text: "Life is not a problem to be solved, but a reality to be experienced.", id: 27, source: "Alan Watts" },
+      { text: "To have faith is to trust yourself to the water. You don’t grab hold of it; you let it carry you.", id: 28, source: "Alan Watts" },
+      // Florence Scovel Shinn
+      { text: "The game of life is a game of boomerangs. Our thoughts, deeds, and words return to us sooner or later with astounding accuracy.", id: 29, source: "Florence Scovel Shinn" },
+      { text: "Every great work, every big accomplishment, has been brought into manifestation through holding to the vision.", id: 30, source: "Florence Scovel Shinn" },
+      { text: "Your word is your wand. The words you speak create your own destiny.", id: 31, source: "Florence Scovel Shinn" },
+      { text: "There is no loss in divine mind; therefore, I cannot lose anything that is rightfully mine.", id: 32, source: "Florence Scovel Shinn" },
+      { text: "Faith is an active force, a power that moves mountains.", id: 33, source: "Florence Scovel Shinn" },
+      { text: "The Divine Plan unfolds through your trust and inspired action.", id: 34, source: "Florence Scovel Shinn" },
+      { text: "Intuition is the voice of God within, guiding you to your good.", id: 35, source: "Florence Scovel Shinn" },
+      // Lao Tzu
+      { text: "When you let go of what you are, you become what you might be.", id: 36, source: "Lao Tzu" },
+      { text: "The Tao that can be told is not the eternal Tao.", id: 37, source: "Lao Tzu" },
+      { text: "A journey of a thousand miles begins with a single step.", id: 38, source: "Lao Tzu" },
+      { text: "To the mind that is still, the whole universe surrenders.", id: 39, source: "Lao Tzu" },
+      { text: "He who knows others is wise; he who knows himself is enlightened.", id: 40, source: "Lao Tzu" },
+      { text: "Nature does not hurry, yet everything is accomplished.", id: 41, source: "Lao Tzu" },
+      { text: "Be content with what you have; rejoice in the way things are.", id: 42, source: "Lao Tzu" },
+      // Law of One
+      { text: "All is one, and that one is love/light, light/love, the Infinite Creator.", id: 43, source: "Law of One" },
+      { text: "The mystery of existence is not in how it works, but why it works at all.", id: 44, source: "Law of One" },
+      { text: "Seek within, for the answers you seek are already part of your being.", id: 45, source: "Law of One" },
+      { text: "The Creator is not separate from the creation; it is the creation.", id: 46, source: "Law of One" },
+      { text: "Service to others is the path to unity with the Infinite.", id: 47, source: "Law of One" },
+      { text: "Every distortion is an opportunity to learn and return to balance.", id: 48, source: "Law of One" },
+      { text: "The universe is one being. When you harm another, you harm yourself.", id: 49, source: "Law of One" },
+      // Emerald Tablet
+      { text: "As above, so below; as below, so above.", id: 50, source: "Emerald Tablet" },
+      { text: "That which is below is like that which is above, and that which is above is like that which is below, to accomplish the miracles of one thing.", id: 51, source: "Emerald Tablet" },
+      { text: "The universe is mental, held in the mind of the All.", id: 52, source: "Emerald Tablet" },
+      { text: "Separate the earth from the fire, the subtle from the gross, gently and with great care.", id: 53, source: "Emerald Tablet" },
+      { text: "All things are born from one, by adaptation.", id: 54, source: "Emerald Tablet" },
+      { text: "The Sun is its father, the Moon its mother, the Wind carries it in its belly.", id: 55, source: "Emerald Tablet" },
+      { text: "Its power is complete when it is turned to earth.", id: 56, source: "Emerald Tablet" },
+      // Buddha
+      { text: "The mind is everything. What you think, you become.", id: 57, source: "Buddha" },
+      { text: "Peace comes from within. Do not seek it without.", id: 58, source: "Buddha" },
+      { text: "Do not dwell in the past, do not dream of the future, concentrate the mind on the present moment.", id: 59, source: "Buddha" },
+      { text: "Happiness does not depend on what you have, but on what you are.", id: 60, source: "Buddha" },
+      { text: "Three things cannot be long hidden: the sun, the moon, and the truth.", id: 61, source: "Buddha" },
+      { text: "To conquer oneself is a greater task than conquering others.", id: 62, source: "Buddha" },
+      { text: "All that we are is the result of what we have thought.", id: 63, source: "Buddha" }
+    ];
+
+    // Track used passages
+    let usedPassages = JSON.parse(localStorage.getItem('usedPassages')) || [];
+    let isGenerating = false;
+
+    // Fetch additional quotes from Quotable API
+    async function fetchQuotes(limit = 5) {
+      try {
+        const response = await fetch(`https://api.quotable.io/quotes?tags=inspirational,spirituality&limit=${limit}`);
+        const data = await response.json();
+        return data.results.map((quote, index) => ({
+          text: quote.content,
+          id: `api-${index + 100}`,
+          source: "Quotable API"
+        }));
+      } catch (error) {
+        console.error('Error fetching quotes:', error);
+        document.getElementById('passageOutput').innerHTML = '<p>Unable to fetch new quotes. Please try again later.</p>';
+        return [];
+      }
+    }
+
+    // Update passages with fetched quotes
+    async function updatePassages() {
+      const newQuotes = await fetchQuotes();
+      passages = [...passages, ...newQuotes];
+      localStorage.setItem('passages', JSON.stringify(passages));
+    }
+
+    // Ensure voices are loaded
+    let voicesLoaded = false;
+    window.speechSynthesis.onvoiceschanged = () => {
+      voicesLoaded = true;
+    };
+
+    // Generate audio using Web Speech API
+    function generateAudio(text, autoPlay = false) {
+      const audioPlayer = document.getElementById('audioPlayer');
+      audioPlayer.innerHTML = '';
+
+      const utterance = new SpeechSynthesisUtterance(text);
+      utterance.lang = 'en-US';
+      utterance.pitch = 0.9;
+      utterance.rate = 1;
+
+      // Select a male voice if available
+      if (voicesLoaded) {
+        const voices = window.speechSynthesis.getVoices();
+        const maleVoice = voices.find(voice => 
+          voice.name.toLowerCase().includes('male') || 
+          voice.name.includes('Daniel') || 
+          voice.name.includes('Wavenet-D') || 
+          voice.lang === 'en-US'
+        );
+        if (maleVoice) {
+          utterance.voice = maleVoice;
+        }
+      }
+
+      // Auto-play if triggered by button click
+      if (autoPlay) {
+        window.speechSynthesis.speak(utterance);
+      }
+
+      // Add manual play button
+      const playButton = document.createElement('button');
+      playButton.textContent = 'Play Verse Again';
+      playButton.onclick = () => window.speechSynthesis.speak(utterance);
+      audioPlayer.appendChild(playButton);
+    }
+
+    // Generate sharing buttons
+    function generateShareButtons(text) {
+      const shareButtons = document.getElementById('shareButtons');
+      shareButtons.innerHTML = '';
+
+      const encodedText = encodeURIComponent(text);
+      const shareData = {
+        title: 'God Speaking to You',
+        text: text,
+        url: window.location.href
+      };
+
+      if (navigator.share) {
+        const shareBtn = document.createElement('button');
+        shareBtn.textContent = 'Share Verse';
+        shareBtn.onclick = () => navigator.share(shareData);
+        shareButtons.appendChild(shareBtn);
+      }
+
+      const platforms = [
+        { name: 'X', url: `https://x.com/intent/post?text=${encodedText}` },
+        { nam
+<html>
+<head>
+  <meta charset="UTF-8"></meta>
+  <meta content="width=device-width, initial-scale=1.0" name="viewport"></meta>
+  <title>Master Light Spot</title>
+  <style>
+    .cross-button-container {
+      text-align: center;
+      margin: 20px;
+    }
+    .cross-button {
+      position: relative;
+      width: 60px;
+      height: 60px;
+      background: linear-gradient(135deg, #f0f0f0, #d9d9d9);
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+      transition: background 0.3s;
+    }
+    .cross-vertical {
+      position: absolute;
+      top: 15px;
+      left: 50%;
+      width: 12px;
+      height: 30px;
+      background: #333;
+      border-radius: 4px;
+      transform: translateX(-50%);
+    }
+    .cross-horizontal {
+      position: absolute;
+      top: 50%;
+      left: 15px;
+      width: 30px;
+      height: 12px;
+      background: #333;
+      border-radius: 4px;
+      transform: translateY(-50%);
+    }
+    .cross-button:hover {
+      background: linear-gradient(135deg, #e6e6e6, #cccccc);
+    }
+    .cross-button:hover .cross-vertical,
+    .cross-button:hover .cross-horizontal {
+      background: #007bff;
+    }
+    .cross-button.active {
+      animation: warmGlow 4s ease-in-out;
+    }
+    @keyframes warmGlow {
+      0% { box-shadow: 0 0 10px #FFD700, 0 0 20px #FFD700; }
+      25% { box-shadow: 0 0 10px #FFA500, 0 0 20px #FFA500; }
+      50% { box-shadow: 0 0 10px #FF6347, 0 0 20px #FF6347; }
+      75% { box-shadow: 0 0 10px #FF4500, 0 0 20px #FF4500; }
+      100% { box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); }
+    }
+    #passageOutput {
+      margin: 20px;
+      font-style: italic;
+      color: #333;
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    #audioPlayer {
+      margin: 10px;
+    }
+    #shareButtons a {
+      padding: 8px 12px;
+      background: #f1f1f1;
+      text-decoration: none;
+      color: #333;
+      border-radius: 4px;
+      margin: 5px;
+      display: inline-block;
+    }
+    #shareButtons button {
+      padding: 8px 12px;
+      background: #f1f1f1;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      margin: 5px;
+    }
+    #credit {
+      font-size: 10px;
+      color: #888;
+      text-align: center;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+  <div class="cross-button-container">
+    <button aria-label="Generate a new inspirational quote" class="cross-button" id="crossButton" onclick="generatePassage()">
+      <span class="cross-vertical"></span>
+      <span class="cross-horizontal"></span>
+    </button>
+    <div id="passageOutput"></div>
+    <div id="audioPlayer"></div>
+    <div id="shareButtons"></div>
+  </div>
+  <div id="credit">Quotes sourced from Conversations with God, Seth Speaks, Rumi, Alan Watts, Florence Scovel Shinn, Lao Tzu, Law of One, Emerald Tablet, Buddha, and Quotable API.</div>
+
+  <script>
+    // Passages array with all requested quotes plus new Seth Speaks quotes
+    let passages = [
+      // Conversations with God
+      { text: "There is no such thing as 'wrong,' only what does not serve you. You cannot make a mistake, you can only make a choice.", id: 1, source: "Conversations with God" },
+      { text: "The purpose of life is to know yourself, create yourself, and experience yourself as Who You Really Are.", id: 2, source: "Conversations with God" },
+      { text: "Life is an ongoing process of creation. You are creating your reality with every thought, word, and action.", id: 3, source: "Conversations with God" },
+      { text: "Fear is the opposite of love. Every thought, word, or deed is founded in one or the other.", id: 4, source: "Conversations with God" },
+      { text: "You are not here to learn lessons; you are here to remember who you are.", id: 5, source: "Conversations with God" },
+      { text: "The highest purpose of any soul is to be fully self-expressed in its divinity.", id: 6, source: "Conversations with God" },
+      { text: "God is not a singular super-being, but the energy of life, and you are part of it.", id: 7, source: "Conversations with God" },
+      // Seth Speaks
+      { text: "You create your own reality. There are no limitations to the self except those you believe in.", id: 8, source: "Seth Speaks" },
+      { text: "The universe is a multidimensional school, and you are here to learn and explore your own consciousness.", id: 9, source: "Seth Speaks" },
+      { text: "Your beliefs form your experience, as surely as clay shapes a pot.", id: 10, source: "Seth Speaks" },
+      { text: "There is no separation between you and All That Is; you are an eternal portion of it.", id: 11, source: "Seth Speaks" },
+      { text: "The present is the point of power, where all realities intersect.", id: 12, source: "Seth Speaks" },
+      { text: "Your inner self knows its purpose, and it guides you through every moment.", id: 13, source: "Seth Speaks" },
+      { text: "Consciousness creates form, not the other way around.", id: 14, source: "Seth Speaks" },
+      { text: "You are not a puppet of fate, but a creator of your own destiny.", id: 64, source: "Seth Speaks" },
+      { text: "The soul is not bound by time or space, but dances through both.", id: 65, source: "Seth Speaks" },
+      { text: "Every moment is a new creation, born of your inner thoughts.", id: 66, source: "Seth Speaks" },
+      { text: "Your reality is a canvas, and your beliefs are the brush.", id: 67, source: "Seth Speaks" },
+      { text: "There is no end to the self, only new beginnings in consciousness.", id: 68, source: "Seth Speaks" },
+      // Rumi
+      { text: "Out beyond ideas of wrongdoing and rightdoing, there is a field. I'll meet you there.", id: 15, source: "Rumi" },
+      { text: "The wound is the place where the Light enters you.", id: 16, source: "Rumi" },
+      { text: "Do not feel lonely, the entire universe is inside you.", id: 17, source: "Rumi" },
+      { text: "Let the beauty we love be what we do.", id: 18, source: "Rumi" },
+      { text: "What you seek is seeking you.", id: 19, source: "Rumi" },
+      { text: "Stop acting so small. You are the universe in ecstatic motion.", id: 20, source: "Rumi" },
+      { text: "The heart has its own language; the heart knows a hundred thousand ways to speak.", id: 21, source: "Rumi" },
+      // Alan Watts
+      { text: "You are the universe experiencing itself.", id: 22, source: "Alan Watts" },
+      { text: "The only way to make sense out of change is to plunge into it, move with it, and join the dance.", id: 23, source: "Alan Watts" },
+      { text: "Trying to define yourself is like trying to bite your own teeth.", id: 24, source: "Alan Watts" },
+      { text: "The meaning of life is just to be alive. It is so plain and so obvious and so simple.", id: 25, source: "Alan Watts" },
+      { text: "You don’t look out there for God, something in the sky; you look in here.", id: 26, source: "Alan Watts" },
+      { text: "Life is not a problem to be solved, but a reality to be experienced.", id: 27, source: "Alan Watts" },
+      { text: "To have faith is to trust yourself to the water. You don’t grab hold of it; you let it carry you.", id: 28, source: "Alan Watts" },
+      // Florence Scovel Shinn
+      { text: "The game of life is a game of boomerangs. Our thoughts, deeds, and words return to us sooner or later with astounding accuracy.", id: 29, source: "Florence Scovel Shinn" },
+      { text: "Every great work, every big accomplishment, has been brought into manifestation through holding to the vision.", id: 30, source: "Florence Scovel Shinn" },
+      { text: "Your word is your wand. The words you speak create your own destiny.", id: 31, source: "Florence Scovel Shinn" },
+      { text: "There is no loss in divine mind; therefore, I cannot lose anything that is rightfully mine.", id: 32, source: "Florence Scovel Shinn" },
+      { text: "Faith is an active force, a power that moves mountains.", id: 33, source: "Florence Scovel Shinn" },
+      { text: "The Divine Plan unfolds through your trust and inspired action.", id: 34, source: "Florence Scovel Shinn" },
+      { text: "Intuition is the voice of God within, guiding you to your good.", id: 35, source: "Florence Scovel Shinn" },
+      // Lao Tzu
+      { text: "When you let go of what you are, you become what you might be.", id: 36, source: "Lao Tzu" },
+      { text: "The Tao that can be told is not the eternal Tao.", id: 37, source: "Lao Tzu" },
+      { text: "A journey of a thousand miles begins with a single step.", id: 38, source: "Lao Tzu" },
+      { text: "To the mind that is still, the whole universe surrenders.", id: 39, source: "Lao Tzu" },
+      { text: "He who knows others is wise; he who knows himself is enlightened.", id: 40, source: "Lao Tzu" },
+      { text: "Nature does not hurry, yet everything is accomplished.", id: 41, source: "Lao Tzu" },
+      { text: "Be content with what you have; rejoice in the way things are.", id: 42, source: "Lao Tzu" },
+      // Law of One
+      { text: "All is one, and that one is love/light, light/love, the Infinite Creator.", id: 43, source: "Law of One" },
+      { text: "The mystery of existence is not in how it works, but why it works at all.", id: 44, source: "Law of One" },
+      { text: "Seek within, for the answers you seek are already part of your being.", id: 45, source: "Law of One" },
+      { text: "The Creator is not separate from the creation; it is the creation.", id: 46, source: "Law of One" },
+      { text: "Service to others is the path to unity with the Infinite.", id: 47, source: "Law of One" },
+      { text: "Every distortion is an opportunity to learn and return to balance.", id: 48, source: "Law of One" },
+      { text: "The universe is one being. When you harm another, you harm yourself.", id: 49, source: "Law of One" },
+      // Emerald Tablet
+      { text: "As above, so below; as below, so above.", id: 50, source: "Emerald Tablet" },
+      { text: "That which is below is like that which is above, and that which is above is like that which is below, to accomplish the miracles of one thing.", id: 51, source: "Emerald Tablet" },
+      { text: "The universe is mental, held in the mind of the All.", id: 52, source: "Emerald Tablet" },
+      { text: "Separate the earth from the fire, the subtle from the gross, gently and with great care.", id: 53, source: "Emerald Tablet" },
+      { text: "All things are born from one, by adaptation.", id: 54, source: "Emerald Tablet" },
+      { text: "The Sun is its father, the Moon its mother, the Wind carries it in its belly.", id: 55, source: "Emerald Tablet" },
+      { text: "Its power is complete when it is turned to earth.", id: 56, source: "Emerald Tablet" },
+      // Buddha
+      { text: "The mind is everything. What you think, you become.", id: 57, source: "Buddha" },
+      { text: "Peace comes from within. Do not seek it without.", id: 58, source: "Buddha" },
+      { text: "Do not dwell in the past, do not dream of the future, concentrate the mind on the present moment.", id: 59, source: "Buddha" },
+      { text: "Happiness does not depend on what you have, but on what you are.", id: 60, source: "Buddha" },
+      { text: "Three things cannot be long hidden: the sun, the moon, and the truth.", id: 61, source: "Buddha" },
+      { text: "To conquer oneself is a greater task than conquering others.", id: 62, source: "Buddha" },
+      { text: "All that we are is the result of what we have thought.", id: 63, source: "Buddha" }
+    ];
+
+    // Track used passages
+    let usedPassages = JSON.parse(localStorage.getItem('usedPassages')) || [];
+    let isGenerating = false;
+
+    // Fetch additional quotes from Quotable API
+    async function fetchQuotes(limit = 5) {
+      try {
+        const response = await fetch(`https://api.quotable.io/quotes?tags=inspirational,spirituality&limit=${limit}`);
+        const data = await response.json();
+        return data.results.map((quote, index) => ({
+          text: quote.content,
+          id: `api-${index + 100}`,
+          source: "Quotable API"
+        }));
+      } catch (error) {
+        console.error('Error fetching quotes:', error);
+        document.getElementById('passageOutput').innerHTML = '<p>Unable to fetch new quotes. Please try again later.</p>';
+        return [];
+      }
+    }
+
+    // Update passages with fetched quotes
+    async function updatePassages() {
+      const newQuotes = await fetchQuotes();
+      passages = [...passages, ...newQuotes];
+      localStorage.setItem('passages', JSON.stringify(passages));
+    }
+
+    // Ensure voices are loaded
+    let voicesLoaded = false;
+    window.speechSynthesis.onvoiceschanged = () => {
+      voicesLoaded = true;
+    };
+
+    // Generate audio using Web Speech API
+    function generateAudio(text, autoPlay = false) {
+      const audioPlayer = document.getElementById('audioPlayer');
+      audioPlayer.innerHTML = '';
+
+      const utterance = new SpeechSynthesisUtterance(text);
+      utterance.lang = 'en-US';
+      utterance.pitch = 0.9;
+      utterance.rate = 1;
+
+      // Select a male voice if available
+      if (voicesLoaded) {
+        const voices = window.speechSynthesis.getVoices();
+        const maleVoice = voices.find(voice => 
+          voice.name.toLowerCase().includes('male') || 
+          voice.name.includes('Daniel') || 
+          voice.name.includes('Wavenet-D') || 
+          voice.lang === 'en-US'
+        );
+        if (maleVoice) {
+          utterance.voice = maleVoice;
+        }
+      }
+
+      // Auto-play if triggered by button click
+      if (autoPlay) {
+        window.speechSynthesis.speak(utterance);
+      }
+
+      // Add manual play button
+      const playButton = document.createElement('button');
+      playButton.textContent = 'Play Verse Again';
+      playButton.onclick = () => window.speechSynthesis.speak(utterance);
+      audioPlayer.appendChild(playButton);
+    }
+
+    // Generate sharing buttons
+    function generateShareButtons(text) {
+      const shareButtons = document.getElementById('shareButtons');
+      shareButtons.innerHTML = '';
+
+      const encodedText = encodeURIComponent(text);
+      const shareData = {
+        title: 'God Speaking to You',
+        text: text,
+        url: window.location.href
+      };
+
+      if (navigator.share) {
+        const shareBtn = document.createElement('button');
+        shareBtn.textContent = 'Share Verse';
+        shareBtn.onclick = () => navigator.share(shareData);
+        shareButtons.appendChild(shareBtn);
+      }
+
+      const platforms = [
+        { name: 'X', url: `https://x.com/intent/post?text=${encodedText}` },
+        { name: 'Facebook', url: `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareData.url)}&quote=${encodedText}` },
+        { name: 'WhatsApp', url: `https://api.whatsapp.com/send?text=${encodedText}` },
+        { name: 'Email', url: `mailto:?subject=${encodeURIComponent(shareData.title)}&body=${encodedText}%0A${shareData.url}` }
+      ];
+
+      platforms.forEach(platform => {
+        const btn = document.createElement('a');
+        btn.href = platform.url;
+        btn.textContent = `Share on ${platform.name}`;
+        btn.style.margin = '5px';
+        btn.style.display = 'inline-block';
+        shareButtons.appendChild(btn);
+      });
+    }
+
+    // Generate a non-repeating random passage
+    function generatePassage() {
+      if (isGenerating) return;
+      isGenerating = true;
+
+      // Trigger glow animation
+      const button = document.getElementById('crossButton');
+      button.classList.add('active');
+      setTimeout(() => {
+        button.classList.remove('active');
+        isGenerating = false;
+      }, 4000);
+
+      let availablePassages = passages.filter(p => !usedPassages.includes(p.id));
+
+      if (availablePassages.length === 0) {
+        usedPassages = [];
+        availablePassages = passages;
+      }
+
+      const randomPassage = availablePassages[Math.floor(Math.random() * availablePassages.length)];
+      usedPassages.push(randomPassage.id);
+      localStorage.setItem('usedPassages', JSON.stringify(usedPassages));
+
+      document.getElementById('passageOutput').innerHTML = `<p>"${randomPassage.text}"${randomPassage.source ? `<br><small>Source: ${randomPassage.source}</small>` : ''}</p>`;
+      generateAudio(randomPassage.text, true);
+      generateShareButtons(randomPassage.text);
+    }
+
+    // Add keyboard navigation
+    document.getElementById('crossButton').addEventListener('keydown', (event) => {
+      if (event.key === 'Enter' || event.key === ' ') {
+        generatePassage();
+      }
+    });
+
+    // Initialize by fetching quotes
+    updatePassages();
+  </script>
+</body>
+</html><div><strike><br /></strike></div><h2 style="text-align: left;">Master Light Spot</h2>e: 'Facebook', url: `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareData.url)}&quote=${encodedText}` },
+        { name: 'WhatsApp', url: `https://api.whatsapp.com/send?text=${encodedText}` },
+        { name: 'Email', url: `mailto:?subject=${encodeURIComponent(shareData.title)}&body=${encodedText}%0A${shareData.url}` }
+      ];
+
+      platforms.forEach(platform => {
+        const btn = document.createElement('a');
+        btn.href = platform.url;
+        btn.textContent = `Share on ${platform.name}`;
+        btn.style.margin = '5px';
+        btn.style.display = 'inline-block';
+        shareButtons.appendChild(btn);
+      });
+    }
+
+    // Generate a non-repeating random passage
+    function generatePassage() {
+      if (isGenerating) return;
+      isGenerating = true;
+
+      // Trigger glow animation
+      const button = document.getElementById('crossButton');
+      button.classList.add('active');
+      setTimeout(() => {
+        button.classList.remove('active');
+        isGenerating = false;
+      }, 4000);
+
+      let availablePassages = passages.filter(p => !usedPassages.includes(p.id));
+
+      if (availablePassages.length === 0) {
+        usedPassages = [];
+        availablePassages = passages;
+      }
+
+      const randomPassage = availablePassages[Math.floor(Math.random() * availablePassages.length)];
+      usedPassages.push(randomPassage.id);
+      localStorage.setItem('usedPassages', JSON.stringify(usedPassages));
+
+      document.getElementById('passageOutput').innerHTML = `<p>"${randomPassage.text}"${randomPassage.source ? `<br><small>Source: ${randomPassage.source}</small>` : ''}</p>`;
+      generateAudio(randomPassage.text, true);
+      generateShareButtons(randomPassage.text);
+    }
+
+    // Add keyboard navigation
+    document.getElementById('crossButton').addEventListener('keydown', (event) => {
+      if (event.key === 'Enter' || event.key === ' ') {
+        generatePassage();
+      }
+    });
+
+    // Initialize by fetching quotes
+    updatePassages();
+  </script>
+</body>
+</html><div><strike><br /></strike></div><h2 style="text-align: left;">Master Light Spot</h2>
