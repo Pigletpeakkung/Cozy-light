@@ -219,7 +219,7 @@
       width: 2px;
       height: 2px;
       background: rgba(90, 62, 54, 0.2);
-      border-radius: 50%;
+      border-radius:(lst) 50%;
       pointer-events: none;
       z-index: 0;
     }
@@ -285,66 +285,346 @@
     let favoriteQuotes = JSON.parse(localStorage.getItem('favoriteQuotes')) || [];
     let currentQuote = null;
     const defaultPassages = [
-      Passages array with all requested quotes plus new Seth Speaks quotes let passages = [ 
-      // Conversations with God (15 quotes) 
-      { text: "You are God, in drag.", id: 1, source: "Conversations with God" }, { text: "There is no such thing as a better way, only another way.", id: 2, source: "Conversations with God" }, { text: "The soul creates, the mind reacts, the body experiences.", id: 3, source: "Conversations with God" }, { text: "All human actions are motivated at their deepest level by one of two emotions: fear or love.", id: 4, source: "Conversations with God" }, { text: "There are no victims in the universe—only creators.", id: 5, source: "Conversations with God" }, { text: "Your life is not about you, it is about everyone whose life you touch.", id: 6, source: "Conversations with God" }, { text: "The purpose of relationship is not to have another who might complete you, but to have another with whom you might share your completeness.", id: 7, source: "Conversations with God" }, { text: "There is only one purpose for all of life, and that is for you and all that lives to experience fullest glory.", id: 8, source: "Conversations with God" }, { text: "You are the creator of your own reality, and life can show up no other way for you than that way in which you think it will.", id: 9, source: "Conversations with God" }, { text: "The truth is simple: There is no separation between you and God.", id: 10, source: "Conversations with God" }, { text: "Your way of being is your way of believing, and your way of believing creates your experience.", id: 11, source: "Conversations with God" }, { text: "The moment you declare anything, everything unlike it will come into the space.", id: 12, source: "Conversations with God" }, { text: "There is no truth except the truth that exists within you.", id: 13, source: "Conversations with God" }, { text: "You are the one who calls the light into being. Indeed, you are the light.", id: 14, source: "Conversations with God" }, { text: "The deepest secret is that life is not a process of discovery, but a process of creation.", id: 15, source: "Conversations with God" }, // Seth Speaks (15 quotes) { text: "You are not a human being having a spiritual experience. You are a spiritual being having a human experience.", id: 16, source: "Seth Speaks" }, { text: "The universe is not something apart from you. You are the universe expressing itself as a human for a little while.", id: 17, source: "Seth Speaks" }, { text: "Your imagination is your gateway to other realities.", id: 18, source: "Seth Speaks" }, { text: "You create your reality according to your beliefs and expectations.", id: 19, source: "Seth Speaks" }, { text: "The present is the point of power where past and future meet.", id: 20, source: "Seth Speaks" }, { text: "You are given the gift of the gods; you create your reality according to your beliefs.", id: 21, source: "Seth Speaks" }, { text: "The soul is a medium for creativity, a creator that forms realities.", id: 22, source: "Seth Speaks" }, { text: "You are not at the mercy of past events unless you believe you are.", id: 23, source: "Seth Speaks" }, { text: "Dreams are the language of the soul.", id: 24, source: "Seth Speaks" }, { text: "You are more than your physical body. Your consciousness continues when your body dies.", id: 25, source: "Seth Speaks" }, { text: "Probable realities exist around you like shadows, waiting for your recognition.", id: 26, source: "Seth Speaks" }, { text: "Your thoughts are as real as your physical objects.", id: 27, source: "Seth Speaks" }, { text: "You are a multidimensional being, experiencing many realities simultaneously.", id: 28, source: "Seth Speaks" }, { text: "The answers you seek lie within your own consciousness.", id: 29, source: "Seth Speaks" }, { text: "Your beliefs shape your health, your relationships, and your world.", id: 30, source: "Seth Speaks" }, // Rumi (15 quotes) { text: "You are not a drop in the ocean. You are the entire ocean in a drop.", id: 31, source: "Rumi" }, { text: "What you seek is seeking you.", id: 32, source: "Rumi" }, { text: "Don't grieve. Anything you lose comes round in another form.", id: 33, source: "Rumi" }, { text: "Let yourself be silently drawn by the strange pull of what you really love.", id: 34, source: "Rumi" }, { text: "Be like a tree and let the dead leaves drop.", id: 35, source: "Rumi" }, { text: "The wound is the place where the Light enters you.", id: 36, source: "Rumi" }, { text: "When you do things from your soul, you feel a river moving in you, a joy.", id: 37, source: "Rumi" }, { text: "Your task is not to seek for love, but merely to seek and find all the barriers within yourself that you have built against it.", id: 38, source: "Rumi" }, { text: "Why do you stay in prison when the door is so wide open?", id: 39, source: "Rumi" }, { text: "Be a lamp, or a lifeboat, or a ladder.", id: 40, source: "Rumi" }, { text: "Where there is ruin, there is hope for a treasure.", id: 41, source: "Rumi" }, { text: "Let the beauty of what you love be what you do.", id: 42, source: "Rumi" }, { text: "The universe is not outside of you. Look inside yourself; everything that you want, you already are.", id: 43, source: "Rumi" }, { text: "You were born with wings. Why prefer to crawl through life?", id: 44, source: "Rumi" }, { text: "Sell your cleverness and buy bewilderment.", id: 45, source: "Rumi" }, // Alan Watts (15 quotes) { text: "You are an aperture through which the universe is looking at and exploring itself.", id: 46, source: "Alan Watts" }, { text: "The only way to make sense out of change is to plunge into it, move with it, and join the dance.", id: 47, source: "Alan Watts" }, { text: "Trying to define yourself is like trying to bite your own teeth.", id: 48, source: "Alan Watts" }, { text: "You are that vast thing that you see far, far off with great telescopes.", id: 49, source: "Alan Watts" }, { text: "This is the real secret of life—to be completely engaged with what you are doing in the here and now.", id: 50, source: "Alan Watts" }, { text: "The more a thing tends to be permanent, the more it tends to be lifeless.", id: 51, source: "Alan Watts" }, { text: "We do not 'come into' this world; we come out of it, as leaves from a tree.", id: 52, source: "Alan Watts" }, { text: "No one is more dangerously insane than one who is sane all the time.", id: 53, source: "Alan Watts" }, { text: "Muddy water is best cleared by leaving it alone.", id: 54, source: "Alan Watts" }, { text: "The ego is nothing other than the focus of conscious attention.", id: 55, source: "Alan Watts" }, { text: "You are under no obligation to be the same person you were five minutes ago.", id: 56, source: "Alan Watts" }, { text: "Problems that remain persistently insoluble should always be suspected as questions asked in the wrong way.", id: 57, source: "Alan Watts" }, { text: "The art of living is neither careless drifting nor fearful clinging, but a dance.", id: 58, source: "Alan Watts" }, { text: "What you are basically, deep deep down, is simply the fabric and structure of existence itself.", id: 59, source: "Alan Watts" }, { text: "The meaning of life is just to be alive. It is so plain and so obvious and so simple.", id: 60, source: "Alan Watts" }, // Buddhist Teachings (15 quotes) { text: "Do not dwell in the past, do not dream of the future, concentrate the mind on the present moment.", id: 61, source: "Buddha" }, { text: "Peace comes from within. Do not seek it without.", id: 62, source: "Buddha" }, { text: "Holding onto anger is like drinking poison and expecting the other person to die.", id: 63, source: "Buddhist proverb" }, { text: "Thousands of candles can be lit from a single candle, and the life of the candle will not be shortened.", id: 64, source: "Buddha" }, { text: "You yourself, as much as anybody in the entire universe, deserve your love and affection.", id: 65, source: "Buddha" }, { text: "In the end, only three things matter: how much you loved, how gently you lived, and how gracefully you let go.", id: 66, source: "Buddhist saying" }, { text: "The root of suffering is attachment.", id: 67, source: "Buddha" }, { text: "There is no path to happiness: happiness is the path.", id: 68, source: "Buddha" }, { text: "All that we are is the result of what we have thought.", id: 69, source: "Buddha" }, { text: "Better than a thousand hollow words is one word that brings peace.", id: 70, source: "Buddha" }, { text: "Just as a snake sheds its skin, we must shed our past over and over again.", id: 71, source: "Buddha" }, { text: "The mind is everything. What you think you become.", id: 72, source: "Buddha" }, { text: "To understand everything is to forgive everything.", id: 73, source: "Buddha" }, { text: "No one saves us but ourselves. No one can and no one may. We ourselves must walk the path.", id: 74, source: "Buddha" }, { text: "Work out your own salvation. Do not depend on others.", id: 75, source: "Buddha" }, // Tao Te Ching (15 quotes) { text: "The Tao that can be told is not the eternal Tao.", id: 76, source: "Lao Tzu, Tao Te Ching" }, { text: "Nature does not hurry, yet everything is accomplished.", id: 77, source: "Lao Tzu, Tao Te Ching" }, { text: "When I let go of what I am, I become what I might be.", id: 78, source: "Lao Tzu, Tao Te Ching" }, { text: "A good traveler has no fixed plans and is not intent on arriving.", id: 79, source: "Lao Tzu, Tao Te Ching" }, { text: "Knowing others is intelligence; knowing yourself is true wisdom.", id: 80, source: "Lao Tzu, Tao Te Ching" }, { text: "The soft overcomes the hard; the gentle overcomes the rigid.", id: 81, source: "Lao Tzu, Tao Te Ching" }, { text: "He who knows he has enough is rich.", id: 82, source: "Lao Tzu, Tao Te Ching" }, { text: "The journey of a thousand miles begins with one step.", id: 83, source: "Lao Tzu, Tao Te Ching" }, { text: "When you realize there is nothing lacking, the whole world belongs to you.", id: 84, source: "Lao Tzu, Tao Te Ching" }, { text: "Silence is a source of great strength.", id: 85, source: "Lao Tzu, Tao Te Ching" }, { text: "Be content with what you have; rejoice in the way things are.", id: 86, source: "Lao Tzu, Tao Te Ching" }, { text: "To the mind that is still, the whole universe surrenders.", id: 87, source: "Lao Tzu, Tao Te Ching" }, { text: "Health is the greatest possession. Contentment is the greatest treasure.", id: 88, source: "Lao Tzu, Tao Te Ching" }, { text: "Respond intelligently even to unintelligent treatment.", id: 89, source: "Lao Tzu, Tao Te Ching" }, { text: "New beginnings are often disguised as painful endings.", id: 90, source: "Lao Tzu, Tao Te Ching" }, // Law of One (15 quotes) { text: "All is one. There is no polarity, no right or wrong, no disharmony, but only identity.", id: 91, source: "Law of One" }, { text: "The universe is one being. When you harm another, you harm yourself.", id: 92, source: "Law of One" }, { text: "Service to others is the path to unity with the Infinite.", id: 93, source: "Law of One" }, { text: "The Creator is not separate from the creation; it is the creation.", id: 94, source: "Law of One" }, { text: "Love is the vibration which creates, builds, and maintains all things.", id: 95, source: "Law of One" }, { text: "The purpose of incarnation is to learn the ways of love.", id: 96, source: "Law of One" }, { text: "There is no right or wrong. There is no polarity for all will be reconciled in time.", id: 97, source: "Law of One" }, { text: "The heart of spiritual evolution is understanding that all beings are the Creator.", id: 98, source: "Law of One" }, { text: "The path back to the One is through love, understanding and acceptance.", id: 99, source: "Law of One" }, { text: "Each entity contains all of creation within its consciousness.", id: 100, source: "Law of One" }, { text: "The present moment contains all that there is.", id: 101, source: "Law of One" }, { text: "The greatest service is to be and to allow others to be.", id: 102, source: "Law of One" }, { text: "All things, all of life, all of the creation is part of one original thought.", id: 103, source: "Law of One" }, { text: "The purpose of the illusion is that the Creator may know Itself.", id: 104, source: "Law of One" }, { text: "The energy of the Creator is love/light, light/love.", id: 105, source: "Law of One" }, // Additional Wisdom (10 quotes) { text: "As above, so below; as below, so above.", id: 106, source: "Emerald Tablet" }, { text: "The universe is mental, held in the mind of the All.", id: 107, source: "Emerald Tablet" }, { text: "Be the change you wish to see in the world.", id: 108, source: "Mahatma Gandhi" }, { text: "What we think, we become.", id: 109, source: "Mahatma Gandhi" }, { text: "The only real valuable thing is intuition.", id: 110, source: "Albert Einstein" }, { text: "Everything is energy and that's all there is to it.", id: 111, source: "Albert Einstein" }, { text: "The privilege of a lifetime is to become who you truly are.", id: 112, source: "Carl Jung" }, { text: "Your vision will become clear only when you can look into your own heart.", id: 113, source: "Carl Jung" }, { text: "We are not human beings having a spiritual experience. We are spiritual beings having a human experience.", id: 114, source: "Pierre Teilhard de Chardin" }, { text: "The day science begins to study non-physical phenomena, it will make more progress in one decade than in all the previous centuries.", id: 115, source: "Nikola Tesla" } // Emerald Tablet (15 passages) { text: "As above, so below; as below, so above.", id: 116, source: "Emerald Tablet" }, { text: "That which is below is like that which is above, and that which is above is like that which is below, to accomplish the miracles of one thing.", id: 117, source: "Emerald Tablet" }, { text: "The Sun is its father, the Moon its mother, the Wind carries it in its belly, the Earth is its nurse.", id: 118, source: "Emerald Tablet" }, { text: "All things are born from this one thing by adaptation.", id: 119, source: "Emerald Tablet" }, { text: "Its father is the Sun, its mother the Moon; the Wind carries it in its belly; its nurse is the Earth.", id: 120, source: "Emerald Tablet" }, { text: "Separate the Earth from Fire, the subtle from the gross, gently and with great skill.", id: 121, source: "Emerald Tablet" }, { text: "It ascends from Earth to Heaven and again descends to Earth, thereby combining within itself the powers of both the above and the below.", id: 122, source: "Emerald Tablet" }, { text: "Thus will you obtain the glory of the whole world, and all darkness will flee from you.", id: 123, source: "Emerald Tablet" }, { text: "This is the greatest force of all powers, for it overcomes every subtle thing and penetrates every solid.", id: 124, source: "Emerald Tablet" }, { text: "In this way was the world created.", id: 125, source: "Emerald Tablet" }, { text: "From this will come marvelous adaptations of which this is the process.", id: 126, source: "Emerald Tablet" }, { text: "Therefore am I called Hermes Trismegistus, having the three parts of the philosophy of the whole world.", id: 127, source: "Emerald Tablet" }, { text: "What I have said about the operation of the Sun is accomplished and ended.", id: 128, source: "Emerald Tablet" }, { text: "The work is whole, complete and perfect; if performed according to nature.", id: 129, source: "Emerald Tablet" }, { text: "The universe is mental, held in the mind of the All.", id: 130, source: "Emerald Tablet" }, // Florence Scovel Shinn (20 passages) { text: "Your word is your wand. The words you speak create your own destiny.", id: 131, source: "Florence Scovel Shinn" }, { text: "The game of life is a game of boomerangs. Our thoughts, deeds and words return to us sooner or later with astounding accuracy.", id: 132, source: "Florence Scovel Shinn" }, { text: "Every great work, every big accomplishment, has been brought into manifestation through holding to the vision.", id: 133, source: "Florence Scovel Shinn" }, { text: "There is no loss in divine mind, therefore I cannot lose anything that is rightfully mine.", id: 134, source: "Florence Scovel Shinn" }, { text: "Faith is an active force, a power that moves mountains.", id: 135, source: "Florence Scovel Shinn" }, { text: "The Divine Plan unfolds through your trust and inspired action.", id: 136, source: "Florence Scovel Shinn" }, { text: "Intuition is the voice of God within, guiding you to your good.", id: 137, source: "Florence Scovel Shinn" }, { text: "When you have asked and believed, take the steps toward your demonstration.", id: 138, source: "Florence Scovel Shinn" }, { text: "Your good is like a rubber ball—the harder you throw it away, the harder it returns.", id: 139, source: "Florence Scovel Shinn" }, { text: "The invisible supply is inexhaustible, and your faith and word release it.", id: 140, source: "Florence Scovel Shinn" }, { text: "You must have a fearless heart to receive your good.", id: 141, source: "Florence Scovel Shinn" }, { text: "You will never lack when you realize that God is your supply.", id: 142, source: "Florence Scovel Shinn" }, { text: "Every man is a golden link in the chain of your good.", id: 143, source: "Florence Scovel Shinn" }, { text: "Your word is the law and you are held accountable for every idle word.", id: 144, source: "Florence Scovel Shinn" }, { text: "The power of the word is the power to create.", id: 145, source: "Florence Scovel Shinn" }, { text: "Your good is at hand and will manifest if you hold to your faith.", id: 146, source: "Florence Scovel Shinn" }, { text: "The divine design of your life is perfect, and all conditions and experiences are stepping stones to your good.", id: 147, source: "Florence Scovel Shinn" }, { text: "You cannot force your demonstration; it comes through grace when you are ready.", id: 148, source: "Florence Scovel Shinn" }, { text: "Your word has power to dissolve all seeming obstacles.", id: 149, source: "Florence Scovel Shinn" }, { text: "The universe is always working behind the scenes to bring you your perfect good.", id: 150, source: "Florence Scovel Shinn" }, // Neville Goddard (20 passages) { text: "Assume the feeling of your wish fulfilled and observe the route that attention follows.", id: 151, source: "Neville Goddard" }, { text: "Change your conception of yourself and you will automatically change the world in which you live.", id: 152, source: "Neville Goddard" }, { text: "Your imagination is God, and human imagination is the actual Jesus Christ of Scripture.", id: 153, source: "Neville Goddard" }, { text: "Live in the end and you will see the invisible and do the impossible.", id: 154, source: "Neville Goddard" }, { text: "The world is yourself pushed out. Ask yourself what you want and then give it to yourself.", id: 155, source: "Neville Goddard" }, { text: "Assume the feeling of your wish fulfilled and continue feeling that it is fulfilled until that which you feel objectifies itself.", id: 156, source: "Neville Goddard" }, { text: "You are already that which you want to be, and your refusal to believe this is the only reason you do not see it.", id: 157, source: "Neville Goddard" }, { text: "The moment you accept the wish as an accomplished fact, the subconscious finds means for its realization.", id: 158, source: "Neville Goddard" }, { text: "Your imagination is the only reality, and what you imagine as true is true.", id: 159, source: "Neville Goddard" }, { text: "You must abandon yourself mentally to your wish fulfilled in your love for that state, and in so doing, live in the new state and no more in the old.", id: 160, source: "Neville Goddard" }, { text: "All things are possible to God, and God is your own wonderful human imagination.", id: 161, source: "Neville Goddard" }, { text: "The future must become the present in the imagination of the one who would wisely and consciously create circumstances.", id: 162, source: "Neville Goddard" }, { text: "There is no fiction. What you imagine is as real as your hand.", id: 163, source: "Neville Goddard" }, { text: "You are today where your imagination has placed you, and you will be tomorrow where your imagination places you.", id: 164, source: "Neville Goddard" }, { text: "The world is a mirror, forever reflecting what you are doing, within yourself.", id: 165, source: "Neville Goddard" }, { text: "Assume the feeling of your wish fulfilled and your assumption, though false, if sustained, will harden into fact.", id: 166, source: "Neville Goddard" }, { text: "The creative power of God and the creative power of man are one and the same.", id: 167, source: "Neville Goddard" }, { text: "You must be the change you wish to see, and then you will see the change you have assumed.", id: 168, source: "Neville Goddard" }, { text: "Your imagination is the living, creative power of the universe.", id: 169, source: "Neville Goddard" }, { text: "The secret of imagining is the secret of creation.", id: 170, source: "Neville Goddard" } // Buddha (30 passages) { text: "The mind is everything. What you think you become.", id: 171, source: "Buddha" }, { text: "Peace comes from within. Do not seek it without.", id: 172, source: "Buddha" }, { text: "Three things cannot be long hidden: the sun, the moon, and the truth.", id: 173, source: "Buddha" }, { text: "You yourself, as much as anybody in the entire universe, deserve your love and affection.", id: 174, source: "Buddha" }, { text: "Holding onto anger is like drinking poison and expecting the other person to die.", id: 175, source: "Buddha" }, { text: "The root of suffering is attachment.", id: 176, source: "Buddha" }, { text: "No one saves us but ourselves. No one can and no one may. We ourselves must walk the path.", id: 177, source: "Buddha" }, { text: "Thousands of candles can be lit from a single candle, and the life of the candle will not be shortened.", id: 178, source: "Buddha" }, { text: "In the end, only three things matter: how much you loved, how gently you lived, and how gracefully you let go.", id: 179, source: "Buddha" }, { text: "Better than a thousand hollow words is one word that brings peace.", id: 180, source: "Buddha" }, { text: "Just as a snake sheds its skin, we must shed our past over and over again.", id: 181, source: "Buddha" }, { text: "To understand everything is to forgive everything.", id: 182, source: "Buddha" }, { text: "Work out your own salvation. Do not depend on others.", id: 183, source: "Buddha" }, { text: "There is no path to happiness: happiness is the path.", id: 184, source: "Buddha" }, { text: "All that we are is the result of what we have thought.", id: 185, source: "Buddha" }, { text: "Do not dwell in the past, do not dream of the future, concentrate the mind on the present moment.", id: 186, source: "Buddha" }, { text: "Hatred does not cease by hatred, but only by love; this is the eternal rule.", id: 187, source: "Buddha" }, { text: "You will not be punished for your anger; you will be punished by your anger.", id: 188, source: "Buddha" }, { text: "To conquer oneself is a greater victory than to conquer thousands in battle.", id: 189, source: "Buddha" }, { text: "The way is not in the sky. The way is in the heart.", id: 190, source: "Buddha" }, { text: "Health is the greatest gift, contentment the greatest wealth, faithfulness the best relationship.", id: 191, source: "Buddha" }, { text: "A jug fills drop by drop.", id: 192, source: "Buddha" }, { text: "All wrong-doing arises because of mind. If mind is transformed can wrong-doing remain?", id: 193, source: "Buddha" }, { text: "Radiate boundless love towards the entire world.", id: 194, source: "Buddha" }, { text: "Nothing can harm you as much as your own thoughts unguarded.", id: 195, source: "Buddha" }, { text: "Let all-embracing thoughts for all beings be yours.", id: 196, source: "Buddha" }, { text: "As rain breaks through an ill-thatched house, passion will break through an unreflecting mind.", id: 197, source: "Buddha" }, { text: "The secret of health for both mind and body is not to mourn for the past, nor to worry about the future, but to live the present moment wisely and earnestly.", id: 198, source: "Buddha" }, { text: "There is no fire like passion, no crime like hatred, no sorrow like separation, no sickness like hunger, and no joy like the joy of freedom.", id: 199, source: "Buddha" }, { text: "Even death is not to be feared by one who has lived wisely.", id: 200, source: "Buddha" }, // Christ (30 passages) { text: "Blessed are the pure in heart, for they shall see God.", id: 201, source: "Jesus Christ" }, { text: "The kingdom of God is within you.", id: 202, source: "Jesus Christ" }, { text: "Love your enemies, bless those who curse you, do good to those who hate you.", id: 203, source: "Jesus Christ" }, { text: "Ask, and it will be given to you; seek, and you will find; knock, and it will be opened to you.", id: 204, source: "Jesus Christ" }, { text: "Do not judge, and you will not be judged. Do not condemn, and you will not be condemned. Forgive, and you will be forgiven.", id: 205, source: "Jesus Christ" }, { text: "For what will it profit a man if he gains the whole world and forfeits his soul?", id: 206, source: "Jesus Christ" }, { text: "I am the way, and the truth, and the life.", id: 207, source: "Jesus Christ" }, { text: "You will know the truth, and the truth will set you free.", id: 208, source: "Jesus Christ" }, { text: "Let him who is without sin among you be the first to throw a stone.", id: 209, source: "Jesus Christ" }, { text: "Father, forgive them, for they know not what they do.", id: 210, source: "Jesus Christ" }, { text: "Love the Lord your God with all your heart and with all your soul and with all your mind. This is the first and greatest commandment. And the second is like it: Love your neighbor as yourself.", id: 211, source: "Jesus Christ" }, { text: "Blessed are the peacemakers, for they will be called children of God.", id: 212, source: "Jesus Christ" }, { text: "Do to others as you would have them do to you.", id: 213, source: "Jesus Christ" }, { text: "For where your treasure is, there your heart will be also.", id: 214, source: "Jesus Christ" }, { text: "I am the light of the world. Whoever follows me will never walk in darkness, but will have the light of life.", id: 215, source: "Jesus Christ" }, { text: "Let your light shine before others, that they may see your good deeds and glorify your Father in heaven.", id: 216, source: "Jesus Christ" }, { text: "Peace I leave with you; my peace I give you. I do not give to you as the world gives. Do not let your hearts be troubled and do not be afraid.", id: 217, source: "Jesus Christ" }, { text: "Whoever wants to be my disciple must deny themselves and take up their cross and follow me.", id: 218, source: "Jesus Christ" }, { text: "With man this is impossible, but with God all things are possible.", id: 219, source: "Jesus Christ" }, { text: "Come to me, all you who are weary and burdened, and I will give you rest.", id: 220, source: "Jesus Christ" }, { text: "Be perfect, therefore, as your heavenly Father is perfect.", id: 221, source: "Jesus Christ" }, { text: "It is more blessed to give than to receive.", id: 222, source: "Jesus Christ" }, { text: "I am the vine; you are the branches. If you remain in me and I in you, you will bear much fruit; apart from me you can do nothing.", id: 223, source: "Jesus Christ" }, { text: "For God so loved the world that he gave his one and only Son, that whoever believes in him shall not perish but have eternal life.", id: 224, source: "Jesus Christ" }, { text: "Behold, I stand at the door and knock. If anyone hears my voice and opens the door, I will come in to him and eat with him, and he with me.", id: 225, source: "Jesus Christ" }, { text: "Heaven and earth will pass away, but my words will never pass away.", id: 226, source: "Jesus Christ" }, { text: "What good will it be for someone to gain the whole world, yet forfeit their soul?", id: 227, source: "Jesus Christ" }, { text: "The spirit is willing, but the flesh is weak.", id: 228, source: "Jesus Christ" }, { text: "Let the little children come to me, and do not hinder them, for the kingdom of heaven belongs to such as these.", id: 229, source: "Jesus Christ" }, { text: "Behold, I make all things new.", id: 230, source: "Jesus Christ" } // Carl Jung (20 passages) { text: "Until you make the unconscious conscious, it will direct your life and you will call it fate.", id: 231, source: "Carl Jung" }, { text: "Who looks outside, dreams; who looks inside, awakes.", id: 232, source: "Carl Jung" }, { text: "The meeting of two personalities is like the contact of two chemical substances: if there is any reaction, both are transformed.", id: 233, source: "Carl Jung" }, { text: "I am not what happened to me, I am what I choose to become.", id: 234, source: "Carl Jung" }, { text: "Your vision will become clear only when you can look into your own heart.", id: 235, source: "Carl Jung" }, { text: "The privilege of a lifetime is to become who you truly are.", id: 236, source: "Carl Jung" }, { text: "Everything that irritates us about others can lead us to an understanding of ourselves.", id: 237, source: "Carl Jung" }, { text: "Knowing your own darkness is the best method for dealing with the darknesses of other people.", id: 238, source: "Carl Jung" }, { text: "The unconscious is not just evil by nature, it is also the source of the highest good.", id: 239, source: "Carl Jung" }, { text: "There is no coming to consciousness without pain.", id: 240, source: "Carl Jung" }, { text: "The pendulum of the mind alternates between sense and nonsense, not between right and wrong.", id: 241, source: "Carl Jung" }, { text: "Dreams are the guiding words of the soul.", id: 242, source: "Carl Jung" }, { text: "As far as we can discern, the sole purpose of human existence is to kindle a light in the darkness of mere being.", id: 243, source: "Carl Jung" }, { text: "The greatest and most important problems of life are all fundamentally insoluble. They can never be solved but only outgrown.", id: 244, source: "Carl Jung" }, { text: "The most terrifying thing is to accept oneself completely.", id: 245, source: "Carl Jung" }, { text: "We cannot change anything until we accept it.", id: 246, source: "Carl Jung" }, { text: "The archetypes are the great decisive forces, they bring about the real events, and not our personal reasoning and practical intellect.", id: 247, source: "Carl Jung" }, { text: "The Self is the total, timeless man and as such corresponds to the original, spherical, bisexual being who stands for the reconciliation of opposites.", id: 248, source: "Carl Jung" }, { text: "The unconscious is the unwritten history of mankind from time unrecorded.", id: 249, source: "Carl Jung" }, { text: "Synchronicity is an ever-present reality for those who have eyes to see.", id: 250, source: "Carl Jung" }, // Edgar Cayce (20 passages) { text: "The spirit is the life, the mind is the builder, the physical is the result.", id: 251, source: "Edgar Cayce" }, { text: "Dreams are today's answers to tomorrow's questions.", id: 252, source: "Edgar Cayce" }, { text: "The soul grows as the mind is opened to the higher understandings.", id: 253, source: "Edgar Cayce" }, { text: "All healing is first a change in attitude, then a change in the physical.", id: 254, source: "Edgar Cayce" }, { text: "The body is a temple. Keep it clean, keep it holy for the living forces that manifest through same.", id: 255, source: "Edgar Cayce" }, { text: "Mind is the builder. That which we think upon may become crimes or miracles.", id: 256, source: "Edgar Cayce" }, { text: "The earth is but a school, and all are pupils.", id: 257, source: "Edgar Cayce" }, { text: "The greatest thing any soul may do is to make the will of the Father its own.", id: 258, source: "Edgar Cayce" }, { text: "Patience is the greatest virtue that may be manifested in a material experience.", id: 259, source: "Edgar Cayce" }, { text: "Each soul enters with a pattern to fulfill, with lessons to meet, with relationships to complete.", id: 260, source: "Edgar Cayce" }, { text: "The purpose of life is to become aware of our oneness with God.", id: 261, source: "Edgar Cayce" }, { text: "The answers to every problem are within self, if the self will but seek, will but knock, will but ask.", id: 262, source: "Edgar Cayce" }, { text: "There are no shortcuts in spiritual development.", id: 263, source: "Edgar Cayce" }, { text: "The thoughts of today are the experiences of tomorrow.", id: 264, source: "Edgar Cayce" }, { text: "Love is the fulfilling of the law - not the law of the land, but the law of God.", id: 265, source: "Edgar Cayce" }, { text: "The soul never loses what it has gained.", id: 266, source: "Edgar Cayce" }, { text: "Each entity is a portion of the universal consciousness, or God.", id: 267, source: "Edgar Cayce" }, { text: "The present is the opportunity. Make the most of today.", id: 268, source: "Edgar Cayce" }, { text: "The kingdom of heaven is within. The Christ Consciousness is universal.", id: 269, source: "Edgar Cayce" }, { text: "All force is one force, all power is one power, all energy is one energy.", id: 270, source: "Edgar Cayce" } 
-// Dolores Cannon (20 passages)
-{ text: "We are all fragments of the One Infinite Creator experiencing itself in infinite ways.", id: 271, source: "Dolores Cannon" },
-{ text: "Time is an illusion created by the mind to allow the soul to experience growth.", id: 272, source: "Dolores Cannon" },
-{ text: "The past, present and future exist simultaneously in the eternal now.", id: 273, source: "Dolores Cannon" },
-{ text: "You chose to be here at this time because you knew you could make a difference.", id: 274, source: "Dolores Cannon" },
-{ text: "There are no mistakes in the universe, only experiences for soul growth.", id: 275, source: "Dolores Cannon" },
-{ text: "The Earth is a school for souls, and we are here to learn lessons of love.", id: 276, source: "Dolores Cannon" },
-{ text: "Your higher self knows all your past lives and your soul's purpose.", id: 277, source: "Dolores Cannon" },
-{ text: "Reality is much more fluid and malleable than we've been taught to believe.", id: 278, source: "Dolores Cannon" },
-{ text: "Death is merely a transition to another state of consciousness.", id: 279, source: "Dolores Cannon" },
-{ text: "The answers you seek are already within you - you just need to remember.", id: 280, source: "Dolores Cannon" },
-{ text: "All knowledge exists in the Akashic records, the library of all souls' experiences.", id: 281, source: "Dolores Cannon" },
-{ text: "You are a multidimensional being existing in many dimensions simultaneously.", id: 282, source: "Dolores Cannon" },
-{ text: "The veil between dimensions is thinning as consciousness evolves.", id: 283, source: "Dolores Cannon" },
-{ text: "Your thoughts create your reality more powerfully than you can imagine.", id: 284, source: "Dolores Cannon" },
-{ text: "The purpose of life is to remember who you truly are - an eternal spiritual being.", id: 285, source: "Dolores Cannon" },
-{ text: "There are no coincidences - only synchronicities guiding you on your path.", id: 286, source: "Dolores Cannon" },
-{ text: "All souls are connected through the web of consciousness.", id: 287, source: "Dolores Cannon" },
-{ text: "The greatest healing comes when we remember our divine nature.", id: 288, source: "Dolores Cannon" },
-{ text: "You are here to help raise the vibration of the planet through your awakening.", id: 289, source: "Dolores Cannon" },
-{ text: "Love is the fundamental energy of the universe that binds all creation together.", id: 290, source: "Dolores Cannon" },
-
-// Louis Hay (20 passages)
-{ text: "You have the power to heal your life, and you need to know that.", id: 291, source: "Louise Hay" },
-{ text: "Every thought we think is creating our future.", id: 292, source: "Louise Hay" },
-{ text: "The point of power is always in the present moment.", id: 293, source: "Louise Hay" },
-{ text: "You are the only person who thinks in your mind! You are the power and authority in your world.", id: 294, source: "Louise Hay" },
-{ text: "I do not fix problems. I fix my thinking. Then problems fix themselves.", id: 295, source: "Louise Hay" },
-{ text: "Love is the great miracle cure. Loving ourselves works miracles in our lives.", id: 296, source: "Louise Hay" },
-{ text: "It's only a thought, and a thought can be changed.", id: 297, source: "Louise Hay" },
-{ text: "You are constantly in the act of creating yourself. You are in every moment deciding who and what you are.", id: 298, source: "Louise Hay" },
-{ text: "The thoughts you choose to think are the tools you use to paint the canvas of your life.", id: 299, source: "Louise Hay" },
-{ text: "I am in the right place at the right time, doing the right thing.", id: 300, source: "Louise Hay" },
-{ text: "I approve of myself. I am safe. I express myself with ease. All is well in my world.", id: 301, source: "Louise Hay" },
-{ text: "I release the need to struggle. Life is easy when I allow it to be.", id: 302, source: "Louise Hay" },
-{ text: "I am willing to change and grow. I now create a safe, new future.", id: 303, source: "Louise Hay" },
-{ text: "I forgive myself and set myself free.", id: 304, source: "Louise Hay" },
-{ text: "I am open and receptive to all the good and abundance in the universe.", id: 305, source: "Louise Hay" },
-{ text: "I deserve all that is good. I refuse to beat myself up anymore.", id: 306, source: "Louise Hay" },
-{ text: "I release all negative thoughts about the past. I am at peace with my past.", id: 307, source: "Louise Hay" },
-{ text: "I am a magnet for miracles. I attract only good into my life.", id: 308, source: "Louise Hay" },
-{ text: "I am grateful for my perfect health. I listen with love to my body's messages.", id: 309, source: "Louise Hay" },
-{ text: "I am in the process of positive change. I am willing to release old limitations.", id: 310, source: "Louise Hay" },
-
-// Mahabharata/Bhagavad Gita (30 passages)
-{ text: "You have the right to perform your prescribed duties, but you are not entitled to the fruits of your actions.", id: 311, source: "Bhagavad Gita" },
-{ text: "The soul is neither born, nor does it ever die; nor having once existed, does it ever cease to be.", id: 312, source: "Bhagavad Gita" },
-{ text: "For the soul there is neither birth nor death. It is not slain when the body is slain.", id: 313, source: "Bhagavad Gita" },
-{ text: "A person can rise through the efforts of his own mind; or draw himself down, in the same manner.", id: 314, source: "Bhagavad Gita" },
-{ text: "When meditation is mastered, the mind is unwavering like the flame of a lamp in a windless place.", id: 315, source: "Bhagavad Gita" },
-{ text: "The wise see knowledge and action as one.", id: 316, source: "Bhagavad Gita" },
-{ text: "The self-controlled soul, who moves amongst sense objects, free from either attachment or repulsion, he wins eternal peace.", id: 317, source: "Bhagavad Gita" },
-{ text: "One who sees inaction in action, and action in inaction, is intelligent among men.", id: 318, source: "Bhagavad Gita" },
-{ text: "The peace of God is with them whose mind and soul are in harmony, who are free from desire and wrath.", id: 319, source: "Bhagavad Gita" },
-{ text: "Perform your obligatory duty, because action is indeed better than inaction.", id: 320, source: "Bhagavad Gita" },
-{ text: "Whatever happened, happened for the good. Whatever is happening, is happening for the good. Whatever will happen, will also happen for the good.", id: 321, source: "Bhagavad Gita" },
-{ text: "The power of God is with you at all times; through the activities of mind, senses, breathing, and emotions; and is constantly doing all the work using you as a mere instrument.", id: 322, source
+      // Conversations with God (15 quotes)
+      { text: "You are God, in drag.", id: 1, source: "Conversations with God" },
+      { text: "There is no such thing as a better way, only another way.", id: 2, source: "Conversations with God" },
+      { text: "The soul creates, the mind reacts, the body experiences.", id: 3, source: "Conversations with God" },
+      { text: "All human actions are motivated at their deepest level by one of two emotions: fear or love.", id: 4, source: "Conversations with God" },
+      { text: "There are no victims in the universe—only creators.", id: 5, source: "Conversations with God" },
+      { text: "Your life is not about you, it is about everyone whose life you touch.", id: 6, source: "Conversations with God" },
+      { text: "The purpose of relationship is not to have another who might complete you, but to have another with whom you might share your completeness.", id: 7, source: "Conversations with God" },
+      { text: "There is only one purpose for all of life, and that is for you and all that lives to experience fullest glory.", id: 8, source: "Conversations with God" },
+      { text: "You are the creator of your own reality, and life can show up no other way for you than that way in which you think it will.", id: 9, source: "Conversations with God" },
+      { text: "The truth is simple: There is no separation between you and God.", id: 10, source: "Conversations with God" },
+      { text: "Your way of being is your way of believing, and your way of believing creates your experience.", id: 11, source: "Conversations with God" },
+      { text: "The moment you declare anything, everything unlike it will come into the space.", id: 12, source: "Conversations with God" },
+      { text: "There is no truth except the truth that exists within you.", id: 13, source: "Conversations with God" },
+      { text: "You are the one who calls the light into being. Indeed, you are the light.", id: 14, source: "Conversations with God" },
+      { text: "The deepest secret is that life is not a process of discovery, but a process of creation.", id: 15, source: "Conversations with God" },
+      // Seth Speaks (15 quotes)
+      { text: "You are not a human being having a spiritual experience. You are a spiritual being having a human experience.", id: 16, source: "Seth Speaks" },
+      { text: "The universe is not something apart from you. You are the universe expressing itself as a human for a little while.", id: 17, source: "Seth Speaks" },
+      { text: "Your imagination is your gateway to other realities.", id: 18, source: "Seth Speaks" },
+      { text: "You create your reality according to your beliefs and expectations.", id: 19, source: "Seth Speaks" },
+      { text: "The present is the point of power where past and future meet.", id: 20, source: "Seth Speaks" },
+      { text: "You are given the gift of the gods; you create your reality according to your beliefs.", id: 21, source: "Seth Speaks" },
+      { text: "The soul is a medium for creativity, a creator that forms realities.", id: 22, source: "Seth Speaks" },
+      { text: "You are not at the mercy of past events unless you believe you are.", id: 23, source: "Seth Speaks" },
+      { text: "Dreams are the language of the soul.", id: 24, source: "Seth Speaks" },
+      { text: "You are more than your physical body. Your consciousness continues when your body dies.", id: 25, source: "Seth Speaks" },
+      { text: "Probable realities exist around you like shadows, waiting for your recognition.", id: 26, source: "Seth Speaks" },
+      { text: "Your thoughts are as real as your physical objects.", id: 27, source: "Seth Speaks" },
+      { text: "You are a multidimensional being, experiencing many realities simultaneously.", id: 28, source: "Seth Speaks" },
+      { text: "The answers you seek lie within your own consciousness.", id: 29, source: "Seth Speaks" },
+      { text: "Your beliefs shape your health, your relationships, and your world.", id: 30, source: "Seth Speaks" },
+      // Rumi (15 quotes)
+      { text: "You are not a drop in the ocean. You are the entire ocean in a drop.", id: 31, source: "Rumi" },
+      { text: "What you seek is seeking you.", id: 32, source: "Rumi" },
+      { text: "Don't grieve. Anything you lose comes round in another form.", id: 33, source: "Rumi" },
+      { text: "Let yourself be silently drawn by the strange pull of what you really love.", id: 34, source: "Rumi" },
+      { text: "Be like a tree and let the dead leaves drop.", id: 35, source: "Rumi" },
+      { text: "The wound is the place where the Light enters you.", id: 36, source: "Rumi" },
+      { text: "When you do things from your soul, you feel a river moving in you, a joy.", id: 37, source: "Rumi" },
+      { text: "Your task is not to seek for love, but merely to seek and find all the barriers within yourself that you have built against it.", id: 38, source: "Rumi" },
+      { text: "Why do you stay in prison when the door is so wide open?", id: 39, source: "Rumi" },
+      { text: "Be a lamp, or a lifeboat, or a ladder.", id: 40, source: "Rumi" },
+      { text: "Where there is ruin, there is hope for a treasure.", id: 41, source: "Rumi" },
+      { text: "Let the beauty of what you love be what you do.", id: 42, source: "Rumi" },
+      { text: "The universe is not outside of you. Look inside yourself; everything that you want, you already are.", id: 43, source: "Rumi" },
+      { text: "You were born with wings. Why prefer to crawl through life?", id: 44, source: "Rumi" },
+      { text: "Sell your cleverness and buy bewilderment.", id: 45, source: "Rumi" },
+      // Alan Watts (15 quotes)
+      { text: "You are an aperture through which the universe is looking at and exploring itself.", id: 46, source: "Alan Watts" },
+      { text: "The only way to make sense out of change is to plunge into it, move with it, and join the dance.", id: 47, source: "Alan Watts" },
+      { text: "Trying to define yourself is like trying to bite your own teeth.", id: 48, source: "Alan Watts" },
+      { text: "You are that vast thing that you see far, far off with great telescopes.", id: 49, source: "Alan Watts" },
+      { text: "This is the real secret of life—to be completely engaged with what you are doing in the here and now.", id: 50, source: "Alan Watts" },
+      { text: "The more a thing tends to be permanent, the more it tends to be lifeless.", id: 51, source: "Alan Watts" },
+      { text: "We do not 'come into' this world; we come out of it, as leaves from a tree.", id: 52, source: "Alan Watts" },
+      { text: "No one is more dangerously insane than one who is sane all the time.", id: 53, source: "Alan Watts" },
+      { text: "Muddy water is best cleared by leaving it alone.", id: 54, source: "Alan Watts" },
+      { text: "The ego is nothing other than the focus of conscious attention.", id: 55, source: "Alan Watts" },
+      { text: "You are under no obligation to be the same person you were five minutes ago.", id: 56, source: "Alan Watts" },
+      { text: "Problems that remain persistently insoluble should always be suspected as questions asked in the wrong way.", id: 57, source: "Alan Watts" },
+      { text: "The art of living is neither careless drifting nor fearful clinging, but a dance.", id: 58, source: "Alan Watts" },
+      { text: "What you are basically, deep deep down, is simply the fabric and structure of existence itself.", id: 59, source: "Alan Watts" },
+      { text: "The meaning of life is just to be alive. It is so plain and so obvious and so simple.", id: 60, source: "Alan Watts" },
+      // Buddhist Teachings (15 quotes)
+      { text: "Do not dwell in the past, do not dream of the future, concentrate the mind on the present moment.", id: 61, source: "Buddha" },
+      { text: "Peace comes from within. Do not seek it without.", id: 62, source: "Buddha" },
+      { text: "Holding onto anger is like drinking poison and expecting the other person to die.", id: 63, source: "Buddhist proverb" },
+      { text: "Thousands of candles can be lit from a single candle, and the life of the candle will not be shortened.", id: 64, source: "Buddha" },
+      { text: "You yourself, as much as anybody in the entire universe, deserve your love and affection.", id: 65, source: "Buddha" },
+      { text: "In the end, only three things matter: how much you loved, how gently you lived, and how gracefully you let go.", id: 66, source: "Buddhist saying" },
+      { text: "The root of suffering is attachment.", id: 67, source: "Buddha" },
+      { text: "There is no path to happiness: happiness is the path.", id: 68, source: "Buddha" },
+      { text: "All that we are is the result of what we have thought.", id: 69, source: "Buddha" },
+      { text: "Better than a thousand hollow words is one word that brings peace.", id: 70, source: "Buddha" },
+      { text: "Just as a snake sheds its skin, we must shed our past over and over again.", id: 71, source: "Buddha" },
+      { text: "The mind is everything. What you think you become.", id: 72, source: "Buddha" },
+      { text: "To understand everything is to forgive everything.", id: 73, source: "Buddha" },
+      { text: "No one saves us but ourselves. No one can and no one may. We ourselves must walk the path.", id: 74, source: "Buddha" },
+      { text: "Work out your own salvation. Do not depend on others.", id: 75, source: "Buddha" },
+      // Tao Te Ching (15 quotes)
+      { text: "The Tao that can be told is not the eternal Tao.", id: 76, source: "Lao Tzu, Tao Te Ching" },
+      { text: "Nature does not hurry, yet everything is accomplished.", id: 77, source: "Lao Tzu, Tao Te Ching" },
+      { text: "When I let go of what I am, I become what I might be.", id: 78, source: "Lao Tzu, Tao Te Ching" },
+      { text: "A good traveler has no fixed plans and is not intent on arriving.", id: 79, source: "Lao Tzu, Tao Te Ching" },
+      { text: "Knowing others is intelligence; knowing yourself is true wisdom.", id: 80, source: "Lao Tzu, Tao Te Ching" },
+      { text: "The soft overcomes the hard; the gentle overcomes the rigid.", id: 81, source: "Lao Tzu, Tao Te Ching" },
+      { text: "He who knows he has enough is rich.", id: 82, source: "Lao Tzu, Tao Te Ching" },
+      { text: "The journey of a thousand miles begins with one step.", id: 83, source: "Lao Tzu, Tao Te Ching" },
+      { text: "When you realize there is nothing lacking, the whole world belongs to you.", id: 84, source: "Lao Tzu, Tao Te Ching" },
+      { text: "Silence is a source of great strength.", id: 85, source: "Lao Tzu, Tao Te Ching" },
+      { text: "Be content with what you have; rejoice in the way things are.", id: 86, source: "Lao Tzu, Tao Te Ching" },
+      { text: "To the mind that is still, the whole universe surrenders.", id: 87, source: "Lao Tzu, Tao Te Ching" },
+      { text: "Health is the greatest possession. Contentment is the greatest treasure.", id: 88, source: "Lao Tzu, Tao Te Ching" },
+      { text: "Respond intelligently even to unintelligent treatment.", id: 89, source: "Lao Tzu, Tao Te Ching" },
+      { text: "New beginnings are often disguised as painful endings.", id: 90, source: "Lao Tzu, Tao Te Ching" },
+      // Law of One (15 quotes)
+      { text: "All is one. There is no polarity, no right or wrong, no disharmony, but only identity.", id: 91, source: "Law of One" },
+      { text: "The universe is one being. When you harm another, you harm yourself.", id: 92, source: "Law of One" },
+      { text: "Service to others is the path to unity with the Infinite.", id: 93, source: "Law of One" },
+      { text: "The Creator is not separate from the creation; it is the creation.", id: 94, source: "Law of One" },
+      { text: "Love is the vibration which creates, builds, and maintains all things.", id: 95, source: "Law of One" },
+      { text: "The purpose of incarnation is to learn the ways of love.", id: 96, source: "Law of One" },
+      { text: "There is no right or wrong. There is no polarity for all will be reconciled in time.", id: 97, source: "Law of One" },
+      { text: "The heart of spiritual evolution is understanding that all beings are the Creator.", id: 98, source: "Law of One" },
+      { text: "The path back to the One is through love, understanding and acceptance.", id: 99, source: "Law of One" },
+      { text: "Each entity contains all of creation within its consciousness.", id: 100, source: "Law of One" },
+      { text: "The present moment contains all that there is.", id: 101, source: "Law of One" },
+      { text: "The greatest service is to be and to allow others to be.", id: 102, source: "Law of One" },
+      { text: "All things, all of life, all of the creation is part of one original thought.", id: 103, source: "Law of One" },
+      { text: "The purpose of the illusion is that the Creator may know Itself.", id: 104, source: "Law of One" },
+      { text: "The energy of the Creator is love/light, light/love.", id: 105, source: "Law of One" },
+      // Additional Wisdom (10 quotes)
+      { text: "As above, so below; as below, so above.", id: 106, source: "Emerald Tablet" },
+      { text: "The universe is mental, held in the mind of the All.", id: 107, source: "Emerald Tablet" },
+      { text: "Be the change you wish to see in the world.", id: 108, source: "Mahatma Gandhi" },
+      { text: "What we think, we become.", id: 109, source: "Mahatma Gandhi" },
+      { text: "The only real valuable thing is intuition.", id: 110, source: "Albert Einstein" },
+      { text: "Everything is energy and that's all there is to it.", id: 111, source: "Albert Einstein" },
+      { text: "The privilege of a lifetime is to become who you truly are.", id: 112, source: "Carl Jung" },
+      { text: "Your vision will become clear only when you can look into your own heart.", id: 113, source: "Carl Jung" },
+      { text: "We are not human beings having a spiritual experience. We are spiritual beings having a human experience.", id: 114, source: "Pierre Teilhard de Chardin" },
+      { text: "The day science begins to study non-physical phenomena, it will make more progress in one decade than in all the previous centuries.", id: 115, source: "Nikola Tesla" },
+      // Emerald Tablet (15 passages)
+      { text: "As above, so below; as below, so above.", id: 116, source: "Emerald Tablet" },
+      { text: "That which is below is like that which is above, and that which is above is like that which is below, to accomplish the miracles of one thing.", id: 117, source: "Emerald Tablet" },
+      { text: "The Sun is its father, the Moon its mother, the Wind carries it in its belly, the Earth is its nurse.", id: 118, source: "Emerald Tablet" },
+      { text: "All things are born from this one thing by adaptation.", id: 119, source: "Emerald Tablet" },
+      { text: "Its father is the Sun, its mother the Moon; the Wind carries it in its belly; its nurse is the Earth.", id: 120, source: "Emerald Tablet" },
+      { text: "Separate the Earth from Fire, the subtle from the gross, gently and with great skill.", id: 121, source: "Emerald Tablet" },
+      { text: "It ascends from Earth to Heaven and again descends to Earth, thereby combining within itself the powers of both the above and the below.", id: 122, source: "Emerald Tablet" },
+      { text: "Thus will you obtain the glory of the whole world, and all darkness will flee from you.", id: 123, source: "Emerald Tablet" },
+      { text: "This is the greatest force of all powers, for it overcomes every subtle thing and penetrates every solid.", id: 124, source: "Emerald Tablet" },
+      { text: "In this way was the world created.", id: 125, source: "Emerald Tablet" },
+      { text: "From this will come marvelous adaptations of which this is the process.", id: 126, source: "Emerald Tablet" },
+      { text: "Therefore am I called Hermes Trismegistus, having the three parts of the philosophy of the whole world.", id: 127, source: "Emerald Tablet" },
+      { text: "What I have said about the operation of the Sun is accomplished and ended.", id: 128, source: "Emerald Tablet" },
+      { text: "The work is whole, complete and perfect; if performed according to nature.", id: 129, source: "Emerald Tablet" },
+      { text: "The universe is mental, held in the mind of the All.", id: 130, source: "Emerald Tablet" },
+      // Florence Scovel Shinn (20 passages)
+      { text: "Your word is your wand. The words you speak create your own destiny.", id: 131, source: "Florence Scovel Shinn" },
+      { text: "The game of life is a game of boomerangs. Our thoughts, deeds and words return to us sooner or later with astounding accuracy.", id: 132, source: "Florence Scovel Shinn" },
+      { text: "Every great work, every big accomplishment, has been brought into manifestation through holding to the vision.", id: 133, source: "Florence Scovel Shinn" },
+      { text: "There is no loss in divine mind, therefore I cannot lose anything that is rightfully mine.", id: 134, source: "Florence Scovel Shinn" },
+      { text: "Faith is an active force, a power that moves mountains.", id: 135, source: "Florence Scovel Shinn" },
+      { text: "The Divine Plan unfolds through your trust and inspired action.", id: 136, source: "Florence Scovel Shinn" },
+      { text: "Intuition is the voice of God within, guiding you to your good.", id: 137, source: "Florence Scovel Shinn" },
+      { text: "When you have asked and believed, take the steps toward your demonstration.", id: 138, source: "Florence Scovel Shinn" },
+      { text: "Your good is like a rubber ball—the harder you throw it away, the harder it returns.", id: 139, source: "Florence Scovel Shinn" },
+      { text: "The invisible supply is inexhaustible, and your faith and word release it.", id: 140, source: "Florence Scovel Shinn" },
+      { text: "You must have a fearless heart to receive your good.", id: 141, source: "Florence Scovel Shinn" },
+      { text: "You will never lack when you realize that God is your supply.", id: 142, source: "Florence Scovel Shinn" },
+      { text: "Every man is a golden link in the chain of your good.", id: 143, source: "Florence Scovel Shinn" },
+      { text: "Your word is the law and you are held accountable for every idle word.", id: 144, source: "Florence Scovel Shinn" },
+      { text: "The power of the word is the power to create.", id: 145, source: "Florence Scovel Shinn" },
+      { text: "Your good is at hand and will manifest if you hold to your faith.", id: 146, source: "Florence Scovel Shinn" },
+      { text: "The divine design of your life is perfect, and all conditions and experiences are stepping stones to your good.", id: 147, source: "Florence Scovel Shinn" },
+      { text: "You cannot force your demonstration; it comes through grace when you are ready.", id: 148, source: "Florence Scovel Shinn" },
+      { text: "Your word has power to dissolve all seeming obstacles.", id: 149, source: "Florence Scovel Shinn" },
+      { text: "The universe is always working behind the scenes to bring you your perfect good.", id: 150, source: "Florence Scovel Shinn" },
+      // Neville Goddard (20 passages)
+      { text: "Assume the feeling of your wish fulfilled and observe the route that attention follows.", id: 151, source: "Neville Goddard" },
+      { text: "Change your conception of yourself and you will automatically change the world in which you live.", id: 152, source: "Neville Goddard" },
+      { text: "Your imagination is God, and human imagination is the actual Jesus Christ of Scripture.", id: 153, source: "Neville Goddard" },
+      { text: "Live in the end and you will see the invisible and do the impossible.", id: 154, source: "Neville Goddard" },
+      { text: "The world is yourself pushed out. Ask yourself what you want and then give it to yourself.", id: 155, source: "Neville Goddard" },
+      { text: "Assume the feeling of your wish fulfilled and continue feeling that it is fulfilled until that which you feel objectifies itself.", id: 156, source: "Neville Goddard" },
+      { text: "You are already that which you want to be, and your refusal to believe this is the only reason you do not see it.", id: 157, source: "Neville Goddard" },
+      { text: "The moment you accept the wish as an accomplished fact, the subconscious finds means for its realization.", id: 158, source: "Neville Goddard" },
+      { text: "Your imagination is the only reality, and what you imagine as true is true.", id: 159, source: "Neville Goddard" },
+      { text: "You must abandon yourself mentally to your wish fulfilled in your love for that state, and in so doing, live in the new state and no more in the old.", id: 160, source: "Neville Goddard" },
+      { text: "All things are possible to God, and God is your own wonderful human imagination.", id: 161, source: "Neville Goddard" },
+      { text: "The future must become the present in the imagination of the one who would wisely and consciously create circumstances.", id: 162, source: "Neville Goddard" },
+      { text: "There is no fiction. What you imagine is as real as your hand.", id: 163, source: "Neville Goddard" },
+      { text: "You are today where your imagination has placed you, and you will be tomorrow where your imagination places you.", id: 164, source: "Neville Goddard" },
+      { text: "The world is a mirror, forever reflecting what you are doing, within yourself.", id: 165, source: "Neville Goddard" },
+      { text: "Assume the feeling of your wish fulfilled and your assumption, though false, if sustained, will harden into fact.", id: 166, source: "Neville Goddard" },
+      { text: "The creative power of God and the creative power of man are one and the same.", id: 167, source: "Neville Goddard" },
+      { text: "You must be the change you wish to see, and then you will see the change you have assumed.", id: 168, source: "Neville Goddard" },
+      { text: "Your imagination is the living, creative power of the universe.", id: 169, source: "Neville Goddard" },
+      { text: "The secret of imagining is the secret of creation.", id: 170, source: "Neville Goddard" },
+      // Buddha (30 passages)
+      { text: "The mind is everything. What you think you become.", id: 171, source: "Buddha" },
+      { text: "Peace comes from within. Do not seek it without.", id: 172, source: "Buddha" },
+      { text: "Three things cannot be long hidden: the sun, the moon, and the truth.", id: 173, source: "Buddha" },
+      { text: "You yourself, as much as anybody in the entire universe, deserve your love and affection.", id: 174, source: "Buddha" },
+      { text: "Holding onto anger is like drinking poison and expecting the other person to die.", id: 175, source: "Buddha" },
+      { text: "The root of suffering is attachment.", id: 176, source: "Buddha" },
+      { text: "No one saves us but ourselves. No one can and no one may. We ourselves must walk the path.", id: 177, source: "Buddha" },
+      { text: "Thousands of candles can be lit from a single candle, and the life of the candle will not be shortened.", id: 178, source: "Buddha" },
+      { text: "In the end, only three things matter: how much you loved, how gently you lived, and how gracefully you let go.", id: 179, source: "Buddha" },
+      { text: "Better than a thousand hollow words is one word that brings peace.", id: 180, source: "Buddha" },
+      { text: "Just as a snake sheds its skin, we must shed our past over and over again.", id: 181, source: "Buddha" },
+      { text: "To understand everything is to forgive everything.", id: 182, source: "Buddha" },
+      { text: "Work out your own salvation. Do not depend on others.", id: 183, source: "Buddha" },
+      { text: "There is no path to happiness: happiness is the path.", id: 184, source: "Buddha" },
+      { text: "All that we are is the result of what we have thought.", id: 185, source: "Buddha" },
+      { text: "Do not dwell in the past, do not dream of the future, concentrate the mind on the present moment.", id: 186, source: "Buddha" },
+      { text: "Hatred does not cease by hatred, but only by love; this is the eternal rule.", id: 187, source: "Buddha" },
+      { text: "You will not be punished for your anger; you will be punished by your anger.", id: 188, source: "Buddha" },
+      { text: "To conquer oneself is a greater victory than to conquer thousands in battle.", id: 189, source: "Buddha" },
+      { text: "The way is not in the sky. The way is in the heart.", id: 190, source: "Buddha" },
+      { text: "Health is the greatest gift, contentment the greatest wealth, faithfulness the best relationship.", id: 191, source: "Buddha" },
+      { text: "A jug fills drop by drop.", id: 192, source: "Buddha" },
+      { text: "All wrong-doing arises because of mind. If mind is transformed can wrong-doing remain?", id: 193, source: "Buddha" },
+      { text: "Radiate boundless love towards the entire world.", id: 194, source: "Buddha" },
+      { text: "Nothing can harm you as much as your own thoughts unguarded.", id: 195, source: "Buddha" },
+      { text: "Let all-embracing thoughts for all beings be yours.", id: 196, source: "Buddha" },
+      { text: "As rain breaks through an ill-thatched house, passion will break through an unreflecting mind.", id: 197, source: "Buddha" },
+      { text: "The secret of health for both mind and body is not to mourn for the past, nor to worry about the future, but to live the present moment wisely and earnestly.", id: 198, source: "Buddha" },
+      { text: "There is no fire like passion, no crime like hatred, no sorrow like separation, no sickness like hunger, and no joy like the joy of freedom.", id: 199, source: "Buddha" },
+      { text: "Even death is not to be feared by one who has lived wisely.", id: 200, source: "Buddha" },
+      // Christ (30 passages)
+      { text: "Blessed are the pure in heart, for they shall see God.", id: 201, source: "Jesus Christ" },
+      { text: "The kingdom of God is within you.", id: 202, source: "Jesus Christ" },
+      { text: "Love your enemies, bless those who curse you, do good to those who hate you.", id: 203, source: "Jesus Christ" },
+      { text: "Ask, and it will be given to you; seek, and you will find; knock, and it will be opened to you.", id: 204, source: "Jesus Christ" },
+      { text: "Do not judge, and you will not be judged. Do not condemn, and you will not be condemned. Forgive, and you will be forgiven.", id: 205, source: "Jesus Christ" },
+      { text: "For what will it profit a man if he gains the whole world and forfeits his soul?", id: 206, source: "Jesus Christ" },
+      { text: "I am the way, and the truth, and the life.", id: 207, source: "Jesus Christ" },
+      { text: "You will know the truth, and the truth will set you free.", id: 208, source: "Jesus Christ" },
+      { text: "Let him who is without sin among you be the first to throw a stone.", id: 209, source: "Jesus Christ" },
+      { text: "Father, forgive them, for they know not what they do.", id: 210, source: "Jesus Christ" },
+      { text: "Love the Lord your God with all your heart and with all your soul and with all your mind. This is the first and greatest commandment. And the second is like it: Love your neighbor as yourself.", id: 211, source: "Jesus Christ" },
+      { text: "Blessed are the peacemakers, for they will be called children of God.", id: 212, source: "Jesus Christ" },
+      { text: "Do to others as you would have them do to you.", id: 213, source: "Jesus Christ" },
+      { text: "For where your treasure is, there your heart will be also.", id: 214, source: "Jesus Christ" },
+      { text: "I am the light of the world. Whoever follows me will never walk in darkness, but will have the light of life.", id: 215, source: "Jesus Christ" },
+      { text: "Let your light shine before others, that they may see your good deeds and glorify your Father in heaven.", id: 216, source: "Jesus Christ" },
+      { text: "Peace I leave with you; my peace I give you. I do not give to you as the world gives. Do not let your hearts be troubled and do not be afraid.", id: 217, source: "Jesus Christ" },
+      { text: "Whoever wants to be my disciple must deny themselves and take up their cross and follow me.", id: 218, source: "Jesus Christ" },
+      { text: "With man this is impossible, but with God all things are possible.", id: 219, source: "Jesus Christ" },
+      { text: "Come to me, all you who are weary and burdened, and I will give you rest.", id: 220, source: "Jesus Christ" },
+      { text: "Be perfect, therefore, as your heavenly Father is perfect.", id: 221, source: "Jesus Christ" },
+      { text: "It is more blessed to give than to receive.", id: 222, source: "Jesus Christ" },
+      { text: "I am the vine; you are the branches. If you remain in me and I in you, you will bear much fruit; apart from me you can do nothing.", id: 223, source: "Jesus Christ" },
+      { text: "For God so loved the world that he gave his one and only Son, that whoever believes in him shall not perish but have eternal life.", id: 224, source: "Jesus Christ" },
+      { text: "Behold, I stand at the door and knock. If anyone hears my voice and opens the door, I will come in to him and eat with him, and he with me.", id: 225, source: "Jesus Christ" },
+      { text: "Heaven and earth will pass away, but my words will never pass away.", id: 226, source: "Jesus Christ" },
+      { text: "What good will it be for someone to gain the whole world, yet forfeit their soul?", id: 227, source: "Jesus Christ" },
+      { text: "The spirit is willing, but the flesh is weak.", id: 228, source: "Jesus Christ" },
+      { text: "Let the little children come to me, and do not hinder them, for the kingdom of heaven belongs to such as these.", id: 229, source: "Jesus Christ" },
+      { text: "Behold, I make all things new.", id: 230, source: "Jesus Christ" },
+      // Carl Jung (20 passages)
+      { text: "Until you make the unconscious conscious, it will direct your life and you will call it fate.", id: 231, source: "Carl Jung" },
+      { text: "Who looks outside, dreams; who looks inside, awakes.", id: 232, source: "Carl Jung" },
+      { text: "The meeting of two personalities is like the contact of two chemical substances: if there is any reaction, both are transformed.", id: 233, source: "Carl Jung" },
+      { text: "I am not what happened to me, I am what I choose to become.", id: 234, source: "Carl Jung" },
+      { text: "Your vision will become clear only when you can look into your own heart.", id: 235, source: "Carl Jung" },
+      { text: "The privilege of a lifetime is to become who you truly are.", id: 236, source: "Carl Jung" },
+      { text: "Everything that irritates us about others can lead us to an understanding of ourselves.", id: 237, source: "Carl Jung" },
+      { text: "Knowing your own darkness is the best method for dealing with the darknesses of other people.", id: 238, source: "Carl Jung" },
+      { text: "The unconscious is not just evil by nature, it is also the source of the highest good.", id: 239, source: "Carl Jung" },
+      { text: "There is no coming to consciousness without pain.", id: 240, source: "Carl Jung" },
+      { text: "The pendulum of the mind alternates between sense and nonsense, not between right and wrong.", id: 241, source: "Carl Jung" },
+      { text: "Dreams are the guiding words of the soul.", id: 242, source: "Carl Jung" },
+      { text: "As far as we can discern, the sole purpose of human existence is to kindle a light in the darkness of mere being.", id: 243, source: "Carl Jung" },
+      { text: "The greatest and most important problems of life are all fundamentally insoluble. They can never be solved but only outgrown.", id: 244, source: "Carl Jung" },
+      { text: "The most terrifying thing is to accept oneself completely.", id: 245, source: "Carl Jung" },
+      { text: "We cannot change anything until we accept it.", id: 246, source: "Carl Jung" },
+      { text: "The archetypes are the great decisive forces, they bring about the real events, and not our personal reasoning and practical intellect.", id: 247, source: "Carl Jung" },
+      { text: "The Self is the total, timeless man and as such corresponds to the original, spherical, bisexual being who stands for the reconciliation of opposites.", id: 248, source: "Carl Jung" },
+      { text: "The unconscious is the unwritten history of mankind from time unrecorded.", id: 249, source: "Carl Jung" },
+      { text: "Synchronicity is an ever-present reality for those who have eyes to see.", id: 250, source: "Carl Jung" },
+      // Edgar Cayce (20 passages)
+      { text: "The spirit is the life, the mind is the builder, the physical is the result.", id: 251, source: "Edgar Cayce" },
+      { text: "Dreams are today's answers to tomorrow's questions.", id: 252, source: "Edgar Cayce" },
+      { text: "The soul grows as the mind is opened to the higher understandings.", id: 253, source: "Edgar Cayce" },
+      { text: "All healing is first a change in attitude, then a change in the physical.", id: 254, source: "Edgar Cayce" },
+      { text: "The body is a temple. Keep it clean, keep it holy for the living forces that manifest through same.", id: 255, source: "Edgar Cayce" },
+      { text: "Mind is the builder. That which we think upon may become crimes or miracles.", id: 256, source: "Edgar Cayce" },
+      { text: "The earth is but a school, and all are pupils.", id: 257, source: "Edgar Cayce" },
+      { text: "The greatest thing any soul may do is to make the will of the Father its own.", id: 258, source: "Edgar Cayce" },
+      { text: "Patience is the greatest virtue that may be manifested in a material experience.", id: 259, source: "Edgar Cayce" },
+      { text: "Each soul enters with a pattern to fulfill, with lessons to meet, with relationships to complete.", id: 260, source: "Edgar Cayce" },
+      { text: "The purpose of life is to become aware of our oneness with God.", id: 261, source: "Edgar Cayce" },
+      { text: "The answers to every problem are within self, if the self will but seek, will but knock, will but ask.", id: 262, source: "Edgar Cayce" },
+      { text: "There are no shortcuts in spiritual development.", id: 263, source: "Edgar Cayce" },
+      { text: "The thoughts of today are the experiences of tomorrow.", id: 264, source: "Edgar Cayce" },
+      { text: "Love is the fulfilling of the law - not the law of the land, but the law of God.", id: 265, source: "Edgar Cayce" },
+      { text: "The soul never loses what it has gained.", id: 266, source: "Edgar Cayce" },
+      { text: "Each entity is a portion of the universal consciousness, or God.", id: 267, source: "Edgar Cayce" },
+      { text: "The present is the opportunity. Make the most of today.", id: 268, source: "Edgar Cayce" },
+      { text: "The kingdom of heaven is within. The Christ Consciousness is universal.", id: 269, source: "Edgar Cayce" },
+      { text: "All force is one force, all power is one power, all energy is one energy.", id: 270, source: "Edgar Cayce" },
+      // Dolores Cannon (20 passages)
+      { text: "We are all fragments of the One Infinite Creator experiencing itself in infinite ways.", id: 271, source: "Dolores Cannon" },
+      { text: "Time is an illusion created by the mind to allow the soul to experience growth.", id: 272, source: "Dolores Cannon" },
+      { text: "The past, present and future exist simultaneously in the eternal now.", id: 273, source: "Dolores Cannon" },
+      { text: "You chose to be here at this time because you knew you could make a difference.", id: 274, source: "Dolores Cannon" },
+      { text: "There are no mistakes in the universe, only experiences for soul growth.", id: 275, source: "Dolores Cannon" },
+      { text: "The Earth is a school for souls, and we are here to learn lessons of love.", id: 276, source: "Dolores Cannon" },
+      { text: "Your higher self knows all your past lives and your soul's purpose.", id: 277, source: "Dolores Cannon" },
+      { text: "Reality is much more fluid and malleable than we've been taught to believe.", id: 278, source: "Dolores Cannon" },
+      { text: "Death is merely a transition to another state of consciousness.", id: 279, source: "Dolores Cannon" },
+      { text: "The answers you seek are already within you - you just need to remember.", id: 280, source: "Dolores Cannon" },
+      { text: "All knowledge exists in the Akashic records, the library of all souls' experiences.", id: 281, source: "Dolores Cannon" },
+      { text: "You are a multidimensional being existing in many dimensions simultaneously.", id: 282, source: "Dolores Cannon" },
+      { text: "The veil between dimensions is thinning as consciousness evolves.", id: 283, source: "Dolores Cannon" },
+      { text: "Your thoughts create your reality more powerfully than you can imagine.", id: 284, source: "Dolores Cannon" },
+      { text: "The purpose of life is to remember who you truly are - an eternal spiritual being.", id: 285, source: "Dolores Cannon" },
+      { text: "There are no coincidences - only synchronicities guiding you on your path.", id: 286, source: "Dolores Cannon" },
+      { text: "All souls are connected through the web of consciousness.", id: 287, source: "Dolores Cannon" },
+      { text: "The greatest healing comes when we remember our divine nature.", id: 288, source: "Dolores Cannon" },
+      { text: "You are here to help raise the vibration of the planet through your awakening.", id: 289, source: "Dolores Cannon" },
+      { text: "Love is the fundamental energy of the universe that binds all creation together.", id: 290, source: "Dolores Cannon" },
+      // Louise Hay (20 passages)
+      { text: "You have the power to heal your life, and you need to know that.", id: 291, source: "Louise Hay" },
+      { text: "Every thought we think is creating our future.", id: 292, source: "Louise Hay" },
+      { text: "The point of power is always in the present moment.", id: 293, source: "Louise Hay" },
+      { text: "You are the only person who thinks in your mind! You are the power and authority in your world.", id: 294, source: "Louise Hay" },
+      { text: "I do not fix problems. I fix my thinking. Then problems fix themselves.", id: 295, source: "Louise Hay" },
+      { text: "Love is the great miracle cure. Loving ourselves works miracles in our lives.", id: 296, source: "Louise Hay" },
+      { text: "It's only a thought, and a thought can be changed.", id: 297, source: "Louise Hay" },
+      { text: "You are constantly in the act of creating yourself. You are in every moment deciding who and what you are.", id: 298, source: "Louise Hay" },
+      { text: "The thoughts you choose to think are the tools you use to paint the canvas of your life.", id: 299, source: "Louise Hay" },
+      { text: "I am in the right place at the right time, doing the right thing.", id: 300, source: "Louise Hay" },
+      { text: "I approve of myself. I am safe. I express myself with ease. All is well in my world.", id: 301, source: "Louise Hay" },
+      { text: "I release the need to struggle. Life is easy when I allow it to be.", id: 302, source: "Louise Hay" },
+      { text: "I am willing to change and grow. I now create a safe, new future.", id: 303, source: "Louise Hay" },
+      { text: "I forgive myself and set myself free.", id: 304, source: "Louise Hay" },
+      { text: "I am open and receptive to all the good and abundance in the universe.", id: 305, source: "Louise Hay" },
+      { text: "I deserve all that is good. I refuse to beat myself up anymore.", id: 306, source: "Louise Hay" },
+      { text: "I release all negative thoughts about the past. I am at peace with my past.", id: 307, source: "Louise Hay" },
+      { text: "I am a magnet for miracles. I attract only good into my life.", id: 308, source: "Louise Hay" },
+      { text: "I am grateful for my perfect health. I listen with love to my body's messages.", id: 309, source: "Louise Hay" },
+      { text: "I am in the process of positive change. I am willing to release old limitations.", id: 310, source: "Louise Hay" },
+      // Mahabharata/Bhagavad Gita (30 passages)
+      { text: "You have the right to perform your prescribed duties, but you are not entitled to the fruits of your actions.", id: 311, source: "Bhagavad Gita" },
+      { text: "The soul is neither born, nor does it ever die; nor having once existed, does it ever cease to be.", id: 312, source: "Bhagavad Gita" },
+      { text: "For the soul there is neither birth nor death. It is not slain when the body is slain.", id: 313, source: "Bhagavad Gita" },
+      { text: "A person can rise through the efforts of his own mind; or draw himself down, in the same manner.", id: 314, source: "Bhagavad Gita" },
+      { text: "When meditation is mastered, the mind is unwavering like the flame of a lamp in a windless place.", id: 315, source: "Bhagavad Gita" },
+      { text: "The wise see knowledge and action as one.", id: 316, source: "Bhagavad Gita" },
+      { text: "The self-controlled soul, who moves amongst sense objects, free from either attachment or repulsion, he wins eternal peace.", id: 317, source: "Bhagavad Gita" },
+      { text: "One who sees inaction in action, and action in inaction, is intelligent among men.", id: 318, source: "Bhagavad Gita" },
+      { text: "The peace of God is with them whose mind and soul are in harmony, who are free from desire and wrath.", id: 319, source: "Bhagavad Gita" },
+      { text: "Perform your obligatory duty, because action is indeed better than inaction.", id: 320, source: "Bhagavad Gita" },
+      { text: "Whatever happened, happened for the good. Whatever is happening, is happening for the good. Whatever will happen, will also happen for the good.", id: 321, source: "Bhagavad Gita" },
+      { text: "The power of God is with you at all times; through the activities of mind, senses, breathing, and emotions; and is constantly doing all the work using you as a mere instrument.", id: 322, source: "Bhagavad Gita" }
     ];
 
     // User preferences
@@ -403,7 +683,7 @@
       }
     }
 
-    // Fetch quotes from Quotable API (mock implementation)
+    // Fetch quotes from Quotable API
     async function fetchQuotes(count) {
       try {
         const response = await fetch(`https://api.quotable.io/quotes?limit=${count}`);
@@ -422,12 +702,62 @@
 
     // Initialize speech synthesis voices
     function initializeVoices() {
-      voices = window.speechSynthesis?.getVoices() || [];
-      if (window.speechSynthesis) {
-        window.speechSynthesis.onvoiceschanged = () => {
-          voices = window.speechSynthesis.getVoices();
-        };
-      }
+        if (!window.speechSynthesis) {
+            audioPlayer.innerHTML = '<p>Text-to-speech is not supported in this browser.</p>';
+            return;
+        }
+        function loadVoices() {
+            voices = window.speechSynthesis.getVoices();
+            if (voices.length === 0) {
+                audioPlayer.innerHTML = '<p>No voices found. Please ensure text-to-speech is enabled in your system settings.</p>';
+                setTimeout(loadVoices, 100); // Retry
+            }
+        }
+        window.speechSynthesis.onvoiceschanged = loadVoices;
+        loadVoices();
+    }
+
+    // Generate audio button
+    function generateAudioButton(text) {
+        if (!window.speechSynthesis || voices.length === 0) {
+            audioPlayer.innerHTML = '<p>Text-to-speech is not supported or no voices available.</p>';
+            return;
+        }
+        const safeText = text.replace(/'/g, "\\'").replace(/"/g, '\\"');
+        audioPlayer.innerHTML = `
+            <button onclick="speakQuote('${safeText}')" aria-label="Play quote audio">Play Quote</button>
+        `;
+    }
+
+    // Speak quote using speech synthesis
+    function speakQuote(text) {
+        try {
+            if (!window.speechSynthesis) {
+                throw new Error('Speech synthesis not supported');
+            }
+            if (voices.length === 0) {
+                throw new Error('No voices available');
+            }
+
+            const utterance = new SpeechSynthesisUtterance(text);
+            utterance.voice = voices.find(v => v.lang.includes('en')) || voices[0];
+            utterance.lang = utterance.voice.lang;
+            utterance.onend = () => {
+                promptMessage.textContent = 'Click again for more wisdom';
+                promptMessage.classList.remove('error-message');
+            };
+            utterance.onerror = (event) => {
+                console.error('Speech synthesis error:', event.error);
+                promptMessage.textContent = `Unable to play audio: ${event.error}. Please try again.`;
+                promptMessage.classList.add('error-message');
+            };
+            window.speechSynthesis.cancel(); // Cancel any ongoing speech
+            window.speechSynthesis.speak(utterance);
+        } catch (error) {
+            console.error('Speech synthesis error:', error);
+            promptMessage.textContent = `Unable to play audio: ${error.message}. Please try again.`;
+            promptMessage.classList.add('error-message');
+        }
     }
 
     // Set up event listeners
@@ -520,30 +850,6 @@
       }
       localStorage.setItem('favoriteQuotes', JSON.stringify(favoriteQuotes));
       generateShareButtons(currentQuote.text, currentQuote.source, currentQuote.id);
-    }
-
-    // Generate audio button
-    function generateAudioButton(text) {
-      if (!window.speechSynthesis || voices.length === 0) {
-        audioPlayer.innerHTML = '<p>Text-to-speech is not supported in this browser.</p>';
-        return;
-      }
-      audioPlayer.innerHTML = `
-        <button onclick="speakQuote('${text.replace(/'/g, "\\'")}')" aria-label="Play quote audio">Play Quote</button>
-      `;
-    }
-
-    // Speak quote using speech synthesis
-    function speakQuote(text) {
-      try {
-        const utterance = new SpeechSynthesisUtterance(text);
-        utterance.voice = voices.find(v => v.lang.includes('en')) || voices[0];
-        window.speechSynthesis.speak(utterance);
-      } catch (error) {
-        console.error('Speech synthesis error:', error);
-        promptMessage.textContent = 'Unable to play audio. Please try again.';
-        promptMessage.classList.add('error-message');
-      }
     }
 
     // Create category selector
@@ -675,49 +981,153 @@
             <option value="full">Full</option>
             <option value="reduced">Reduced</option>
             <option value="none">None</option>
-          </select>
+                      </select>
         </label>
-      `;
-      
-      document.getElementById('themePref').value = userPreferences.theme;
-      document.getElementById('fontSizePref').value = userPreferences.fontSize;
-      document.getElementById('animationPref').value = userPreferences.animationLevel;
-      
-      document.getElementById('themePref').addEventListener('change', updatePreferences);
-      document.getElementById('fontSizePref').addEventListener('change', updatePreferences);
-      document.getElementById('animationPref').addEventListener('change', updatePreferences);
-      
-      document.body.appendChild(prefPanel);
-      applyPreferences();
-    }
+    `;
+    document.body.appendChild(prefPanel);
 
-    function updatePreferences() {
-      userPreferences.theme = document.getElementById('themePref').value;
-      userPreferences.fontSize = document.getElementById('fontSizePref').value;
-      userPreferences.animationLevel = document.getElementById('animationPref').value;
-      
-      localStorage.setItem('preferences', JSON.stringify(userPreferences));
-      applyPreferences();
-    }
+    // Set current preferences
+    document.getElementById('themePref').value = userPreferences.theme;
+    document.getElementById('fontSizePref').value = userPreferences.fontSize;
+    document.getElementById('animationPref').value = userPreferences.animationLevel;
 
-    function applyPreferences() {
-      document.body.className = userPreferences.theme;
-      
-      const sizes = { small: '14px', medium: '16px', large: '18px' };
-      document.documentElement.style.fontSize = sizes[userPreferences.fontSize];
-      
-      if (userPreferences.animationLevel === 'none') {
+    // Apply preferences
+    applyPreferences();
+
+    // Add event listeners for preference changes
+    document.getElementById('themePref').addEventListener('change', updatePreferences);
+    document.getElementById('fontSizePref').addEventListener('change', updatePreferences);
+    document.getElementById('animationPref').addEventListener('change', updatePreferences);
+}
+
+// Update and apply user preferences
+function updatePreferences() {
+    userPreferences.theme = document.getElementById('themePref').value;
+    userPreferences.fontSize = document.getElementById('fontSizePref').value;
+    userPreferences.animationLevel = document.getElementById('animationPref').value;
+
+    localStorage.setItem('preferences', JSON.stringify(userPreferences));
+    applyPreferences();
+
+    // Restart animations if changed
+    if (userPreferences.animationLevel !== 'none') {
+        document.querySelectorAll('.particle').forEach(p => p.remove());
+        enhancedAnimations();
+    } else {
+        document.querySelectorAll('.particle').forEach(p => p.remove());
+    }
+}
+
+// Apply user preferences to the page
+function applyPreferences() {
+    // Theme
+    document.body.className = userPreferences.theme;
+
+    // Font Size
+    const fontSizes = {
+        small: '0.9em',
+        medium: '1em',
+        large: '1.2em'
+    };
+    document.body.style.fontSize = fontSizes[userPreferences.fontSize];
+
+    // Animation level
+    if (userPreferences.animationLevel === 'reduced') {
+        document.documentElement.style.setProperty('--animation-duration', '2s');
+    } else if (userPreferences.animationLevel === 'none') {
         document.documentElement.style.setProperty('--animation-duration', '0s');
-      } else if (userPreferences.animationLevel === 'reduced') {
-        document.documentElement.style.setProperty('--animation-duration', '0.5s');
-      } else {
+    } else {
         document.documentElement.style.setProperty('--animation-duration', '1s');
-      }
-      
-      // Re-run animations if needed
-      document.querySelectorAll('.particle').forEach(p => p.remove());
-      enhancedAnimations();
     }
-  </script>
+}
+
+// Register service worker for offline support
+if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/sw.js')
+            .then(reg => console.log('Service Worker registered', reg))
+            .catch(err => console.error('Service Worker registration failed', err));
+    });
+}
+
+// Create a sacred canvas animation
+function createSacredCanvas() {
+    const canvas = document.createElement('canvas');
+    canvas.className = 'sacred-canvas';
+    document.body.appendChild(canvas);
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    const ctx = canvas.getContext('2d');
+    let animationFrame;
+
+    function draw() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.beginPath();
+        ctx.arc(canvas.width / 2, canvas.height / 2, 50 + Math.sin(Date.now() / 1000) * 10, 0, 2 * Math.PI);
+        ctx.strokeStyle = 'rgba(90, 62, 54, 0.3)';
+        ctx.lineWidth = 2;
+        ctx.stroke();
+        animationFrame = requestAnimationFrame(draw);
+    }
+
+    draw();
+
+    // Resize canvas on window resize
+    window.addEventListener('resize', () => {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+    });
+
+    return () => cancelAnimationFrame(animationFrame);
+}
+
+// Initialize sacred canvas
+const stopCanvasAnimation = createSacredCanvas();
+
+// Handle page visibility for performance
+document.addEventListener('visibilitychange', () => {
+    if (document.hidden) {
+        stopCanvasAnimation();
+    } else {
+        createSacredCanvas();
+    }
+});
+
+// Handle online/offline status
+window.addEventListener('online', () => {
+    promptMessage.textContent = 'Back online! Fetching new quotes...';
+    promptMessage.classList.remove('error-message');
+    loadQuotes();
+});
+
+window.addEventListener('offline', () => {
+    promptMessage.textContent = 'Offline mode: Using cached quotes.';
+    promptMessage.classList.add('error-message');
+});
+
+// Add touch support for mobile
+let touchStartX = 0;
+let touchStartY = 0;
+
+document.addEventListener('touchstart', (e) => {
+    touchStartX = e.touches[0].clientX;
+    touchStartY = e.touches[0].clientY;
+});
+
+document.addEventListener('touchend', (e) => {
+    const touchEndX = e.changedTouches[0].clientX;
+    const touchEndY = e.changedTouches[0].clientY;
+    const deltaX = touchEndX - touchStartX;
+    const deltaY = touchEndY - touchStartY;
+
+    if (Math.abs(deltaX) < 50 && Math.abs(deltaY) < 50) {
+        generatePassage();
+    }
+});
+
+// Log for debugging
+console.log('Master Light Spot initialized');
+</script>
 </body>
 </html>
