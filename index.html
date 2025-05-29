@@ -1,136 +1,75 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
   <meta charset="UTF-8">
-  <meta content="width=device-width, initial-scale=1.0" name="viewport">
-  <title>Master Light Spot | Cozy Light Quotes</title>
-
-  <!-- Favicon -->
-  <link rel="icon" href="/favicon.ico" type="image/x-icon">
-
-  <!-- SEO Meta -->
-  <meta name="description" content="Generate and share inspirational quotes with text-to-speech and beautiful UI. Created by Thanattsitt S.">
-  <meta name="author" content="Thanattsitt S.">
-  <meta name="keywords" content="inspirational quotes, text to speech, cozy light, spiritual wisdom, self-help, mindfulness, quote generator">
-  <meta name="theme-color" content="#f8f9fa">
-
-  <!-- Open Graph / Facebook -->
-  <meta property="og:title" content="Cozy Light - Inspirational Quotes">
-  <meta property="og:description" content="Generate and share inspirational quotes with text-to-speech.">
-  <meta property="og:image" content="https://pigletpeakkung.github.io/Cozy-light/og-image.jpg">
-  <meta property="og:url" content="https://pigletpeakkung.github.io/Cozy-light/">
-  <meta property="og:type" content="website">
-
-  <!-- Twitter Card -->
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Cozy Light - Inspirational Quotes">
-  <meta name="twitter:description" content="Generate and share inspirational quotes with text-to-speech.">
-  <meta name="twitter:image" content="https://pigletpeakkung.github.io/Cozy-light/og-image.jpg">
-
-  <!-- Google Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
-
-  <!-- Bootstrap 5 CSS -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-
-  <!-- Font Awesome -->
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
-
-  <!-- AOS CSS (Animate on Scroll) -->
-  <link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet">
-
-  <!-- Manifest (for PWA setup) -->
-  <link rel="manifest" href="/manifest.json">
-
-  <!-- Schema Markup -->
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "WebApplication",
-    "name": "Cozy Light Quote Generator",
-    "url": "https://pigletpeakkung.github.io/Cozy-light/",
-    "description": "Inspirational quote generator with voice and share options.",
-    "applicationCategory": "Lifestyle",
-    "browserRequirements": "Requires JavaScript and Web Speech API",
-    "operatingSystem": "All",
-    "author": {
-      "@type": "Person",
-      "name": "Thanattsitt S."
-    }
-  }
-  </script>
-
-  <!-- Google Analytics (Replace ID) -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-W2BT2CZN18"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){ dataLayer.push(arguments); }
-    gtag('js', new Date());
-    gtag('config', 'G-W2BT2CZN18');
-  </script>
-
-  <!-- Styles -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Master Light Spot</title>
   <style>
     body {
-      font-family: 'Roboto', sans-serif;
-      background: #f8f9fa;
-      margin: 0;
-      padding: 0;
+      transition: all 0.3s;
     }
     .cross-button-container {
       text-align: center;
-      margin: 40px auto;
-      max-width: 700px;
+      margin: 20px;
     }
     .cross-button {
       position: relative;
-      width: 64px;
-      height: 64px;
+      width: 60px;
+      height: 60px;
       background: linear-gradient(135deg, #f0f0f0, #d9d9d9);
       border: none;
-      border-radius: 12px;
+      border-radius: 10px;
       cursor: pointer;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
       transition: background 0.3s;
     }
-    .cross-vertical, .cross-horizontal {
+    .cross-vertical {
       position: absolute;
+      top: 15px;
+      left: 50%;
+      width: 12px;
+      height: 30px;
       background: #333;
       border-radius: 4px;
-    }
-    .cross-vertical {
-      top: 17px; left: 50%;
-      width: 12px; height: 34px;
       transform: translateX(-50%);
     }
     .cross-horizontal {
-      top: 50%; left: 17px;
-      width: 34px; height: 12px;
+      position: absolute;
+      top: 50%;
+      left: 15px;
+      width: 30px;
+      height: 12px;
+      background: #333;
+      border-radius: 4px;
       transform: translateY(-50%);
     }
-    .cross-button:hover { background: linear-gradient(135deg, #e6e6e6, #cccccc);}
+    .cross-button:hover {
+      background: linear-gradient(135deg, #e6e6e6, #cccccc);
+    }
     .cross-button:hover .cross-vertical,
-    .cross-button:hover .cross-horizontal { background: #007bff;}
-    .cross-button.active { animation: warmGlow 4s ease-in-out;}
+    .cross-button:hover .cross-horizontal {
+      background: #007bff;
+    }
+    .cross-button.active {
+      animation: warmGlow 3s ease-in-out forwards;
+    }
     @keyframes warmGlow {
-      0%, 100% { box-shadow: 0 0 10px #FFD700, 0 0 20px #FFD700; }
+      0% { box-shadow: 0 0 10px #FFD700, 0 0 20px #FFD700; }
       25% { box-shadow: 0 0 10px #FFA500, 0 0 20px #FFA500; }
       50% { box-shadow: 0 0 10px #FF6347, 0 0 20px #FF6347; }
       75% { box-shadow: 0 0 10px #FF4500, 0 0 20px #FF4500; }
+      100% { box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); }
     }
     #passageOutput {
-      margin: 24px auto 18px auto;
+      margin: 20px;
       font-style: italic;
       color: #333;
       max-width: 600px;
-      background: #fff;
-      border-radius: 8px;
-      box-shadow: 0 1px 4px rgba(0,0,0,0.07);
-      padding: 18px;
+      margin-left: auto;
+      margin-right: auto;
     }
-    #audioPlayer, #shareButtons {
-      margin: 10px auto;
-      text-align: center;
+    #audioPlayer {
+      margin: 10px;
     }
     #shareButtons a, #shareButtons button {
       padding: 8px 12px;
@@ -140,100 +79,495 @@
       border-radius: 4px;
       margin: 5px;
       display: inline-block;
-      border: none;
-      cursor: pointer;
-      font-size: 1rem;
+    }
+    #shareButtons a:hover, #shareButtons button:hover {
+      background: #007bff;
+      color: #fff;
     }
     #credit {
-      font-size: 0.9rem;
+      font-size: 10px;
       color: #888;
       text-align: center;
-      margin-top: 18px;
+      margin-top: 10px;
     }
     footer {
       text-align: center;
       padding: 1rem;
-      font-size: 0.95rem;
-      color: #555;
+      font-size: 0.9rem;
     }
-  </style>
-</head>
-
-<body>
-  <main class="container cross-button-container" data-aos="fade-up">
-    <button class="cross-button" id="crossButton" onclick="generatePassage()" aria-label="Generate a new inspirational quote">
-      <span class="cross-vertical"></span>
-      <span class="cross-horizontal"></span>
-    </button>
-    <div id="passageOutput"></div>
-    <div id="audioPlayer"></div>
-    <div id="shareButtons"></div>
-  </main>
-
-<div id="credit" class="text-center text-sm text-gray-600 mt-12 px-4">
-  <p class="mb-2 italic">
-    “Quotes sourced from spiritual and philosophical wisdom traditions.”
-  </p>
-  <p>
-    <small>
-      Icons by
-      <a href="https://fontawesome.com/" target="_blank" rel="noopener noreferrer" class="text-blue-500 hover:underline">Font Awesome</a>.
-      UI by Bootstrap.
-    </small>
-  </p>
-</div>
-
-<footer class="bg-white mt-10 py-6 border-t">
-  <div class="text-center text-gray-600 text-sm">
-    &copy; 2025 <strong>Thanattsitt S.</strong> |
-    <span class="inline-block">
-      Cozy Light by
-      <a href="https://www.pegearts.com/" target="_blank" class="text-blue-500 hover:underline">Thann.AI</a>
-    </span>
-  </div>
-</footer>
-
-  <!-- JavaScript Libraries -->
-  <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-  <script defer src="https://cdn.jsdelivr.net/npm/lodash@4.17.21/lodash.min.js"></script>
-  <script defer src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-  <script defer src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
-
-  <!-- Font Awesome -->
-  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/js/all.min.js"></script>
-
-  <!-- Custom Script -->
-  <script>
-    AOS.init();
-
-    const passages = [
-      { text: "There is no such thing as 'wrong,' only what does not serve you.", id: 1, source: "Conversations with God" },
-      { text: "You create your own reality. There are no limitations to the self except those you believe in.", id: 8, source: "Seth Speaks" },
-      { text: "Out beyond ideas of wrongdoing and rightdoing, there is a field. I'll meet you there.", id: 15, source: "Rumi" }
-    ];
-
-    let usedPassages = [];
-
-    function generatePassage() {
-      if (passages.length === 0) return;
-      let index;
-      do {
-        index = Math.floor(Math.random() * passages.length);
-      } while (usedPassages.includes(index) && usedPassages.length < passages.length);
-
-      const { text, source } = passages[index];
-      document.getElementById('passageOutput').innerHTML = `${text} <br><small>— ${source}</small>`;
-      usedPassages.push(index);
-      speakQuote(text);
+    footer a {
+      color: #007bff;
+      text-decoration: none;
     }
-
-    function speakQuote(text) {
-      if ('speechSynthesis' in window) {
-        const utter = new SpeechSynthesisUtterance(text);
-        utter.lang = 'en-US';
-        window.speechSynthesis.speak(utter);
+    footer a:hover {
+      text-decoration: underline;
+    }
+    .dark-mode {
+      background: #333;
+      color: #fff;
+    }
+    .dark-mode .cross-button {
+      background: linear-gradient(135deg, #555, #444);
+    }
+    .dark-mode .cross-vertical, .dark-mode .cross-horizontal {
+      background: #fff;
+    }
+    @media (max-width: 600px) {
+      .cross-button {
+        width: 50px;
+        height: 50px;
+      }
+      .cross-vertical {
+        width: 10px;
+        height: 25px;
+        top: 12px;
+      }
+      .cross-horizontal {
+        width: 25px;
+        height: 10px;
+        left: 12px;
+      }
+      #passageOutput {
+        font-size: 0.9rem;
+        padding: 0 10px;
       }
     }
+  </style>
+  <script type="application/ld+json">{
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebSite",
+        "url": "https://pigletpeakkung.github.io/Cozy-light/",
+        "name": "Cozy Light by Thanattsitt S.",
+        "description": "A web application for generating inspirational quotes with text-to-speech, sharing, and user customization features, created by Thanattsitt S. under Thann.AI.",
+        "publisher": {
+          "@type": "Person",
+          "name": "Thanattsitt S.",
+          "url": "https://pigletpeakkung.github.io",
+          "sameAs": []
+        },
+        "creator": {
+          "@type": "Person",
+          "name": "Thanattsitt S.",
+          "url": "https://pigletpeakkung.github.io"
+        },
+        "isPartOf": {
+          "@type": "Organization",
+          "name": "Thann.AI",
+          "url": "https://www.pegearts.com/",
+          "description": "An AI-related project or personal brand associated with Thanattsitt S."
+        },
+        "potentialAction": {
+          "@type": "ViewAction",
+          "target": "https://pigletpeakkung.github.io/Cozy-light/",
+          "name": "Explore Inspirational Quotes"
+        }
+      },
+      {
+        "@type": "WebApplication",
+        "url": "https://pigletpeakkung.github.io/Cozy-light/",
+        "name": "Cozy Light Quote Generator",
+        "description": "An interactive web application that displays inspirational quotes from various spiritual and philosophical sources, with text-to-speech functionality, social sharing, and user preferences for theme, font size, and animations.",
+        "applicationCategory": "Lifestyle",
+        "operatingSystem": "Web",
+        "featureList": [
+          "Random quote generation",
+          "Text-to-speech audio playback",
+          "Social sharing via Twitter",
+          "Favorite quote saving",
+          "Category filtering",
+          "User preferences (theme, font size, animations)",
+          "Offline support via service worker",
+          "Daily notifications"
+        ],
+        "author": {
+          "@type": "Person",
+          "name": "Thanattsitt S.",
+          "url": "https://pigletpeakkung.github.io"
+        },
+        "contributor": {
+          "@type": "Organization",
+          "name": "Thann.AI",
+          "url": "https://www.pegearts.com/"
+        },
+        "browserRequirements": "Modern web browser with JavaScript and Web Speech API support",
+        "offers": {
+          "@type": "Offer",
+          "price": "0",
+          "priceCurrency": "USD",
+          "availability": "http://schema.org/InStock"
+        },
+        "contentRating": "General"
+      },
+      {
+        "@type": "Person",
+        "name": "Thanattsitt S.",
+        "url": "https://pigletpeakkung.github.io",
+        "description": "Creator of the Cozy Light web application, associated with Thann.AI.",
+        "sameAs": [],
+        "memberOf": {
+          "@type": "Organization",
+          "name": "Thann.AI",
+          "url": "https://www.pegearts.com/"
+        }
+      },
+      {
+        "@type": "Organization",
+        "name": "Thann.AI",
+        "url": "https://www.pegearts.com/",
+        "description": "An AI-related project or personal brand led by Thanattsitt S., focusing on innovative web applications.",
+        "logo": "https://thann.ai/logo.png",
+        "sameAs": []
+      }
+    ]
+  }
+  </script>
+</head>
+<body>
+  <div class="cross-button-container">
+    <div>
+      <label for="themeToggle">Dark Mode</label>
+      <input type="checkbox" id="themeToggle" onchange="toggleTheme()">
+      <label for="fontSize">Font Size:</label>
+      <select id="fontSize" onchange="changeFontSize()">
+        <option value="1rem">Small</option>
+        <option value="1.2rem" selected>Medium</option>
+        <option value="1.4rem">Large</option>
+      </select>
+      <label for="categoryFilter">Source:</label>
+      <select id="categoryFilter" onchange="filterQuotes()">
+        <option value="all">All Sources</option>
+        <option value="Conversations with God">Conversations with God</option>
+        <option value="Seth Speaks">Seth Speaks</option>
+        <option value="Rumi">Rumi</option>
+        <option value="Alan Watts">Alan Watts</option>
+        <option value="Florence Scovel Shinn">Florence Scovel Shinn</option>
+        <option value="Lao Tzu">Lao Tzu</option>
+        <option value="Law of One">Law of One</option>
+        <option value="Emerald Tablet">Emerald Tablet</option>
+        <option value="Buddha">Buddha</option>
+        <option value="Carl Jung">Carl Jung</option>
+        <option value="Edgar Cayce">Edgar Cayce</option>
+        <option value="Dr. Joe Dispenza">Dr. Joe Dispenza</option>
+        <option value="S.N. Goenka">S.N. Goenka</option>
+        <option value="Quotable API">Quotable API</option>
+      </select>
+    </div>
+    <button aria-label="Generate a new inspirational quote" class="cross-button" id="crossButton" onclick="generatePassage()" role="button">
+      <span class="cross-vertical" aria-hidden="true"></span>
+      <span class="cross-horizontal" aria-hidden="true"></span>
+    </button>
+    <div id="passageOutput" role="region" aria-live="polite"></div>
+    <div id="audioPlayer"></div>
+    <div id="shareButtons"></div>
+  </div>
+  <div id="credit">Quotes sourced from Conversations with God, Seth Speaks, Rumi, Alan Watts, Florence Scovel Shinn, Lao Tzu, Law of One, Emerald Tablet, Buddha, Carl Jung, Edgar Cayce, Dr. Joe Dispenza, S.N. Goenka, and Quotable API.</div>
+
+  <footer>
+    <p>© Thann.AI Project | <a href="https://www.pegearts.com" target="_blank">PegeArts</a> |
+       <a href="https://www.linkedin.com/in/thanattsitts" target="_blank">LinkedIn</a> |
+       <a href="https://ko-fi.com/ezekielarts" target="_blank">Support on Ko-fi</a></p>
+  </footer>
+
+  <script>
+    // Passages array (same as provided, abbreviated for brevity)
+    let passages = [
+      { text: "The present is the opportunity. Make the most of today.", id: 268, source: "Edgar Cayce" }, { text: "The kingdom of heaven is within. The Christ Consciousness is universal.", id: 269, source: "Edgar Cayce" }, { text: "All force is one force, all power is one power, all energy is one energy.", id: 270, source: "Edgar Cayce" } ];
+// Dolores Cannon (20 passages)
+{ text: "We are all fragments of the One Infinite Creator experiencing itself in infinite ways.", id: 271, source: "Dolores Cannon" },
+{ text: "Time is an illusion created by the mind to allow the soul to experience growth.", id: 272, source: "Dolores Cannon" },
+{ text: "The past, present and future exist simultaneously in the eternal now.", id: 273, source: "Dolores Cannon" },
+{ text: "You chose to be here at this time because you knew you could make a difference.", id: 274, source: "Dolores Cannon" },
+{ text: "There are no mistakes in the universe, only experiences for soul growth.", id: 275, source: "Dolores Cannon" },
+{ text: "The Earth is a school for souls, and we are here to learn lessons of love.", id: 276, source: "Dolores Cannon" },
+{ text: "Your higher self knows all your past lives and your soul's purpose.", id: 277, source: "Dolores Cannon" },
+{ text: "Reality is much more fluid and malleable than we've been taught to believe.", id: 278, source: "Dolores Cannon" },
+{ text: "Death is merely a transition to another state of consciousness.", id: 279, source: "Dolores Cannon" },
+{ text: "The answers you seek are already within you - you just need to remember.", id: 280, source: "Dolores Cannon" },
+{ text: "All knowledge exists in the Akashic records, the library of all souls' experiences.", id: 281, source: "Dolores Cannon" },
+{ text: "You are a multidimensional being existing in many dimensions simultaneously.", id: 282, source: "Dolores Cannon" },
+{ text: "The veil between dimensions is thinning as consciousness evolves.", id: 283, source: "Dolores Cannon" },
+{ text: "Your thoughts create your reality more powerfully than you can imagine.", id: 284, source: "Dolores Cannon" },
+{ text: "The purpose of life is to remember who you truly are - an eternal spiritual being.", id: 285, source: "Dolores Cannon" },
+{ text: "There are no coincidences - only synchronicities guiding you on your path.", id: 286, source: "Dolores Cannon" },
+{ text: "All souls are connected through the web of consciousness.", id: 287, source: "Dolores Cannon" },
+{ text: "The greatest healing comes when we remember our divine nature.", id: 288, source: "Dolores Cannon" },
+{ text: "You are here to help raise the vibration of the planet through your awakening.", id: 289, source: "Dolores Cannon" },
+{ text: "Love is the fundamental energy of the universe that binds all creation together.", id: 290, source: "Dolores Cannon" },
+
+// Louis Hay (20 passages)
+{ text: "You have the power to heal your life, and you need to know that.", id: 291, source: "Louise Hay" },
+{ text: "Every thought we think is creating our future.", id: 292, source: "Louise Hay" },
+{ text: "The point of power is always in the present moment.", id: 293, source: "Louise Hay" },
+{ text: "You are the only person who thinks in your mind! You are the power and authority in your world.", id: 294, source: "Louise Hay" },
+{ text: "I do not fix problems. I fix my thinking. Then problems fix themselves.", id: 295, source: "Louise Hay" },
+{ text: "Love is the great miracle cure. Loving ourselves works miracles in our lives.", id: 296, source: "Louise Hay" },
+{ text: "It's only a thought, and a thought can be changed.", id: 297, source: "Louise Hay" },
+{ text: "You are constantly in the act of creating yourself. You are in every moment deciding who and what you are.", id: 298, source: "Louise Hay" },
+{ text: "The thoughts you choose to think are the tools you use to paint the canvas of your life.", id: 299, source: "Louise Hay" },
+{ text: "I am in the right place at the right time, doing the right thing.", id: 300, source: "Louise Hay" },
+{ text: "I approve of myself. I am safe. I express myself with ease. All is well in my world.", id: 301, source: "Louise Hay" },
+{ text: "I release the need to struggle. Life is easy when I allow it to be.", id: 302, source: "Louise Hay" },
+{ text: "I am willing to change and grow. I now create a safe, new future.", id: 303, source: "Louise Hay" },
+{ text: "I forgive myself and set myself free.", id: 304, source: "Louise Hay" },
+{ text: "I am open and receptive to all the good and abundance in the universe.", id: 305, source: "Louise Hay" },
+  
+// Mahabharata/Bhagavad Gita (30 passages)
+{ text: "You have the right to perform your prescribed duties, but you are not entitled to the fruits of your actions.", id: 311, source: "Bhagavad Gita" },
+{ text: "The soul is neither born, nor does it ever die; nor having once existed, does it ever cease to be.", id: 312, source: "Bhagavad Gita" },
+{ text: "For the soul there is neither birth nor death. It is not slain when the body is slain.", id: 313, source: "Bhagavad Gita" },
+{ text: "A person can rise through the efforts of his own mind; or draw himself down, in the same manner.", id: 314, source: "Bhagavad Gita" },
+{ text: "When meditation is mastered, the mind is unwavering like the flame of a lamp in a windless place.", id: 315, source: "Bhagavad Gita" },
+{ text: "The wise see knowledge and action as one.", id: 316, source: "Bhagavad Gita" },
+{ text: "The self-controlled soul, who moves amongst sense objects, free from either attachment or repulsion, he wins eternal peace.", id: 317, source: "Bhagavad Gita" },
+{ text: "One who sees inaction in action, and action in inaction, is intelligent among men.", id: 318, source: "Bhagavad Gita" },
+{ text: "The peace of God is with them whose mind and soul are in harmony, who are free from desire and wrath.", id: 319, source: "Bhagavad Gita" },
+{ text: "Perform your obligatory duty, because action is indeed better than inaction.", id: 320, source: "Bhagavad Gita" },
+{ text: "Whatever happened, happened for the good. Whatever is happening, is happening for the good. Whatever will happen, will also happen for the good.", id: 321, source: "Bhagavad Gita" },
+{ text: "The power of God is with you at all times; through the activities of mind, senses, breathing, and emotions; and is constantly doing all the work using you as a mere instrument.", id: 322, source: "Bhagavad Gita" },
+
+
+
+{ text: "There is neither this world nor the world beyond nor happiness for the one who doubts.", id: 323, source: "Bhagavad Gita" },
+{ text: "The embodied soul is eternal in existence, indestructible and infinite, only the material body is factually perishable.", id: 324, source: "Bhagavad Gita" },
+{ text: "One who has control over the mind is tranquil in heat and cold, in pleasure and pain, and in honor and dishonor.", id: 325, source: "Bhagavad Gita" },
+{ text: "The mind acts like an enemy for those who do not control it.", id: 326, source: "Bhagavad Gita" },
+{ text: "The soul is unbreakable and incombustible; it can neither be dampened nor dried. It is everlasting, in all places, unalterable, immutable, and primordial.", id: 327, source: "Bhagavad Gita" },
+{ text: "The wise work for the welfare of the world, without thought for themselves.", id: 328, source: "Bhagavad Gita" },
+{ text: "When a person responds to the joys and sorrows of others as if they were his own, he has attained the highest spiritual union.", id: 329, source: "Bhagavad Gita" },
+{ text: "The awakened sages call a person wise when all his undertakings are free from anxiety about results.", id: 330, source: "Bhagavad Gita" },
+{ text: "One who is not disturbed in mind even amidst the threefold miseries or elated when there is happiness, and who is free from attachment, fear and anger, is called a sage of steady mind.", id: 331, source: "Bhagavad Gita" },
+{ text: "The soul can never be cut into pieces by any weapon, nor burned by fire, nor moistened by water, nor withered by the wind.", id: 332, source: "Bhagavad Gita" },
+{ text: "The impermanent has no reality; reality lies in the eternal.", id: 333, source: "Bhagavad Gita" },
+{ text: "Delusion arises from anger. The mind is bewildered by delusion. Reasoning is destroyed when the mind is bewildered. One falls down when reasoning is destroyed.", id: 334, source: "Bhagavad Gita" },
+{ text: "A person who has given up all desires for sense gratification, who lives free from desires, who has given up all sense of proprietorship and is devoid of false ego—he alone can attain real peace.", id: 335, source: "Bhagavad Gita" },
+{ text: "The self is the friend of the self for him who has conquered himself by the Self.", id: 336, source: "Bhagavad Gita" },
+{ text: "As the blazing fire reduces wood to ashes, O Arjuna, so does the fire of knowledge burn to ashes all reactions to material activities.", id: 337, source: "Bhagavad Gita" },
+{ text: "The power of God is with you at all times.", id: 338, source: "Bhagavad Gita" },
+{ text: "One who sees the Supersoul accompanying the individual soul in all bodies, and who understands that neither the soul nor the Supersoul is ever destroyed, actually sees.", id: 339, source: "Bhagavad Gita" },
+{ text: "The soul is neither born, and nor does it die.", id: 340, source: "Bhagavad Gita" },
+    ];
+    let originalPassages = [...passages]; // Store original for filtering
+    let usedPassages = JSON.parse(localStorage.getItem('usedPassages')) || [];
+    let isGenerating = false;
+    let voicesLoaded = false;
+
+    // Service Worker Registration
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('/sw.js').catch(error => console.error('Service Worker registration failed:', error));
+    }
+
+    // Fetch quotes from Quotable API
+    async function fetchQuotes(limit = 5) {
+      try {
+        const response = await fetch(`https://api.quotable.io/quotes?tags=inspirational,spirituality&limit=${limit}`);
+        const data = await response.json();
+        return data.results.map((quote, index) => ({
+          text: quote.content,
+          id: `api-${index + 100}`,
+          source: "Quotable API"
+        }));
+      } catch (error) {
+        console.error('Error fetching quotes:', error);
+        return [];
+      }
+    }
+
+    // Update passages with fetched quotes
+    async function updatePassages() {
+      const cachedPassages = JSON.parse(localStorage.getItem('passages')) || passages;
+      const newQuotes = await fetchQuotes();
+      passages = [...cachedPassages, ...newQuotes];
+      originalPassages = [...passages];
+      localStorage.setItem('passages', JSON.stringify(passages));
+    }
+
+    // Voice selection
+    window.speechSynthesis.onvoiceschanged = () => {
+      voicesLoaded = true;
+      populateVoiceList();
+    };
+
+    function populateVoiceList() {
+      const voices = window.speechSynthesis.getVoices();
+      const voiceSelect = document.createElement('select');
+      voiceSelect.id = 'voiceSelect';
+      voices.forEach(voice => {
+        const option = document.createElement('option');
+        option.value = voice.name;
+        option.textContent = `${voice.name} (${voice.lang})`;
+        voiceSelect.appendChild(option);
+      });
+      const audioPlayer = document.getElementById('audioPlayer');
+      if (voices.length) {
+        audioPlayer.appendChild(voiceSelect);
+      } else {
+        audioPlayer.innerHTML = '<p>Text-to-speech is not supported in this browser.</p>';
+      }
+    }
+
+    // Generate audio
+    function generateAudio(text, autoPlay = false) {
+      const audioPlayer = document.getElementById('audioPlayer');
+      audioPlayer.innerHTML = voicesLoaded && window.speechSynthesis.getVoices().length ? '' : '<p>Text-to-speech is not supported in this browser.</p>';
+
+      const utterance = new SpeechSynthesisUtterance(text);
+      utterance.lang = 'en-US';
+      utterance.pitch = 0.9;
+      utterance.rate = 1;
+
+      if (voicesLoaded) {
+        const voices = window.speechSynthesis.getVoices();
+        const selectedVoice = document.getElementById('voiceSelect')?.value;
+        const voice = voices.find(v => v.name === selectedVoice) || voices.find(v => v.lang === 'en-US');
+        if (voice) utterance.voice = voice;
+      }
+
+      if (autoPlay) {
+        window.speechSynthesis.speak(utterance);
+      }
+
+      const playButton = document.createElement('button');
+      playButton.textContent = 'Play Verse Again';
+      playButton.onclick = () => window.speechSynthesis.speak(utterance);
+      audioPlayer.appendChild(playButton);
+    }
+
+    // Generate sharing buttons
+    function generateShareButtons(text, id, source) {
+      const shareButtons = document.getElementById('shareButtons');
+      shareButtons.innerHTML = '';
+
+      const encodedText = encodeURIComponent(text);
+      const shareData = {
+        title: 'God Speaking to You',
+        text: text,
+        url: window.location.href
+      };
+
+      if (navigator.share) {
+        const shareBtn = document.createElement('button');
+        shareBtn.textContent = 'Share Verse';
+        shareBtn.onclick = () => navigator.share(shareData);
+        shareButtons.appendChild(shareBtn);
+      }
+
+      const favoriteBtn = document.createElement('button');
+      favoriteBtn.textContent = 'Save as Favorite';
+      favoriteBtn.onclick = () => saveFavorite(text, id, source);
+      shareButtons.appendChild(favoriteBtn);
+
+      const platforms = [
+        { name: 'X', url: `https://x.com/intent/post?text=${encodedText}` },
+        { name: 'Facebook', url: `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareData.url)}&quote=${encodedText}` },
+        { name: 'WhatsApp', url: `https://api.whatsapp.com/send?text=${encodedText}` },
+        { name: 'Email', url: `mailto:?subject=${encodeURIComponent(shareData.title)}&body=${encodedText}%0A${shareData.url}` }
+      ];
+
+      platforms.forEach(platform => {
+        const btn = document.createElement('a');
+        btn.href = platform.url;
+        btn.textContent = `Share on ${platform.name}`;
+        shareButtons.appendChild(btn);
+      });
+    }
+
+    // Save favorite quote
+    function saveFavorite(text, id, source) {
+      const favorites = JSON.parse(localStorage.getItem('favorites')) || [];
+      if (!favorites.some(f => f.id === id)) {
+        favorites.push({ text, id, source });
+        localStorage.setItem('favorites', JSON.stringify(favorites));
+        alert('Quote saved to favorites!');
+      } else {
+        alert('This quote is already in your favorites.');
+      }
+    }
+
+    // Filter quotes by source
+    function filterQuotes() {
+      const selectedSource = document.getElementById('categoryFilter').value;
+      if (selectedSource === 'all') {
+        passages = [...originalPassages];
+      } else {
+        passages = originalPassages.filter(p => p.source === selectedSource);
+      }
+      usedPassages = [];
+      localStorage.setItem('usedPassages', JSON.stringify(usedPassages));
+      generatePassage();
+    }
+
+    // Generate a non-repeating random passage
+    function generatePassage() {
+      if (isGenerating) return;
+      isGenerating = true;
+
+      const button = document.getElementById('crossButton');
+      button.classList.add('active');
+      setTimeout(() => {
+        button.classList.remove('active');
+        isGenerating = false;
+      }, 3000);
+
+      let availablePassages = passages.filter(p => !usedPassages.includes(p.id));
+      if (availablePassages.length === 0) {
+        usedPassages = [];
+        availablePassages = passages;
+      }
+
+      const randomPassage = availablePassages[Math.floor(Math.random() * availablePassages.length)];
+      usedPassages.push(randomPassage.id);
+      localStorage.setItem('usedPassages', JSON.stringify(usedPassages));
+
+      document.getElementById('passageOutput').innerHTML = `<p>"${randomPassage.text}"${randomPassage.source ? `<br><small>Source: ${randomPassage.source}</small>` : ''}</p>`;
+      generateAudio(randomPassage.text, true);
+      generateShareButtons(randomPassage.text, randomPassage.id, randomPassage.source);
+    }
+
+    // Theme toggle
+    function toggleTheme() {
+      document.body.classList.toggle('dark-mode');
+      localStorage.setItem('theme', document.body.classList.contains('dark-mode') ? 'dark' : 'light');
+    }
+
+    // Font size adjustment
+    function changeFontSize() {
+      const size = document.getElementById('fontSize').value;
+      document.getElementById('passageOutput').style.fontSize = size;
+      localStorage.setItem('fontSize', size);
+    }
+
+    // Load saved preferences
+    if (localStorage.getItem('theme') === 'dark') {
+      document.body.classList.add('dark-mode');
+      document.getElementById('themeToggle').checked = true;
+    }
+    if (localStorage.getItem('fontSize')) {
+      document.getElementById('fontSize').value = localStorage.getItem('fontSize');
+      document.getElementById('passageOutput').style.fontSize = localStorage.getItem('fontSize');
+    }
+
+    // Keyboard navigation
+    document.getElementById('crossButton').addEventListener('keydown', (event) => {
+      if (event.key === 'Enter' || event.key === ' ') {
+        generatePassage();
+      }
+    });
+
+    // Daily notifications
+    if (Notification.permission === 'granted') {
+      setInterval(() => {
+        const randomPassage = passages[Math.floor(Math.random() * passages.length)];
+        new Notification('Daily Inspiration', { body: randomPassage.text });
+      }, 24 * 60 * 60 * 1000);
+    } else if (Notification.permission !== 'denied') {
+      Notification.requestPermission();
+    }
+
+    // Initialize
+    updatePassages();
+    generatePassage();
   </script>
 </body>
-</html>
+  </html>
