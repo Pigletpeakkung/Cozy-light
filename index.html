@@ -85,22 +85,55 @@
       color: #fff;
     }
     #credit {
-      font-size: 10px;
-      color: #888;
+      font-size: 0.9rem;
+      color: #666;
       text-align: center;
-      margin-top: 10px;
+      margin: 20px auto;
+      padding: 10px;
+      max-width: 600px;
+      border-radius: 5px;
+      background: rgba(0, 0, 0, 0.05);
+      border: 1px solid rgba(0, 0, 0, 0.1);
+    }
+    .dark-mode #credit {
+      color: #ccc;
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.2);
     }
     footer {
       text-align: center;
-      padding: 1rem;
+      padding: 1.5rem;
       font-size: 0.9rem;
+      background: linear-gradient(135deg, #f5f5f5, #e0e0e0);
+      border-top: 1px solid rgba(0, 0, 0, 0.1);
+    }
+    .dark-mode footer {
+      background: linear-gradient(135deg, #444, #333);
+      border-top: 1px solid rgba(255, 255, 255, 0.2);
+    }
+    footer .gradient-text {
+      background: linear-gradient(90deg, #FFD700, #FF4500);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      text-fill-color: transparent;
+      font-weight: bold;
     }
     footer a {
       color: #007bff;
       text-decoration: none;
+      margin: 0 10px;
+      transition: color 0.3s ease;
     }
     footer a:hover {
+      color: #FF4500;
       text-decoration: underline;
+    }
+    .dark-mode footer a {
+      color: #66b0ff;
+    }
+    .dark-mode footer a:hover {
+      color: #FFD700;
     }
     .dark-mode {
       background: #333;
@@ -130,6 +163,17 @@
       #passageOutput {
         font-size: 0.9rem;
         padding: 0 10px;
+      }
+      #credit {
+        font-size: 0.8rem;
+        padding: 8px;
+      }
+      footer {
+        padding: 1rem;
+        font-size: 0.8rem;
+      }
+      footer a {
+        margin: 0 5px;
       }
     }
   </style>
@@ -242,18 +286,8 @@
         <option value="Seth Speaks">Seth Speaks</option>
         <option value="Rumi">Rumi</option>
         <option value="Alan Watts">Alan Watts</option>
-        <option value="Florence Scovel Shinn">Florence Scovel Shinn</option>
-        <option value="Lao Tzu">Lao Tzu</option>
-        <option value="Law of One">Law of One</option>
-        <option value="Emerald Tablet">Emerald Tablet</option>
         <option value="Buddha">Buddha</option>
-        <option value="Carl Jung">Carl Jung</option>
-        <option value="Edgar Cayce">Edgar Cayce</option>
-        <option value="Dr. Joe Dispenza">Dr. Joe Dispenza</option>
-        <option value="S.N. Goenka">S.N. Goenka</option>
-        <option value="Dolores Cannon">Dolores Cannon</option>
-        <option value="Louise Hay">Louise Hay</option>
-        <option value="Bhagavad Gita">Bhagavad Gita</option>
+        <option value="Lao Tzu, Tao Te Ching">Lao Tzu, Tao Te Ching</option>
         <option value="Quotable API">Quotable API</option>
       </select>
     </div>
@@ -265,24 +299,114 @@
     <div id="audioPlayer"></div>
     <div id="shareButtons"></div>
   </div>
-  <div id="credit">Quotes sourced from Conversations with God, Sethfillable, Rumi, Alan Watts, Florence Scovel Shinn, Lao Tzu, Law of One, Emerald Tablet, Buddha, Carl Jung, Edgar Cayce, Dr. Joe Dispenza, S.N. Goenka, Dolores Cannon, Louise Hay, Bhagavad Gita, and Quotable API.</div>
+  <div id="credit">Quotes sourced from Conversations with God, Seth Speaks, Rumi, Alan Watts, Buddha, Lao Tzu, and Quotable API.</div>
 
-  <footer>
-    <p>© Thann.AI Project | <a href="https://www.pegearts.com" target="_blank">PegeArts</a> |
-       <a href="https://www.linkedin.com/in/thanattsitts" target="_blank">LinkedIn</a> |
-       <a href="https://ko-fi.com/ezekielarts" target="_blank">Support on Ko-fi</a></p>
+  <footer role="contentinfo">
+    <p><span class="gradient-text">© Thann.AI Project</span> | 
+       <a href="https://www.pegearts.com" target="_blank" aria-label="Visit PegeArts website">PegeArts</a> |
+       <a href="https://www.linkedin.com/in/thanattsitts" target="_blank" aria-label="Visit Thanattsitt S. LinkedIn profile">LinkedIn</a> |
+       <a href="https://ko-fi.com/ezekielarts" target="_blank" aria-label="Support on Ko-fi">Support on Ko-fi</a></p>
   </footer>
 
   <script>
-    // Passages array (abbreviated; replace with full array from original code)
+    // Passages array (90 quotes as provided)
     let passages = [
-      { text: "The present is the opportunity. Make the most of today.", id: 268, source: "Edgar Cayce" },
-      { text: "The kingdom of heaven is within. The Christ Consciousness is universal.", id: 269, source: "Edgar Cayce" },
-      { text: "All force is one force, all power is one power, all energy is one energy.", id: 270, source: "Edgar Cayce" },
-      { text: "We are all fragments of the One Infinite Creator experiencing itself in infinite ways.", id: 271, source: "Dolores Cannon" },
-      { text: "You have the power to heal your life, and you need to know that.", id: 291, source: "Louise Hay" },
-      { text: "You have the right to perform your prescribed duties, but you are not entitled to the fruits of your actions.", id: 311, source: "Bhagavad Gita" }
-      // Add all 673 passages from your original code here
+      // Conversations with God (15 quotes)
+      { text: "You are God, in drag.", id: 1, source: "Conversations with God" },
+      { text: "There is no such thing as a better way, only another way.", id: 2, source: "Conversations with God" },
+      { text: "The soul creates, the mind reacts, the body experiences.", id: 3, source: "Conversations with God" },
+      { text: "All human actions are motivated at their deepest level by one of two emotions: fear or love.", id: 4, source: "Conversations with God" },
+      { text: "There are no victims in the universe—only creators.", id: 5, source: "Conversations with God" },
+      { text: "Your life is not about you, it is about everyone whose life you touch.", id: 6, source: "Conversations with God" },
+      { text: "The purpose of relationship is not to have another who might complete you, but to have another with whom you might share your completeness.", id: 7, source: "Conversations with God" },
+      { text: "There is only one purpose for all of life, and that is for you and all that lives to experience fullest glory.", id: 8, source: "Conversations with God" },
+      { text: "You are the creator of your own reality, and life can show up no other way for you than that way in which you think it will.", id: 9, source: "Conversations with God" },
+      { text: "The truth is simple: There is no separation between you and God.", id: 10, source: "Conversations with God" },
+      { text: "Your way of being is your way of believing, and your way of believing creates your experience.", id: 11, source: "Conversations with God" },
+      { text: "The moment you declare anything, everything unlike it will come into the space.", id: 12, source: "Conversations with God" },
+      { text: "There is no truth except the truth that exists within you.", id: 13, source: "Conversations with God" },
+      { text: "You are the one who calls the light into being. Indeed, you are the light.", id: 14, source: "Conversations with God" },
+      { text: "The deepest secret is that life is not a process of discovery, but a process of creation.", id: 15, source: "Conversations with God" },
+      // Seth Speaks (15 quotes)
+      { text: "You are not a human being having a spiritual experience. You are a spiritual being having a human experience.", id: 16, source: "Seth Speaks" },
+      { text: "The universe is not something apart from you. You are the universe expressing itself as a human for a little while.", id: 17, source: "Seth Speaks" },
+      { text: "Your imagination is your gateway to other realities.", id: 18, source: "Seth Speaks" },
+      { text: "You create your reality according to your beliefs and expectations.", id: 19, source: "Seth Speaks" },
+      { text: "The present is the point of power where past and future meet.", id: 20, source: "Seth Speaks" },
+      { text: "You are given the gift of the gods; you create your reality according to your beliefs.", id: 21, source: "Seth Speaks" },
+      { text: "The soul is a medium for creativity, a creator that forms realities.", id: 22, source: "Seth Speaks" },
+      { text: "You are not at the mercy of past events unless you believe you are.", id: 23, source: "Seth Speaks" },
+      { text: "Dreams are the language of the soul.", id: 24, source: "Seth Speaks" },
+      { text: "You are more than your physical body. Your consciousness continues when your body dies.", id: 25, source: "Seth Speaks" },
+      { text: "Probable realities exist around you like shadows, waiting for your recognition.", id: 26, source: "Seth Speaks" },
+      { text: "Your thoughts are as real as your physical objects.", id: 27, source: "Seth Speaks" },
+      { text: "You are a multidimensional being, experiencing many realities simultaneously.", id: 28, source: "Seth Speaks" },
+      { text: "The answers you seek lie within your own consciousness.", id: 29, source: "Seth Speaks" },
+      { text: "Your beliefs shape your health, your relationships, and your world.", id: 30, source: "Seth Speaks" },
+      // Rumi (15 quotes)
+      { text: "You are not a drop in the ocean. You are the entire ocean in a drop.", id: 31, source: "Rumi" },
+      { text: "What you seek is seeking you.", id: 32, source: "Rumi" },
+      { text: "Don't grieve. Anything you lose comes round in another form.", id: 33, source: "Rumi" },
+      { text: "Let yourself be silently drawn by the strange pull of what you really love.", id: 34, source: "Rumi" },
+      { text: "Be like a tree and let the dead leaves drop.", id: 35, source: "Rumi" },
+      { text: "The wound is the place where the Light enters you.", id: 36, source: "Rumi" },
+      { text: "When you do things from your soul, you feel a river moving in you, a joy.", id: 37, source: "Rumi" },
+      { text: "Your task is not to seek for love, but merely to seek and find all the barriers within yourself that you have built against it.", id: 38, source: "Rumi" },
+      { text: "Why do you stay in prison when the door is so wide open?", id: 39, source: "Rumi" },
+      { text: "Be a lamp, or a lifeboat, or a ladder.", id: 40, source: "Rumi" },
+      { text: "Where there is ruin, there is hope for a treasure.", id: 41, source: "Rumi" },
+      { text: "Let the beauty of what you love be what you do.", id: 42, source: "Rumi" },
+      { text: "The universe is not outside of you. Look inside yourself; everything that you want, you already are.", id: 43, source: "Rumi" },
+      { text: "You were born with wings. Why prefer to crawl through life?", id: 44, source: "Rumi" },
+      { text: "Sell your cleverness and buy bewilderment.", id: 45, source: "Rumi" },
+      // Alan Watts (15 quotes)
+      { text: "You are an aperture through which the universe is looking at and exploring itself.", id: 46, source: "Alan Watts" },
+      { text: "The only way to make sense out of change is to plunge into it, move with it, and join the dance.", id: 47, source: "Alan Watts" },
+      { text: "Trying to define yourself is like trying to bite your own teeth.", id: 48, source: "Alan Watts" },
+      { text: "You are that vast thing that you see far, far off with great telescopes.", id: 49, source: "Alan Watts" },
+      { text: "This is the real secret of life—to be completely engaged with what you are doing in the here and now.", id: 50, source: "Alan Watts" },
+      { text: "The more a thing tends to be permanent, the more it tends to be lifeless.", id: 51, source: "Alan Watts" },
+      { text: "We do not 'come into' this world; we come out of it, as leaves from a tree.", id: 52, source: "Alan Watts" },
+      { text: "No one is more dangerously insane than one who is sane all the time.", id: 53, source: "Alan Watts" },
+      { text: "Muddy water is best cleared by leaving it alone.", id: 54, source: "Alan Watts" },
+      { text: "The ego is nothing other than the focus of conscious attention.", id: 55, source: "Alan Watts" },
+      { text: "You are under no obligation to be the same person you were five minutes ago.", id: 56, source: "Alan Watts" },
+      { text: "Problems that remain persistently insoluble should always be suspected as questions asked in the wrong way.", id: 57, source: "Alan Watts" },
+      { text: "The art of living is neither careless drifting nor fearful clinging, but a dance.", id: 58, source: "Alan Watts" },
+      { text: "What you are basically, deep deep down, is simply the fabric and structure of existence itself.", id: 59, source: "Alan Watts" },
+      { text: "The meaning of life is just to be alive. It is so plain and so obvious and so simple.", id: 60, source: "Alan Watts" },
+      // Buddhist Teachings (15 quotes)
+      { text: "Do not dwell in the past, do not dream of the future, concentrate the mind on the present moment.", id: 61, source: "Buddha" },
+      { text: "Peace comes from within. Do not seek it without.", id: 62, source: "Buddha" },
+      { text: "Holding onto anger is like drinking poison and expecting the other person to die.", id: 63, source: "Buddhist proverb" },
+      { text: "Thousands of candles can be lit from a single candle, and the life of the candle will not be shortened.", id: 64, source: "Buddha" },
+      { text: "You yourself, as much as anybody in the entire universe, deserve your love and affection.", id: 65, source: "Buddha" },
+      { text: "In the end, only three things matter: how much you loved, how gently you lived, and how gracefully you let go.", id: 66, source: "Buddhist saying" },
+      { text: "The root of suffering is attachment.", id: 67, source: "Buddha" },
+      { text: "There is no path to happiness: happiness is the path.", id: 68, source: "Buddha" },
+      { text: "All that we are is the result of what we have thought.", id: 69, source: "Buddha" },
+      { text: "Better than a thousand hollow words is one word that brings peace.", id: 70, source: "Buddha" },
+      { text: "Just as a snake sheds its skin, we must shed our past over and over again.", id: 71, source: "Buddha" },
+      { text: "The mind is everything. What you think you become.", id: 72, source: "Buddha" },
+      { text: "To understand everything is to forgive everything.", id: 73, source: "Buddha" },
+      { text: "No one saves us but ourselves. No one can and no one may. We ourselves must walk the path.", id: 74, source: "Buddha" },
+      { text: "Work out your own salvation. Do not depend on others.", id: 75, source: "Buddha" },
+      // Tao Te Ching (15 quotes)
+      { text: "The Tao that can be told is not the eternal Tao.", id: 76, source: "Lao Tzu, Tao Te Ching" },
+      { text: "Nature does not hurry, yet everything is accomplished.", id: 77, source: "Lao Tzu, Tao Te Ching" },
+      { text: "When I let go of what I am, I become what I might be.", id: 78, source: "Lao Tzu, Tao Te Ching" },
+      { text: "A good traveler has no fixed plans and is not intent on arriving.", id: 79, source: "Lao Tzu, Tao Te Ching" },
+      { text: "Knowing others is intelligence; knowing yourself is true wisdom.", id: 80, source: "Lao Tzu, Tao Te Ching" },
+      { text: "The soft overcomes the hard; the gentle overcomes the rigid.", id: 81, source: "Lao Tzu, Tao Te Ching" },
+      { text: "He who knows he has enough is rich.", id: 82, source: "Lao Tzu, Tao Te Ching" },
+      { text: "The journey of a thousand miles begins with one step.", id: 83, source: "Lao Tzu, Tao Te Ching" },
+      { text: "When you realize there is nothing lacking, the whole world belongs to you.", id: 84, source: "Lao Tzu, Tao Te Ching" },
+      { text: "Silence is a source of great strength.", id: 85, source: "Lao Tzu, Tao Te Ching" },
+      { text: "Be content with what you have; rejoice in the way things are.", id: 86, source: "Lao Tzu, Tao Te Ching" },
+      { text: "To the mind that is still, the whole universe surrenders.", id: 87, source: "Lao Tzu, Tao Te Ching" },
+      { text: "Health is the greatest possession. Contentment is the greatest treasure.", id: 88, source: "Lao Tzu, Tao Te Ching" },
+      { text: "Respond intelligently even to unintelligent treatment.", id: 89, source: "Lao Tzu, Tao Te Ching" },
+      { text: "New beginnings are often disguised as painful endings.", id: 90, source: "Lao Tzu, Tao Te Ching" }
     ];
     let originalPassages = [...passages];
     let usedPassages = JSON.parse(localStorage.getItem('usedPassages')) || [];
@@ -368,14 +492,15 @@
       };
 
       if (autoPlay) {
-        window.speechSynthesis.cancel(); // Clear any existing speech queue
+        window.speechSynthesis.cancel();
         window.speechSynthesis.speak(createUtterance());
       }
 
       const playButton = document.createElement('button');
       playButton.textContent = 'Play Verse Again';
+      playButton.setAttribute('aria-label', 'Play the quote again');
       playButton.onclick = () => {
-        window.speechSynthesis.cancel(); // Clear any ongoing speech
+        window.speechSynthesis.cancel();
         window.speechSynthesis.speak(createUtterance());
       };
       audioPlayer.appendChild(playButton);
@@ -517,4 +642,4 @@
     generatePassage();
   </script>
 </body>
-      </html>
+</html>
