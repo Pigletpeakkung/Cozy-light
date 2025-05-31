@@ -718,53 +718,55 @@
         document.body.classList.add('dark-mode');
         document.getElementById('themeToggle').checked = true;
       }
-      
-      // Load font size
-      if (localStorage.getItem('fontSize')) {
-        document.getElementById('fontSize').value = localStorage.getItem('fontSize');
-        document.getElementById('passageOutput').style.fontSize = localStorage.getItem
-              });
-      document.getElementById('themeToggle').onchange = toggleTheme;
-      document.getElementById('fontSize').onchange = changeFontSize;
-      document.getElementById('categoryFilter').onchange = filterQuotes;
-      document.getElementById('crossButton').onclick = generatePassage;
-      document.getElementById('crossButton').addEventListener('keydown', event => {
-        if (event.key === 'Enter' || event.key === ' ') generatePassage();
-      });
-      document.getElementById('viewFavorites').onclick = () => {
-        const favoritesList = document.getElementById('favoritesList');
-        favoritesList.hidden = !favoritesList.hidden;
-      };
-      
-      await updatePassages();
-      generatePassage();
-      updateFavoritesList(); // Initialize favorites list
+    
+  window.addEventListener('DOMContentLoaded', async () => {
+    // Load font size
+    if (localStorage.getItem('fontSize')) {
+      document.getElementById('fontSize').value = localStorage.getItem('fontSize');
+      document.getElementById('passageOutput').style.fontSize = localStorage.getItem('fontSize');
+    }
+
+    // Event listeners
+    document.getElementById('themeToggle').onchange = toggleTheme;
+    document.getElementById('fontSize').onchange = changeFontSize;
+    document.getElementById('categoryFilter').onchange = filterQuotes;
+    document.getElementById('crossButton').onclick = generatePassage;
+    document.getElementById('crossButton').addEventListener('keydown', event => {
+      if (event.key === 'Enter' || event.key === ' ') generatePassage();
     });
+    document.getElementById('viewFavorites').onclick = () => {
+      const favoritesList = document.getElementById('favoritesList');
+      favoritesList.hidden = !favoritesList.hidden;
+    };
 
-    // --- Voice Selection Handling ---
-    if (voicesLoaded) {
+    await updatePassages();
+    generatePassage();
+    updateFavoritesList(); // Initialize favorites list
+  });
+
+  // --- Voice Selection Handling ---
+  if (voicesLoaded) {
+    populateVoiceList();
+  } else {
+    window.speechSynthesis.addEventListener('voiceschanged', () => {
       populateVoiceList();
-    } else {
-      window.speechSynthesis.addEventListener('voiceschanged', () => {
-        populateVoiceList();
-      });
-    }
+    });
+  }
 
-    // --- Daily Notifications (with Permission Request) ---
-    if ('Notification' in window) {
-      if (Notification.permission === 'granted') {
-        setInterval(() => {
-          const randomPassage = passages[Math.floor(Math.random() * passages.length)];
-          new Notification('Daily Inspiration', { 
-            body: randomPassage.text,
-            icon: 'https://pigletpeakkung.github.io/Cozy-light/favicon.ico'
-          });
-        }, 24 * 60 * 60 * 1000);
-      } else if (Notification.permission !== 'denied') {
-        Notification.requestPermission();
-      }
+  // --- Daily Notifications (with Permission Request) ---
+  if ('Notification' in window) {
+    if (Notification.permission === 'granted') {
+      setInterval(() => {
+        const randomPassage = passages[Math.floor(Math.random() * passages.length)];
+        new Notification('Daily Inspiration', { 
+          body: randomPassage.text,
+          icon: 'https://pigletpeakkung.github.io/Cozy-light/favicon.ico'
+        });
+      }, 24 * 60 * 60 * 1000);
+    } else if (Notification.permission !== 'denied') {
+      Notification.requestPermission();
     }
-  </script>
+  }
+</script>
 </body>
 </html>
-
