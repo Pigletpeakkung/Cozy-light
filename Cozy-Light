@@ -1,7 +1,17 @@
-Cozy-Light/
+Cozy-light/
 ├── index.html
 ├── manifest.json
-├── sw.js
-└── (optional) icons/
-    ├── icon-192.png
-    └── icon-512.png
+├── src/
+│   ├── css/
+│   │   ├── main.css
+│   │   ├── components.css
+│   │   └── responsive.css
+│   ├── js/
+│   │   ├── main.js
+│   │   ├── lightController.js
+│   │   ├── presets.js
+│   │   └── settings.js
+│   └── assets/
+│       ├── icons/
+│       └── sounds/
+└── README.md
