@@ -1,0 +1,7 @@
+Cozy-Light/
+├── index.html
+├── manifest.json
+├── sw.js
+└── (optional) icons/
+    ├── icon-192.png
+    └── icon-512.png
