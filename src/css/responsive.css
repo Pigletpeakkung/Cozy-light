@@ -1,0 +1,499 @@
+/* Mobile-first responsive design */
+
+/* Extra small devices (phones, 600px and down) */
+@media only screen and (max-width: 600px) {
+    .app-container {
+        padding: 10px;
+    }
+    
+    .app-header h1 {
+        font-size: 2rem;
+    }
+    
+    .app-header p {
+        font-size: 1rem;
+    }
+    
+    /* Light display adjustments */
+    .light-display {
+        height: 150px;
+        margin-bottom: 20px;
+    }
+    
+    .light-bulb {
+        width: 80px;
+        height: 80px;
+    }
+    
+    /* Control groups */
+    .control-group {
+        padding: 15px;
+        margin-bottom: 15px;
+    }
+    
+    .control-group label {
+        font-size: 1rem;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+    }
+    
+    .control-value {
+        align-self: flex-end;
+        margin-top: -25px;
+    }
+    
+    /* Sliders */
+    .slider {
+        height: 8px;
+        margin: 15px 0;
+    }
+    
+    .slider::-webkit-slider-thumb {
+        width: 25px;
+        height: 25px;
+    }
+    
+    .slider::-moz-range-thumb {
+        width: 25px;
+        height: 25px;
+    }
+    
+    /* Preset buttons */
+    .preset-buttons {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+    }
+    
+    .preset-btn {
+        padding: 12px 15px;
+        font-size: 0.9rem;
+    }
+    
+    /* Color picker */
+    .color-picker-container {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+    
+    .color-input {
+        width: 50px;
+        height: 50px;
+    }
+    
+    .color-preset {
+        width: 35px;
+        height: 35px;
+    }
+    
+    /* Timer controls */
+    .timer-controls {
+        flex-direction: column;
+        gap: 15px;
+    }
+    
+    .timer-controls input,
+    .timer-controls select {
+        width: 100%;
+        padding: 12px;
+    }
+    
+    .timer-btn {
+        width: 100%;
+        padding: 15px;
+    }
+    
+    /* Sound controls */
+    .sound-controls {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 8px;
+    }
+    
+    .sound-btn {
+        padding: 12px 10px;
+        font-size: 0.8rem;
+    }
+    
+    .volume-control {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+    
+    /* Advanced controls */
+    .toggle-advanced {
+        font-size: 0.9rem;
+        padding: 12px 15px;
+    }
+    
+    /* Messages */
+    .message-container {
+        top: 10px;
+        right: 10px;
+        left: 10px;
+        max-width: none;
+    }
+    
+    .message {
+        padding: 12px 15px;
+        font-size: 0.9rem;
+    }
+    
+    /* Help modal */
+    .help-content {
+        margin: 20px;
+        padding: 20px;
+        max-width: none;
+        width: calc(100% - 40px);
+    }
+    
+    .help-shortcuts {
+        font-size: 0.9rem;
+    }
+    
+    .shortcut-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 5px;
+        margin-bottom: 15px;
+    }
+}
+
+/* Small devices (portrait tablets and large phones, 600px and up) */
+@media only screen and (min-width: 600px) and (max-width: 768px) {
+    .app-container {
+        padding: 15px;
+    }
+    
+    .preset-buttons {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .timer-controls {
+        flex-wrap: wrap;
+        justify-content: space-between;
+    }
+    
+    .timer-controls input,
+    .timer-controls select {
+        flex: 1;
+        min-width: 120px;
+    }
+    
+    .sound-controls {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+/* Medium devices (landscape tablets, 768px and up) */
+@media only screen and (min-width: 768px) and (max-width: 992px) {
+    .app-container {
+        padding: 20px;
+        max-width: 700px;
+    }
+    
+    .preset-buttons {
+        grid-template-columns: repeat(4, 1fr);
+    }
+    
+    .sound-controls {
+        grid-template-columns: repeat(4, 1fr);
+    }
+    
+    /* Two-column layout for some controls */
+    .controls-container {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
+    }
+    
+    .control-group:first-child {
+        grid-column: 1 / -1; /* Brightness spans full width */
+    }
+}
+
+/* Large devices (laptops/desktops, 992px and up) */
+@media only screen and (min-width: 992px) {
+    .app-container {
+        max-width: 900px;
+    }
+    
+    /* Enhanced desktop layout */
+    .main-content {
+        display: grid;
+        grid-template-columns: 2fr 1fr;
+        gap: 30px;
+        align-items: start;
+    }
+    
+    .light-display {
+        height: 250px;
+    }
+    
+    .light-bulb {
+        width: 150px;
+        height: 150px;
+    }
+    
+    /* Side panel for quick controls */
+    .quick-controls {
+        position: sticky;
+        top: 20px;
+    }
+    
+    .preset-buttons {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .sound-controls {
+        grid-template-columns: repeat(4, 1fr);
+    }
+    
+    /* Hover effects for desktop */
+    .control-group:hover {
+        transform: translateY(-3px);
+    }
+    
+    .preset-btn:hover {
+        transform: translateY(-2px) scale(1.02);
+    }
+    
+    .color-preset:hover {
+        transform: scale(1.3);
+    }
+}
+
+/* Extra large devices (large laptops and desktops, 1200px and up) */
+@media only screen and (min-width: 1200px) {
+    .app-container {
+        max-width: 1100px;
+    }
+    
+    .preset-buttons {
+        grid-template-columns: repeat(4, 1fr);
+    }
+    
+    /* Enhanced spacing */
+    .control-group {
+        padding: 25px;
+    }
+    
+    .light-display {
+        height: 300px;
+    }
+    
+    .light-bulb {
+        width: 180px;
+        height: 180px;
+    }
+}
+
+/* Landscape orientation adjustments */
+@media screen and (orientation: landscape) and (max-height: 600px) {
+    .app-header {
+        margin-bottom: 15px;
+        padding: 10px 0;
+    }
+    
+    .app-header h1 {
+        font-size: 1.8rem;
+        margin-bottom: 5px;
+    }
+    
+    .light-display {
+        height: 120px;
+        margin-bottom: 20px;
+    }
+    
+    .light-bulb {
+        width: 70px;
+        height: 70px;
+    }
+    
+    .control-group {
+        padding: 12px;
+        margin-bottom: 10px;
+    }
+}
+
+/* High DPI displays */
+@media only screen and (-webkit-min-device-pixel-ratio: 2),
+       only screen and (min-resolution: 192dpi) {
+    .light-bulb {
+        box-shadow: 0 0 30px currentColor, 0 0 60px currentColor;
+    }
+    
+    .slider::-webkit-slider-thumb {
+        box-shadow: 0 2px 15px rgba(255, 140, 66, 0.6);
+    }
+}
+
+/* Reduced motion preferences */
+@media (prefers-reduced-motion: reduce) {
+    * {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+    
+    .light-glow {
+        transition: none;
+    }
+    
+    .preset-btn.active {
+        transform: none;
+    }
+}
+
+/* Dark mode support (if system preference changes) */
+@media (prefers-color-scheme: light) {
+    :root {
+        --primary-bg: #f5f5f5;
+        --secondary-bg: #ffffff;
+        --text-primary: #333333;
+        --text-secondary: #666666;
+    }
+    
+    body {
+        background: linear-gradient(135deg, #f5f5f5 0%, #e0e0e0 100%);
+    }
+}
+
+/* Print styles */
+@media print {
+    .app-container {
+        background: white;
+        color: black;
+    }
+    
+    .control-group,
+    .timer-container,
+    .sound-container {
+        border: 1px solid #ccc;
+        break-inside: avoid;
+    }
+    
+    .light-display,
+    .preset-buttons,
+    .timer-controls,
+    .sound-controls {
+        display: none;
+    }
+}
+
+/* Accessibility improvements */
+@media (prefers-contrast: high) {
+    :root {
+        --accent-color: #ff6600;
+        --text-primary: #ffffff;
+        --text-secondary: #cccccc;
+    }
+    
+    .control-group {
+        border: 2px solid var(--accent-color);
+    }
+    
+    .slider::-webkit-slider-thumb {
+        border: 2px solid white;
+    }
+}
+
+/* Loading state styles */
+.loading-content {
+    text-align: center;
+}
+
+.loading-spinner {
+    width: 50px;
+    height: 50px;
+    border: 4px solid rgba(255, 140, 66, 0.3);
+    border-top: 4px solid var(--accent-color);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin: 0 auto 20px;
+}
+
+.loading-content h2 {
+    margin-bottom: 10px;
+    font-size: 2rem;
+}
+
+.loading-content p {
+    color: var(--text-secondary);
+    font-size: 1.1rem;
+}
+
+/* Help modal styles */
+.help-content {
+    background: var(--secondary-bg);
+    border-radius: var(--border-radius);
+    padding: 30px;
+    max-width: 500px;
+    margin: 20px;
+    box-shadow: var(--shadow);
+}
+
+.help-content h3 {
+    margin-bottom: 20px;
+    text-align: center;
+    color: var(--accent-color);
+}
+
+.help-shortcuts {
+    margin-bottom: 20px;
+}
+
+.shortcut-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+    padding: 8px 0;
+    border-bottom: 1px solid #444;
+}
+
+.shortcut-item:last-child {
+    border-bottom: none;
+}
+
+kbd {
+    background: var(--primary-bg);
+    border: 1px solid #666;
+    border-radius: 4px;
+    padding: 4px 8px;
+    font-family: monospace;
+    font-size: 0.9rem;
+    margin-right: 5px;
+}
+
+.close-help {
+    width: 100%;
+    margin-top: 20px;
+}
+
+/* Update banner styles */
+.update-content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+.update-btn,
+.dismiss-btn {
+    padding: 8px 16px;
+    border-radius: 15px;
+    font-size: 0.9rem;
+}
+
+.dismiss-btn {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+/* Install button styles */
+.install-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(255, 140, 66, 0.4);
+}
