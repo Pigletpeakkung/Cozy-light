@@ -4,19 +4,15 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Master Light Spot</title>
-  <meta name="description" content="Inspirational quote generator with text-to-speech, social sharing, and customizable themes">
-  <meta name="theme-color" content="#f0f0f0">
-  <link rel="manifest" href="manifest.json">
-  
   <!-- CSS Variables & Cleanup -->
   <style>
     :root {
       --primary: #007bff;
       --secondary: #333;
       --bg-light: #f0f0f0;
-      --bg-dark: #1e1e1e;
+      --bg-dark: #333;
       --text-light: #fff;
-      --text-dark: #f0f0f0;
+      --text-dark: #333;
       --gradient-main: linear-gradient(135deg, #f0f0f0, #d9d9d9);
       --gradient-dark: linear-gradient(135deg, #555, #444);
       --gradient-footer: linear-gradient(135deg, #f5f5f5, #e0e0e0);
@@ -25,54 +21,21 @@
       --radius: 10px;
       --transition: all 0.3s cubic-bezier(.4,0,.2,1);
     }
-
     body {
       transition: var(--transition);
       background: var(--bg-light);
       color: var(--text-dark);
       margin: 0;
       font-family: 'Segoe UI', sans-serif;
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
     }
-
     .dark-mode {
       background: var(--bg-dark);
       color: var(--text-light);
     }
-
-    main {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      padding: 20px;
-    }
-
     .cross-button-container {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 20px;
-      width: 100%;
-      max-width: 600px;
+      text-align: center;
+      margin: 20px;
     }
-
-    .controls {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 15px;
-      width: 100%;
-    }
-
-    .controls label {
-      font-weight: 600;
-    }
-
     .cross-button {
       position: relative;
       width: 60px;
@@ -82,20 +45,19 @@
       border-radius: var(--radius);
       cursor: pointer;
       box-shadow: var(--shadow-main);
-      transition: var(--transition);
+      transition: background 0.3s;
+      margin: 24px auto 8px auto;
+      display: inline-block;
     }
-
     .dark-mode .cross-button {
       background: var(--gradient-dark);
     }
-
     .cross-vertical, .cross-horizontal {
       position: absolute;
       background: var(--secondary);
       border-radius: 4px;
-      transition: var(--transition);
+      transition: background 0.3s;
     }
-
     .cross-vertical {
       top: 15px;
       left: 50%;
@@ -103,25 +65,23 @@
       height: 30px;
       transform: translateX(-50%);
     }
-
-    .dark-mode .cross-vertical,
-    .dark-mode .cross-horizontal {
-      background: var(--text-light);
+    .cross-horizontal {
+      top: 50%;
+      left: 15px;
+      width: 30px;
+      height: 12px;
+      transform: translateY(-50%);
     }
-
     .cross-button:hover {
       background: linear-gradient(135deg, #e6e6e6, #cccccc);
     }
-
     .cross-button:hover .cross-vertical,
     .cross-button:hover .cross-horizontal {
       background: var(--primary);
     }
-
     .cross-button.active {
       animation: warmGlow 2s cubic-bezier(.4,0,.2,1) forwards;
     }
-
     @keyframes warmGlow {
       0% { box-shadow: 0 0 10px #FFD700, 0 0 20px #FFD700; }
       25% { box-shadow: 0 0 10px #FFA500, 0 0 20px #FFA500; }
@@ -129,65 +89,22 @@
       75% { box-shadow: 0 0 10px #FF4500, 0 0 20px #FF4500; }
       100% { box-shadow: var(--shadow-main); }
     }
+    .dark-mode .cross-vertical, .dark-mode .cross-horizontal {
+      background: var(--text-light);
+    }
 
     #passageOutput {
-      margin: 20px 0;
+      margin: 20px auto;
       font-style: italic;
       color: var(--secondary);
       max-width: 600px;
       min-height: 60px;
       font-size: 1.2rem;
-      text-align: center;
-      transition: var(--transition);
+      transition: font-size 0.2s;
     }
-
     .dark-mode #passageOutput {
       color: var(--text-light);
     }
-
-    #audioPlayer, #shareButtons, #favoritesList {
-      margin: 10px auto;
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 8px;
-      max-width: 600px;
-      flex: 1;
-    }
-
-    #favoritesList {
-      margin-top: 20px;
-      flex-direction: column;
-      align-items: center;
-      max-height: 200px;
-      overflow-y: auto;
-      border: 1px solid rgba(0,0,0,0.1);
-      border-radius: var(--radius);
-      padding: 10px;
-      background: rgba(255,255,255,0.05);
-    }
-
-    .dark-mode #favoritesList {
-      border-color: rgba(255,255,255,0.2);
-      background: rgba(0,0,0,0.1);
-    }
-
-    #favoritesList button {
-      margin: 4px 0;
-      padding: 6px 10px;
-      background: transparent;
-      border: 1px solid var(--primary);
-      color: var(--primary);
-      border-radius: var(--radius);
-      cursor: pointer;
-      transition: var(--transition);
-    }
-
-    #favoritesList button:hover {
-      background: var(--primary);
-      color: var(--bg-light);
-    }
-
     #audioPlayer, #shareButtons {
       margin: 10px auto;
       display: flex;
@@ -196,7 +113,6 @@
       gap: 8px;
       max-width: 600px;
     }
-
     #shareButtons a, #shareButtons button {
       padding: 8px 12px;
       background: #f1f1f1;
@@ -207,24 +123,12 @@
       display: inline-block;
       border: none;
       cursor: pointer;
-      transition: var(--transition);
+      transition: background 0.3s, color 0.3s;
     }
-
     #shareButtons a:hover, #shareButtons button:hover {
       background: var(--primary);
       color: var(--text-light);
     }
-
-    .dark-mode #shareButtons a, .dark-mode #shareButtons button {
-      background: rgba(255,255,255,0.1);
-      color: #ccc;
-    }
-
-    .dark-mode #shareButtons a:hover, .dark-mode #shareButtons button:hover {
-      background: #66b0ff;
-      color: #fff;
-    }
-
     #credit {
       font-size: 0.9rem;
       color: #666;
@@ -236,13 +140,11 @@
       background: rgba(0,0,0,0.05);
       border: 1px solid rgba(0,0,0,0.1);
     }
-
     .dark-mode #credit {
       color: #ccc;
       background: rgba(255,255,255,0.1);
       border: 1px solid rgba(255,255,255,0.2);
     }
-
     footer {
       text-align: center;
       padding: 1.5rem;
@@ -250,12 +152,10 @@
       background: var(--gradient-footer);
       border-top: 1px solid rgba(0,0,0,0.1);
     }
-
     .dark-mode footer {
       background: var(--gradient-footer-dark);
       border-top: 1px solid rgba(255,255,255,0.2);
     }
-
     footer .gradient-text {
       background: linear-gradient(90deg, #FFD700, #FF4500);
       -webkit-background-clip: text;
@@ -264,23 +164,19 @@
       text-fill-color: transparent;
       font-weight: bold;
     }
-
     footer a {
       color: var(--primary);
       text-decoration: none;
       margin: 0 10px;
-      transition: var(--transition);
+      transition: color 0.3s;
     }
-
     footer a:hover {
       color: #FF4500;
       text-decoration: underline;
     }
-
     .dark-mode footer a {
       color: #66b0ff;
     }
-
     .dark-mode footer a:hover {
       color: #FFD700;
     }
@@ -290,7 +186,6 @@
       #passageOutput { font-size: 1.1rem; }
       footer { font-size: 0.8rem; }
     }
-
     @media (max-width: 600px) {
       .cross-button { width: 50px; height: 50px; }
       .cross-vertical { width: 10px; height: 25px; top: 12px; }
@@ -301,7 +196,6 @@
       footer a { margin: 0 5px; }
     }
   </style>
-
   <!-- Structured Data for SEO -->
   <script type="application/ld+json">
   {
@@ -338,13 +232,12 @@
         "featureList": [
           "Random quote generation",
           "Text-to-speech audio playback",
-          "Social sharing via X (formerly Twitter)",
+          "Social sharing via Twitter",
           "Favorite quote saving",
           "Category filtering",
           "User preferences (theme, font size, animations)",
           "Offline support via service worker",
-          "Daily notifications",
-          "Favorites list display"
+          "Daily notifications"
         ],
         "author": {
           "@type": "Person",
@@ -370,19 +263,17 @@
   </script>
 </head>
 <body>
-  <main role="main">
+  <main>
     <div class="cross-button-container">
-      <div class="controls">
+      <div>
         <label for="themeToggle">Dark Mode</label>
         <input type="checkbox" id="themeToggle" aria-label="Toggle dark mode">
-        
         <label for="fontSize">Font Size:</label>
         <select id="fontSize" aria-label="Select font size">
           <option value="1rem">Small</option>
           <option value="1.2rem" selected>Medium</option>
           <option value="1.4rem">Large</option>
         </select>
-        
         <label for="categoryFilter">Source:</label>
         <select id="categoryFilter" aria-label="Filter by source">
           <option value="all">All Sources</option>
@@ -394,31 +285,17 @@
           <option value="Lao Tzu, Tao Te Ching">Lao Tzu, Tao Te Ching</option>
           <option value="Quotable API">Quotable API</option>
         </select>
-        
-        <button id="viewFavorites" aria-label="View saved favorites">View Favorites</button>
       </div>
-      
-      <button 
-        aria-label="Generate a new inspirational quote" 
-        class="cross-button" 
-        id="crossButton" 
-        role="button"
-        aria-busy="false"
-        aria-controls="passageOutput"
-      >
+      <button aria-label="Generate a new inspirational quote" class="cross-button" id="crossButton" role="button">
         <span class="cross-vertical" aria-hidden="true"></span>
         <span class="cross-horizontal" aria-hidden="true"></span>
       </button>
-      
-      <div id="passageOutput" role="region" aria-live="polite" aria-atomic="true"></div>
+      <div id="passageOutput" role="region" aria-live="polite"></div>
       <div id="audioPlayer"></div>
       <div id="shareButtons"></div>
-      <div id="favoritesList" hidden></div>
     </div>
-    
     <div id="credit">Quotes sourced from Conversations with God, Seth Speaks, Rumi, Alan Watts, Buddha, Lao Tzu, and Quotable API.</div>
   </main>
-
   <footer role="contentinfo">
     <p>
       <span class="gradient-text">&copy; Thann.AI Project</span> | 
@@ -427,12 +304,11 @@
       <a href="https://ko-fi.com/ezekielarts" target="_blank" rel="noopener" aria-label="Support on Ko-fi">Support on Ko-fi</a>
     </p>
   </footer>
-
   <!-- Main App Script -->
   <script defer>
     // --- Quote Data ---
     let passages = [
-      { text: "The mind is everything. What you think you become.", id: 72, source: "Buddha" },
+           { text: "The mind is everything. What you think you become.", id: 72, source: "Buddha" },
       { text: "To understand everything is to forgive everything.", id: 73, source: "Buddha" },
       { text: "No one saves us but ourselves. No one can and no one may. We ourselves must walk the path.", id: 74, source: "Buddha" },
       { text: "Work out your own salvation. Do not depend on others.", id: 75, source: "Buddha" },
@@ -457,7 +333,6 @@
     let usedPassages = JSON.parse(localStorage.getItem('usedPassages')) || [];
     let isGenerating = false;
     let voicesLoaded = false;
-    let favoritesList = JSON.parse(localStorage.getItem('favorites')) || [];
 
     // --- Service Worker Registration for Offline Support ---
     if ('serviceWorker' in navigator) {
@@ -467,7 +342,7 @@
     }
 
     // --- Fetch Quotes from API with Caching (Performance) ---
-    async function fetchQuotes(limit = 10) {
+    async function fetchQuotes(limit = 5) {
       try {
         const cached = sessionStorage.getItem('apiQuotes');
         if (cached) return JSON.parse(cached);
@@ -500,28 +375,23 @@
       voicesLoaded = true;
       populateVoiceList();
     };
-
     function populateVoiceList() {
-      const audioPlayer = document.getElementById('audioPlayer');
-      const existingSelect = document.getElementById('voiceSelect');
-      
-      if (existingSelect) {
-        audioPlayer.removeChild(existingSelect);
-      }
-
+      const voices = window.speechSynthesis.getVoices();
       const voiceSelect = document.createElement('select');
       voiceSelect.id = 'voiceSelect';
-      voiceSelect.setAttribute('aria-label', 'Select voice for text-to-speech');
-
-      const voices = window.speechSynthesis.getVoices();
       voices.forEach(voice => {
         const option = document.createElement('option');
         option.value = voice.name;
         option.textContent = `${voice.name} (${voice.lang})`;
         voiceSelect.appendChild(option);
       });
-
-      audioPlayer.appendChild(voiceSelect);
+      const audioPlayer = document.getElementById('audioPlayer');
+      audioPlayer.innerHTML = '';
+      if (voices.length) {
+        audioPlayer.appendChild(voiceSelect);
+      } else {
+        audioPlayer.innerHTML = '<p>Text-to-speech is not supported in this browser.</p>';
+      }
     }
 
     function generateAudio(text, autoPlay = false) {
@@ -530,29 +400,25 @@
         audioPlayer.innerHTML = '<p>Text-to-speech is not supported in this browser.</p>';
         return;
       }
-
+      audioPlayer.innerHTML = '';
       const createUtterance = () => {
         const utterance = new SpeechSynthesisUtterance(text);
         utterance.lang = 'en-US';
         utterance.pitch = 0.9;
         utterance.rate = 1;
-        
         if (voicesLoaded) {
           const voices = window.speechSynthesis.getVoices();
           const selectedVoice = document.getElementById('voiceSelect')?.value;
           const voice = voices.find(v => v.name === selectedVoice) || voices.find(v => v.lang === 'en-US');
           if (voice) utterance.voice = voice;
         }
-
         utterance.onerror = event => console.error('SpeechSynthesisUtterance error:', event.error);
         return utterance;
       };
-
       if (autoPlay) {
         window.speechSynthesis.cancel();
         window.speechSynthesis.speak(createUtterance());
       }
-
       const playButton = document.createElement('button');
       playButton.textContent = 'Play Verse Again';
       playButton.setAttribute('aria-label', 'Play the quote again');
@@ -561,6 +427,15 @@
         window.speechSynthesis.speak(createUtterance());
       };
       audioPlayer.appendChild(playButton);
+      // Also allow changing voice if voices are loaded
+      if (voicesLoaded) {
+        populateVoiceList();
+        document.getElementById('voiceSelect').onchange = () => {
+          // Play in new voice if user changes selection
+          window.speechSynthesis.cancel();
+          window.speechSynthesis.speak(createUtterance());
+        };
+      }
     }
 
     // --- Generate Share Buttons (Performance: batch DOM) ---
@@ -570,25 +445,20 @@
       shareButtons.innerHTML = '';
       const encodedText = encodeURIComponent(text);
       const shareData = {
-        title: 'Inspirational Quote',
+        title: 'God Speaking to You',
         text: text,
         url: window.location.href
       };
-
       if (navigator.share) {
         const shareBtn = document.createElement('button');
         shareBtn.textContent = 'Share Verse';
-        shareBtn.setAttribute('aria-label', `Share the quote "${text}"`);
         shareBtn.onclick = () => navigator.share(shareData).catch(console.error);
         fragment.appendChild(shareBtn);
       }
-
       const favoriteBtn = document.createElement('button');
       favoriteBtn.textContent = 'Save as Favorite';
-      favoriteBtn.setAttribute('aria-label', `Save the quote "${text}" to favorites`);
       favoriteBtn.onclick = () => saveFavorite(text, id, source);
       fragment.appendChild(favoriteBtn);
-
       [
         { name: 'X', url: `https://x.com/intent/post?text=${encodedText}` },
         { name: 'Facebook', url: `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareData.url)}&quote=${encodedText}` },
@@ -598,56 +468,24 @@
         const btn = document.createElement('a');
         btn.href = platform.url;
         btn.textContent = `Share on ${platform.name}`;
-        btn.setAttribute('aria-label', `Share this quote on ${platform.name}`);
         btn.target = '_blank';
         btn.rel = 'noopener';
         fragment.appendChild(btn);
       });
-
       shareButtons.appendChild(fragment);
     }
 
     // --- Save Favorite Quote ---
     function saveFavorite(text, id, source) {
-      if (favoritesList.some(f => f.id === id)) {
+      const favorites = JSON.parse(localStorage.getItem('favorites')) || [];
+      if (!favorites.some(f => f.id === id)) {
+        favorites.push({ text, id, source });
+        localStorage.setItem('favorites', JSON.stringify(favorites));
+        alert('Quote saved to favorites!');
+      } else {
         alert('This quote is already in your favorites.');
-        return;
       }
-
-      favoritesList.push({ text, id, source });
-      localStorage.setItem('favorites', JSON.stringify(favoritesList));
-      alert('Quote saved to favorites!');
-      updateFavoritesList();
     }
-
-    // --- Update Favorites List Display ---
-    function updateFavoritesList() {
-      const favoritesListEl = document.getElementById('favoritesList');
-      favoritesListEl.innerHTML = '';
-      
-      if (favoritesList.length === 0) {
-        favoritesListEl.innerHTML = '<p>No favorites saved yet.</p>';
-        return;
-      }
-
-      favoritesList.forEach(quote => {
-        const button = document.createElement('button');
-        button.textContent = `"${quote.text}"`;
-        button.setAttribute('aria-label', `Play favorite quote from ${quote.source}`);
-        button.onclick = () => {
-          window.speechSynthesis.cancel();
-          window.speechSynthesis.speak(new SpeechSynthesisUtterance(quote.text));
-        };
-        favoritesListEl.appendChild(button);
-      });
-    }
-
-    // --- Show Favorites Modal ---
-    document.getElementById('viewFavorites').addEventListener('click', () => {
-      const favoritesListEl = document.getElementById('favoritesList');
-      favoritesListEl.hidden = !favoritesListEl.hidden;
-      updateFavoritesList();
-    });
 
     // --- Filter Quotes by Source ---
     function filterQuotes() {
@@ -664,35 +502,25 @@
 
     // --- Generate a Non-Repeating Random Passage ---
     function generatePassage() {
+      if (isGenerating) return;
+      isGenerating = true;
       const button = document.getElementById('crossButton');
-      button.setAttribute('aria-busy', 'true');
       button.classList.add('active');
-      
-      // Add loading state
-      const passageOutput = document.getElementById('passageOutput');
-      passageOutput.innerHTML = '<p>Generating...</p>';
-      
-      // Simulate async operation
       setTimeout(() => {
-        let availablePassages = passages.filter(p => !usedPassages.includes(p.id));
-        if (availablePassages.length === 0) {
-          usedPassages = [];
-          availablePassages = passages;
-        }
-        
-        const randomPassage = availablePassages[Math.floor(Math.random() * availablePassages.length)];
-        usedPassages.push(randomPassage.id);
-        localStorage.setItem('usedPassages', JSON.stringify(usedPassages));
-        
-        passageOutput.innerHTML = `<p>"${randomPassage.text}"${randomPassage.source ? `<br><small>Source: ${randomPassage.source}</small>` : ''}</p>`;
-        
-        generateAudio(randomPassage.text, true);
-        generateShareButtons(randomPassage.text, randomPassage.id, randomPassage.source);
-        
-        button.setAttribute('aria-busy', 'false');
         button.classList.remove('active');
         isGenerating = false;
       }, 1200);
+      let availablePassages = passages.filter(p => !usedPassages.includes(p.id));
+      if (availablePassages.length === 0) {
+        usedPassages = [];
+        availablePassages = passages;
+      }
+      const randomPassage = availablePassages[Math.floor(Math.random() * availablePassages.length)];
+      usedPassages.push(randomPassage.id);
+      localStorage.setItem('usedPassages', JSON.stringify(usedPassages));
+      document.getElementById('passageOutput').innerHTML = `<p>"${randomPassage.text}"${randomPassage.source ? `<br><small>Source: ${randomPassage.source}</small>` : ''}</p>`;
+      generateAudio(randomPassage.text, true);
+      generateShareButtons(randomPassage.text, randomPassage.id, randomPassage.source);
     }
 
     // --- Theme Toggle & Font Size ---
@@ -700,7 +528,6 @@
       document.body.classList.toggle('dark-mode');
       localStorage.setItem('theme', document.body.classList.contains('dark-mode') ? 'dark' : 'light');
     }
-    
     function changeFontSize() {
       const size = document.getElementById('fontSize').value;
       document.getElementById('passageOutput').style.fontSize = size;
@@ -709,64 +536,36 @@
 
     // --- Load User Preferences ---
     window.addEventListener('DOMContentLoaded', async () => {
-      // Initialize voice list
-      populateVoiceList();
-      window.speechSynthesis.getVoices();
-      
-      // Load theme
       if (localStorage.getItem('theme') === 'dark') {
         document.body.classList.add('dark-mode');
         document.getElementById('themeToggle').checked = true;
       }
-    
-  window.addEventListener('DOMContentLoaded', async () => {
-    // Load font size
-    if (localStorage.getItem('fontSize')) {
-      document.getElementById('fontSize').value = localStorage.getItem('fontSize');
-      document.getElementById('passageOutput').style.fontSize = localStorage.getItem('fontSize');
-    }
-
-    // Event listeners
-    document.getElementById('themeToggle').onchange = toggleTheme;
-    document.getElementById('fontSize').onchange = changeFontSize;
-    document.getElementById('categoryFilter').onchange = filterQuotes;
-    document.getElementById('crossButton').onclick = generatePassage;
-    document.getElementById('crossButton').addEventListener('keydown', event => {
-      if (event.key === 'Enter' || event.key === ' ') generatePassage();
+      if (localStorage.getItem('fontSize')) {
+        document.getElementById('fontSize').value = localStorage.getItem('fontSize');
+        document.getElementById('passageOutput').style.fontSize = localStorage.getItem('fontSize');
+      }
+      document.getElementById('themeToggle').onchange = toggleTheme;
+      document.getElementById('fontSize').onchange = changeFontSize;
+      document.getElementById('categoryFilter').onchange = filterQuotes;
+      document.getElementById('crossButton').onclick = generatePassage;
+      document.getElementById('crossButton').addEventListener('keydown', event => {
+        if (event.key === 'Enter' || event.key === ' ') generatePassage();
+      });
+      await updatePassages();
+      generatePassage();
     });
-    document.getElementById('viewFavorites').onclick = () => {
-      const favoritesList = document.getElementById('favoritesList');
-      favoritesList.hidden = !favoritesList.hidden;
-    };
 
-    await updatePassages();
-    generatePassage();
-    updateFavoritesList(); // Initialize favorites list
-  });
-
-  // --- Voice Selection Handling ---
-  if (voicesLoaded) {
-    populateVoiceList();
-  } else {
-    window.speechSynthesis.addEventListener('voiceschanged', () => {
-      populateVoiceList();
-    });
-  }
-
-  // --- Daily Notifications (with Permission Request) ---
-  if ('Notification' in window) {
-    if (Notification.permission === 'granted') {
-      setInterval(() => {
-        const randomPassage = passages[Math.floor(Math.random() * passages.length)];
-        new Notification('Daily Inspiration', { 
-          body: randomPassage.text,
-          icon: 'https://pigletpeakkung.github.io/Cozy-light/favicon.ico'
-        });
-      }, 24 * 60 * 60 * 1000);
-    } else if (Notification.permission !== 'denied') {
-      Notification.requestPermission();
+    // --- Daily Notifications (with Permission Request) ---
+    if ('Notification' in window) {
+      if (Notification.permission === 'granted') {
+        setInterval(() => {
+          const randomPassage = passages[Math.floor(Math.random() * passages.length)];
+          new Notification('Daily Inspiration', { body: randomPassage.text });
+        }, 24 * 60 * 60 * 1000);
+      } else if (Notification.permission !== 'denied') {
+        Notification.requestPermission();
+      }
     }
-  }
-</script>
+  </script>
 </body>
-</html>
+</html> 
