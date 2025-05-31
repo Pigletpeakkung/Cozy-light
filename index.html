@@ -1,571 +1,148 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Master Light Spot</title>
-  <!-- CSS Variables & Cleanup -->
-  <style>
-    :root {
-      --primary: #007bff;
-      --secondary: #333;
-      --bg-light: #f0f0f0;
-      --bg-dark: #333;
-      --text-light: #fff;
-      --text-dark: #333;
-      --gradient-main: linear-gradient(135deg, #f0f0f0, #d9d9d9);
-      --gradient-dark: linear-gradient(135deg, #555, #444);
-      --gradient-footer: linear-gradient(135deg, #f5f5f5, #e0e0e0);
-      --gradient-footer-dark: linear-gradient(135deg, #444, #333);
-      --shadow-main: 0 2px 5px rgba(0,0,0,0.2);
-      --radius: 10px;
-      --transition: all 0.3s cubic-bezier(.4,0,.2,1);
-    }
-    body {
-      transition: var(--transition);
-      background: var(--bg-light);
-      color: var(--text-dark);
-      margin: 0;
-      font-family: 'Segoe UI', sans-serif;
-    }
-    .dark-mode {
-      background: var(--bg-dark);
-      color: var(--text-light);
-    }
-    .cross-button-container {
-      text-align: center;
-      margin: 20px;
-    }
-    .cross-button {
-      position: relative;
-      width: 60px;
-      height: 60px;
-      background: var(--gradient-main);
-      border: none;
-      border-radius: var(--radius);
-      cursor: pointer;
-      box-shadow: var(--shadow-main);
-      transition: background 0.3s;
-      margin: 24px auto 8px auto;
-      display: inline-block;
-    }
-    .dark-mode .cross-button {
-      background: var(--gradient-dark);
-    }
-    .cross-vertical, .cross-horizontal {
-      position: absolute;
-      background: var(--secondary);
-      border-radius: 4px;
-      transition: background 0.3s;
-    }
-    .cross-vertical {
-      top: 15px;
-      left: 50%;
-      width: 12px;
-      height: 30px;
-      transform: translateX(-50%);
-    }
-    .cross-horizontal {
-      top: 50%;
-      left: 15px;
-      width: 30px;
-      height: 12px;
-      transform: translateY(-50%);
-    }
-    .cross-button:hover {
-      background: linear-gradient(135deg, #e6e6e6, #cccccc);
-    }
-    .cross-button:hover .cross-vertical,
-    .cross-button:hover .cross-horizontal {
-      background: var(--primary);
-    }
-    .cross-button.active {
-      animation: warmGlow 2s cubic-bezier(.4,0,.2,1) forwards;
-    }
-    @keyframes warmGlow {
-      0% { box-shadow: 0 0 10px #FFD700, 0 0 20px #FFD700; }
-      25% { box-shadow: 0 0 10px #FFA500, 0 0 20px #FFA500; }
-      50% { box-shadow: 0 0 10px #FF6347, 0 0 20px #FF6347; }
-      75% { box-shadow: 0 0 10px #FF4500, 0 0 20px #FF4500; }
-      100% { box-shadow: var(--shadow-main); }
-    }
-    .dark-mode .cross-vertical, .dark-mode .cross-horizontal {
-      background: var(--text-light);
-    }
-
-    #passageOutput {
-      margin: 20px auto;
-      font-style: italic;
-      color: var(--secondary);
-      max-width: 600px;
-      min-height: 60px;
-      font-size: 1.2rem;
-      transition: font-size 0.2s;
-    }
-    .dark-mode #passageOutput {
-      color: var(--text-light);
-    }
-    #audioPlayer, #shareButtons {
-      margin: 10px auto;
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 8px;
-      max-width: 600px;
-    }
-    #shareButtons a, #shareButtons button {
-      padding: 8px 12px;
-      background: #f1f1f1;
-      text-decoration: none;
-      color: var(--secondary);
-      border-radius: 4px;
-      margin: 5px 3px;
-      display: inline-block;
-      border: none;
-      cursor: pointer;
-      transition: background 0.3s, color 0.3s;
-    }
-    #shareButtons a:hover, #shareButtons button:hover {
-      background: var(--primary);
-      color: var(--text-light);
-    }
-    #credit {
-      font-size: 0.9rem;
-      color: #666;
-      text-align: center;
-      margin: 20px auto;
-      padding: 10px;
-      max-width: 600px;
-      border-radius: 5px;
-      background: rgba(0,0,0,0.05);
-      border: 1px solid rgba(0,0,0,0.1);
-    }
-    .dark-mode #credit {
-      color: #ccc;
-      background: rgba(255,255,255,0.1);
-      border: 1px solid rgba(255,255,255,0.2);
-    }
-    footer {
-      text-align: center;
-      padding: 1.5rem;
-      font-size: 0.9rem;
-      background: var(--gradient-footer);
-      border-top: 1px solid rgba(0,0,0,0.1);
-    }
-    .dark-mode footer {
-      background: var(--gradient-footer-dark);
-      border-top: 1px solid rgba(255,255,255,0.2);
-    }
-    footer .gradient-text {
-      background: linear-gradient(90deg, #FFD700, #FF4500);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-      text-fill-color: transparent;
-      font-weight: bold;
-    }
-    footer a {
-      color: var(--primary);
-      text-decoration: none;
-      margin: 0 10px;
-      transition: color 0.3s;
-    }
-    footer a:hover {
-      color: #FF4500;
-      text-decoration: underline;
-    }
-    .dark-mode footer a {
-      color: #66b0ff;
-    }
-    .dark-mode footer a:hover {
-      color: #FFD700;
-    }
-
-    /* Responsive Design */
-    @media (max-width: 900px) {
-      #passageOutput { font-size: 1.1rem; }
-      footer { font-size: 0.8rem; }
-    }
-    @media (max-width: 600px) {
-      .cross-button { width: 50px; height: 50px; }
-      .cross-vertical { width: 10px; height: 25px; top: 12px; }
-      .cross-horizontal { width: 25px; height: 10px; left: 12px; }
-      #passageOutput { font-size: 0.95rem; padding: 0 10px; }
-      #credit { font-size: 0.8rem; padding: 8px; }
-      footer { padding: 1rem; }
-      footer a { margin: 0 5px; }
-    }
-  </style>
-  <!-- Structured Data for SEO -->
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@graph": [
-      {
-        "@type": "WebSite",
-        "url": "https://pigletpeakkung.github.io/Cozy-light/",
-        "name": "Cozy Light by Thanattsitt S.",
-        "description": "A web application for generating inspirational quotes with text-to-speech, sharing, and user customization features, created by Thanattsitt S. under Thann.AI.",
-        "publisher": {
-          "@type": "Person",
-          "name": "Thanattsitt S.",
-          "url": "https://pigletpeakkung.github.io"
-        },
-        "creator": {
-          "@type": "Person",
-          "name": "Thanattsitt S.",
-          "url": "https://pigletpeakkung.github.io"
-        },
-        "isPartOf": {
-          "@type": "Organization",
-          "name": "Thann.AI",
-          "url": "https://www.pegearts.com/"
-        }
-      },
-      {
-        "@type": "WebApplication",
-        "url": "https://pigletpeakkung.github.io/Cozy-light/",
-        "name": "Cozy Light Quote Generator",
-        "description": "An interactive web application that displays inspirational quotes from various spiritual and philosophical sources, with text-to-speech functionality, social sharing, and user preferences for theme, font size, and animations.",
-        "applicationCategory": "Lifestyle",
-        "operatingSystem": "Web",
-        "featureList": [
-          "Random quote generation",
-          "Text-to-speech audio playback",
-          "Social sharing via Twitter",
-          "Favorite quote saving",
-          "Category filtering",
-          "User preferences (theme, font size, animations)",
-          "Offline support via service worker",
-          "Daily notifications"
-        ],
-        "author": {
-          "@type": "Person",
-          "name": "Thanattsitt S.",
-          "url": "https://pigletpeakkung.github.io"
-        },
-        "contributor": {
-          "@type": "Organization",
-          "name": "Thann.AI",
-          "url": "https://www.pegearts.com/"
-        },
-        "browserRequirements": "Modern web browser with JavaScript and Web Speech API support",
-        "offers": {
-          "@type": "Offer",
-          "price": "0",
-          "priceCurrency": "USD",
-          "availability": "http://schema.org/InStock"
-        },
-        "contentRating": "General"
-      }
-    ]
-  }
-  </script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🕯️ Cozy Light - Perfect Ambient Lighting</title>
+    <link rel="manifest" href="manifest.json">
+    <link rel="stylesheet" href="src/css/main.css">
+    <link rel="stylesheet" href="src/css/components.css">
+    <link rel="stylesheet" href="src/css/responsive.css">
+    <meta name="theme-color" content="#1a1a1a">
 </head>
 <body>
-  <main>
-    <div class="cross-button-container">
-      <div>
-        <label for="themeToggle">Dark Mode</label>
-        <input type="checkbox" id="themeToggle" aria-label="Toggle dark mode">
-        <label for="fontSize">Font Size:</label>
-        <select id="fontSize" aria-label="Select font size">
-          <option value="1rem">Small</option>
-          <option value="1.2rem" selected>Medium</option>
-          <option value="1.4rem">Large</option>
-        </select>
-        <label for="categoryFilter">Source:</label>
-        <select id="categoryFilter" aria-label="Filter by source">
-          <option value="all">All Sources</option>
-          <option value="Conversations with God">Conversations with God</option>
-          <option value="Seth Speaks">Seth Speaks</option>
-          <option value="Rumi">Rumi</option>
-          <option value="Alan Watts">Alan Watts</option>
-          <option value="Buddha">Buddha</option>
-          <option value="Lao Tzu, Tao Te Ching">Lao Tzu, Tao Te Ching</option>
-          <option value="Quotable API">Quotable API</option>
-        </select>
-      </div>
-      <button aria-label="Generate a new inspirational quote" class="cross-button" id="crossButton" role="button">
-        <span class="cross-vertical" aria-hidden="true"></span>
-        <span class="cross-horizontal" aria-hidden="true"></span>
-      </button>
-      <div id="passageOutput" role="region" aria-live="polite"></div>
-      <div id="audioPlayer"></div>
-      <div id="shareButtons"></div>
+    <div class="app-container">
+        <!-- Header -->
+        <header class="app-header">
+            <h1>🕯️ Cozy Light</h1>
+            <p>Create your perfect atmosphere</p>
+        </header>
+
+        <!-- Main Light Display -->
+        <div class="light-display" id="lightDisplay">
+            <div class="light-bulb" id="lightBulb">
+                <div class="light-glow" id="lightGlow"></div>
+            </div>
+        </div>
+
+        <!-- Quick Presets -->
+        <div class="presets-container">
+            <h3>Quick Scenes</h3>
+            <div class="preset-buttons">
+                <button class="preset-btn" data-preset="cozy">🔥 Cozy</button>
+                <button class="preset-btn" data-preset="focus">💡 Focus</button>
+                <button class="preset-btn" data-preset="relax">🌙 Relax</button>
+                <button class="preset-btn" data-preset="romantic">💕 Romantic</button>
+            </div>
+        </div>
+
+        <!-- Main Controls -->
+        <div class="controls-container">
+            <!-- Brightness Control -->
+            <div class="control-group">
+                <label for="brightness">
+                    <span class="control-icon">☀️</span>
+                    Brightness
+                    <span class="control-value" id="brightnessValue">50%</span>
+                </label>
+                <input type="range" id="brightness" min="0" max="100" value="50" class="slider">
+            </div>
+
+            <!-- Color Control -->
+            <div class="control-group">
+                <label>🎨 Color</label>
+                <div class="color-picker-container">
+                    <input type="color" id="colorPicker" value="#ffffff" class="color-input">
+                    <div class="preset-colors">
+                        <div class="color-preset" data-color="#ff6b6b" style="background: #ff6b6b;"></div>
+                        <div class="color-preset" data-color="#4ecdc4" style="background: #4ecdc4;"></div>
+                        <div class="color-preset" data-color="#45b7d1" style="background: #45b7d1;"></div>
+                        <div class="color-preset" data-color="#96ceb4" style="background: #96ceb4;"></div>
+                        <div class="color-preset" data-color="#feca57" style="background: #feca57;"></div>
+                        <div class="color-preset" data-color="#ff9ff3" style="background: #ff9ff3;"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Warmth Control -->
+            <div class="control-group">
+                <label for="warmth">
+                    <span class="control-icon">🌡️</span>
+                    Warmth
+                    <span class="control-value" id="warmthValue">50%</span>
+                </label>
+                <input type="range" id="warmth" min="0" max="100" value="50" class="slider warmth-slider">
+            </div>
+
+            <!-- Advanced Controls (Collapsible) -->
+            <div class="advanced-section">
+                <button class="toggle-advanced" id="toggleAdvanced">
+                    ⚙️ Advanced Controls
+                    <span class="toggle-icon">▼</span>
+                </button>
+                <div class="advanced-controls" id="advancedControls">
+                    <div class="control-group">
+                        <label for="saturation">
+                            <span class="control-icon">🌈</span>
+                            Saturation
+                            <span class="control-value" id="saturationValue">50%</span>
+                        </label>
+                        <input type="range" id="saturation" min="0" max="100" value="50" class="slider">
+                    </div>
+
+                    <div class="control-group">
+                        <label for="flicker">
+                            <span class="control-icon">✨</span>
+                            Flicker Effect
+                            <span class="control-value" id="flickerValue">0%</span>
+                        </label>
+                        <input type="range" id="flicker" min="0" max="10" value="0" class="slider">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Timer Section -->
+        <div class="timer-container">
+            <h3>⏰ Timer</h3>
+            <div class="timer-controls">
+                <input type="number" id="timerMinutes" min="1" max="480" value="30" placeholder="Minutes">
+                <select id="timerAction">
+                    <option value="off">Turn Off</option>
+                    <option value="dim">Dim to 10%</option>
+                    <option value="cozy">Switch to Cozy</option>
+                </select>
+                <button id="startTimer" class="timer-btn">Start Timer</button>
+                <button id="stopTimer" class="timer-btn secondary">Stop</button>
+            </div>
+            <div class="timer-display" id="timerDisplay" style="display: none;">
+                <span id="timeRemaining">30:00</span>
+            </div>
+        </div>
+
+        <!-- Sound Controls -->
+        <div class="sound-container">
+            <h3>🎵 Ambient Sounds</h3>
+            <div class="sound-controls">
+                <button class="sound-btn" data-sound="rain">🌧️ Rain</button>
+                <button class="sound-btn" data-sound="fire">🔥 Fireplace</button>
+                <button class="sound-btn" data-sound="nature">🌿 Nature</button>
+                <button class="sound-btn" data-sound="off">🔇 Off</button>
+            </div>
+            <div class="volume-control">
+                <label for="soundVolume">Volume</label>
+                <input type="range" id="soundVolume" min="0" max="100" value="30" class="slider">
+            </div>
+        </div>
     </div>
-    <div id="credit">Quotes sourced from Conversations with God, Seth Speaks, Rumi, Alan Watts, Buddha, Lao Tzu, and Quotable API.</div>
-  </main>
-  <footer role="contentinfo">
-    <p>
-      <span class="gradient-text">&copy; Thann.AI Project</span> | 
-      <a href="https://www.pegearts.com" target="_blank" rel="noopener" aria-label="Visit PegeArts website">PegeArts</a> |
-      <a href="https://www.linkedin.com/in/thanattsitts" target="_blank" rel="noopener" aria-label="Visit Thanattsitt S. LinkedIn profile">LinkedIn</a> |
-      <a href="https://ko-fi.com/ezekielarts" target="_blank" rel="noopener" aria-label="Support on Ko-fi">Support on Ko-fi</a>
-    </p>
-  </footer>
-  <!-- Main App Script -->
-  <script defer>
-    // --- Quote Data ---
-    let passages = [
-           { text: "The mind is everything. What you think you become.", id: 72, source: "Buddha" },
-      { text: "To understand everything is to forgive everything.", id: 73, source: "Buddha" },
-      { text: "No one saves us but ourselves. No one can and no one may. We ourselves must walk the path.", id: 74, source: "Buddha" },
-      { text: "Work out your own salvation. Do not depend on others.", id: 75, source: "Buddha" },
-      // Tao Te Ching (15 quotes)
-      { text: "The Tao that can be told is not the eternal Tao.", id: 76, source: "Lao Tzu, Tao Te Ching" },
-      { text: "Nature does not hurry, yet everything is accomplished.", id: 77, source: "Lao Tzu, Tao Te Ching" },
-      { text: "When I let go of what I am, I become what I might be.", id: 78, source: "Lao Tzu, Tao Te Ching" },
-      { text: "A good traveler has no fixed plans and is not intent on arriving.", id: 79, source: "Lao Tzu, Tao Te Ching" },
-      { text: "Knowing others is intelligence; knowing yourself is true wisdom.", id: 80, source: "Lao Tzu, Tao Te Ching" },
-      { text: "The soft overcomes the hard; the gentle overcomes the rigid.", id: 81, source: "Lao Tzu, Tao Te Ching" },
-      { text: "He who knows he has enough is rich.", id: 82, source: "Lao Tzu, Tao Te Ching" },
-      { text: "The journey of a thousand miles begins with one step.", id: 83, source: "Lao Tzu, Tao Te Ching" },
-      { text: "When you realize there is nothing lacking, the whole world belongs to you.", id: 84, source: "Lao Tzu, Tao Te Ching" },
-      { text: "Silence is a source of great strength.", id: 85, source: "Lao Tzu, Tao Te Ching" },
-      { text: "Be content with what you have; rejoice in the way things are.", id: 86, source: "Lao Tzu, Tao Te Ching" },
-      { text: "To the mind that is still, the whole universe surrenders.", id: 87, source: "Lao Tzu, Tao Te Ching" },
-      { text: "Health is the greatest possession. Contentment is the greatest treasure.", id: 88, source: "Lao Tzu, Tao Te Ching" },
-      { text: "Respond intelligently even to unintelligent treatment.", id: 89, source: "Lao Tzu, Tao Te Ching" },
-      { text: "New beginnings are often disguised as painful endings.", id: 90, source: "Lao Tzu, Tao Te Ching" }
-    ];
-    let originalPassages = [...passages];
-    let usedPassages = JSON.parse(localStorage.getItem('usedPassages')) || [];
-    let isGenerating = false;
-    let voicesLoaded = false;
 
-    // --- Service Worker Registration for Offline Support ---
-    if ('serviceWorker' in navigator) {
-      window.addEventListener('load', function() {
-        navigator.serviceWorker.register('sw.js').catch(err => console.error('Service Worker registration failed:', err));
-      });
-    }
+    <!-- Error/Success Messages -->
+    <div id="messageContainer" class="message-container"></div>
 
-    // --- Fetch Quotes from API with Caching (Performance) ---
-    async function fetchQuotes(limit = 5) {
-      try {
-        const cached = sessionStorage.getItem('apiQuotes');
-        if (cached) return JSON.parse(cached);
-        const response = await fetch('https://api.quotable.io/quotes?tags=inspirational,spirituality&limit='+limit);
-        const data = await response.json();
-        const quotes = data.results.map((quote, idx) => ({
-          text: quote.content,
-          id: `api-${idx + 100}`,
-          source: "Quotable API"
-        }));
-        sessionStorage.setItem('apiQuotes', JSON.stringify(quotes));
-        return quotes;
-      } catch (e) {
-        console.error('Error fetching quotes:', e);
-        return [];
-      }
-    }
-
-    // --- Update Passages with Fetched Quotes ---
-    async function updatePassages() {
-      const cachedPassages = JSON.parse(localStorage.getItem('passages')) || passages;
-      const newQuotes = await fetchQuotes();
-      passages = [...cachedPassages, ...newQuotes];
-      originalPassages = [...passages];
-      localStorage.setItem('passages', JSON.stringify(passages));
-    }
-
-    // --- Text-to-Speech (TTS) ---
-    window.speechSynthesis.onvoiceschanged = () => {
-      voicesLoaded = true;
-      populateVoiceList();
-    };
-    function populateVoiceList() {
-      const voices = window.speechSynthesis.getVoices();
-      const voiceSelect = document.createElement('select');
-      voiceSelect.id = 'voiceSelect';
-      voices.forEach(voice => {
-        const option = document.createElement('option');
-        option.value = voice.name;
-        option.textContent = `${voice.name} (${voice.lang})`;
-        voiceSelect.appendChild(option);
-      });
-      const audioPlayer = document.getElementById('audioPlayer');
-      audioPlayer.innerHTML = '';
-      if (voices.length) {
-        audioPlayer.appendChild(voiceSelect);
-      } else {
-        audioPlayer.innerHTML = '<p>Text-to-speech is not supported in this browser.</p>';
-      }
-    }
-
-    function generateAudio(text, autoPlay = false) {
-      const audioPlayer = document.getElementById('audioPlayer');
-      if (!window.speechSynthesis || !window.speechSynthesis.getVoices().length) {
-        audioPlayer.innerHTML = '<p>Text-to-speech is not supported in this browser.</p>';
-        return;
-      }
-      audioPlayer.innerHTML = '';
-      const createUtterance = () => {
-        const utterance = new SpeechSynthesisUtterance(text);
-        utterance.lang = 'en-US';
-        utterance.pitch = 0.9;
-        utterance.rate = 1;
-        if (voicesLoaded) {
-          const voices = window.speechSynthesis.getVoices();
-          const selectedVoice = document.getElementById('voiceSelect')?.value;
-          const voice = voices.find(v => v.name === selectedVoice) || voices.find(v => v.lang === 'en-US');
-          if (voice) utterance.voice = voice;
-        }
-        utterance.onerror = event => console.error('SpeechSynthesisUtterance error:', event.error);
-        return utterance;
-      };
-      if (autoPlay) {
-        window.speechSynthesis.cancel();
-        window.speechSynthesis.speak(createUtterance());
-      }
-      const playButton = document.createElement('button');
-      playButton.textContent = 'Play Verse Again';
-      playButton.setAttribute('aria-label', 'Play the quote again');
-      playButton.onclick = () => {
-        window.speechSynthesis.cancel();
-        window.speechSynthesis.speak(createUtterance());
-      };
-      audioPlayer.appendChild(playButton);
-      // Also allow changing voice if voices are loaded
-      if (voicesLoaded) {
-        populateVoiceList();
-        document.getElementById('voiceSelect').onchange = () => {
-          // Play in new voice if user changes selection
-          window.speechSynthesis.cancel();
-          window.speechSynthesis.speak(createUtterance());
-        };
-      }
-    }
-
-    // --- Generate Share Buttons (Performance: batch DOM) ---
-    function generateShareButtons(text, id, source) {
-      const shareButtons = document.getElementById('shareButtons');
-      const fragment = document.createDocumentFragment();
-      shareButtons.innerHTML = '';
-      const encodedText = encodeURIComponent(text);
-      const shareData = {
-        title: 'God Speaking to You',
-        text: text,
-        url: window.location.href
-      };
-      if (navigator.share) {
-        const shareBtn = document.createElement('button');
-        shareBtn.textContent = 'Share Verse';
-        shareBtn.onclick = () => navigator.share(shareData).catch(console.error);
-        fragment.appendChild(shareBtn);
-      }
-      const favoriteBtn = document.createElement('button');
-      favoriteBtn.textContent = 'Save as Favorite';
-      favoriteBtn.onclick = () => saveFavorite(text, id, source);
-      fragment.appendChild(favoriteBtn);
-      [
-        { name: 'X', url: `https://x.com/intent/post?text=${encodedText}` },
-        { name: 'Facebook', url: `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareData.url)}&quote=${encodedText}` },
-        { name: 'WhatsApp', url: `https://api.whatsapp.com/send?text=${encodedText}` },
-        { name: 'Email', url: `mailto:?subject=${encodeURIComponent(shareData.title)}&body=${encodedText}%0A${shareData.url}` }
-      ].forEach(platform => {
-        const btn = document.createElement('a');
-        btn.href = platform.url;
-        btn.textContent = `Share on ${platform.name}`;
-        btn.target = '_blank';
-        btn.rel = 'noopener';
-        fragment.appendChild(btn);
-      });
-      shareButtons.appendChild(fragment);
-    }
-
-    // --- Save Favorite Quote ---
-    function saveFavorite(text, id, source) {
-      const favorites = JSON.parse(localStorage.getItem('favorites')) || [];
-      if (!favorites.some(f => f.id === id)) {
-        favorites.push({ text, id, source });
-        localStorage.setItem('favorites', JSON.stringify(favorites));
-        alert('Quote saved to favorites!');
-      } else {
-        alert('This quote is already in your favorites.');
-      }
-    }
-
-    // --- Filter Quotes by Source ---
-    function filterQuotes() {
-      const selectedSource = document.getElementById('categoryFilter').value;
-      if (selectedSource === 'all') {
-        passages = [...originalPassages];
-      } else {
-        passages = originalPassages.filter(p => p.source === selectedSource);
-      }
-      usedPassages = [];
-      localStorage.setItem('usedPassages', JSON.stringify(usedPassages));
-      generatePassage();
-    }
-
-    // --- Generate a Non-Repeating Random Passage ---
-    function generatePassage() {
-      if (isGenerating) return;
-      isGenerating = true;
-      const button = document.getElementById('crossButton');
-      button.classList.add('active');
-      setTimeout(() => {
-        button.classList.remove('active');
-        isGenerating = false;
-      }, 1200);
-      let availablePassages = passages.filter(p => !usedPassages.includes(p.id));
-      if (availablePassages.length === 0) {
-        usedPassages = [];
-        availablePassages = passages;
-      }
-      const randomPassage = availablePassages[Math.floor(Math.random() * availablePassages.length)];
-      usedPassages.push(randomPassage.id);
-      localStorage.setItem('usedPassages', JSON.stringify(usedPassages));
-      document.getElementById('passageOutput').innerHTML = `<p>"${randomPassage.text}"${randomPassage.source ? `<br><small>Source: ${randomPassage.source}</small>` : ''}</p>`;
-      generateAudio(randomPassage.text, true);
-      generateShareButtons(randomPassage.text, randomPassage.id, randomPassage.source);
-    }
-
-    // --- Theme Toggle & Font Size ---
-    function toggleTheme() {
-      document.body.classList.toggle('dark-mode');
-      localStorage.setItem('theme', document.body.classList.contains('dark-mode') ? 'dark' : 'light');
-    }
-    function changeFontSize() {
-      const size = document.getElementById('fontSize').value;
-      document.getElementById('passageOutput').style.fontSize = size;
-      localStorage.setItem('fontSize', size);
-    }
-
-    // --- Load User Preferences ---
-    window.addEventListener('DOMContentLoaded', async () => {
-      if (localStorage.getItem('theme') === 'dark') {
-        document.body.classList.add('dark-mode');
-        document.getElementById('themeToggle').checked = true;
-      }
-      if (localStorage.getItem('fontSize')) {
-        document.getElementById('fontSize').value = localStorage.getItem('fontSize');
-        document.getElementById('passageOutput').style.fontSize = localStorage.getItem('fontSize');
-      }
-      document.getElementById('themeToggle').onchange = toggleTheme;
-      document.getElementById('fontSize').onchange = changeFontSize;
-      document.getElementById('categoryFilter').onchange = filterQuotes;
-      document.getElementById('crossButton').onclick = generatePassage;
-      document.getElementById('crossButton').addEventListener('keydown', event => {
-        if (event.key === 'Enter' || event.key === ' ') generatePassage();
-      });
-      await updatePassages();
-      generatePassage();
-    });
-
-    // --- Daily Notifications (with Permission Request) ---
-    if ('Notification' in window) {
-      if (Notification.permission === 'granted') {
-        setInterval(() => {
-          const randomPassage = passages[Math.floor(Math.random() * passages.length)];
-          new Notification('Daily Inspiration', { body: randomPassage.text });
-        }, 24 * 60 * 60 * 1000);
-      } else if (Notification.permission !== 'denied') {
-        Notification.requestPermission();
-      }
-    }
-  </script>
+    <!-- Scripts -->
+    <script src="src/js/settings.js"></script>
+    <script src="src/js/presets.js"></script>
+    <script src="src/js/lightController.js"></script>
+    <script src="src/js/main.js"></script>
 </body>
-</html> 
+</html>
