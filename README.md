@@ -9,6 +9,34 @@ Create the perfect ambient lighting atmosphere for any mood with customizable co
 **Thanatsitt Santisamranwilai**  
 🤖 AI Content Developer & Multilingual Specialist  
 📍 Kamphaeng Phet, Thailand  
+src/
+├── css/
+│   ├── main.css
+│   ├── components.css
+│   ├── responsive.css
+│   ├── animations.css
+│   └── api-enhancements.css
+├── js/
+│   ├── api/
+│   │   ├── weatherAPI.js
+│   │   ├── soundAPI.js
+│   │   ├── colorAPI.js
+│   │   ├── quoteAPI.js
+│   │   └── imageAPI.js
+│   ├── utils.js
+│   ├── storage.js
+│   ├── settings.js
+│   ├── presets.js
+│   ├── particles.js
+│   ├── audioManager.js
+│   ├── timerManager.js
+│   ├── lightController.js
+│   ├── gestureHandler.js
+│   ├── notifications.js
+│   ├── backgroundManager.js
+│   └── main.js
+├── manifest.json
+└── sw.js
 
 ### Connect with me:
 - 🌐 [Portfolio](https://pigletpeakkung.github.io/Thannxai/)
