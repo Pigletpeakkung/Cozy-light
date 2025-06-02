@@ -8,46 +8,19 @@
     <!-- PWA Manifest -->
     <link rel="manifest" href="manifest.json">
     
-    <!-- Favicon -->
-    <link rel="icon" type="image/png" sizes="32x32" href="https://api.iconify.design/noto/candle.svg">
-    <link rel="icon" type="image/png" sizes="16x16" href="https://api.iconify.design/noto/candle.svg">
-    <link rel="apple-touch-icon" href="https://api.iconify.design/noto/candle.svg">
-    
     <!-- Meta Tags -->
     <meta name="theme-color" content="#1a1a1a">
     <meta name="description" content="Create perfect ambient lighting with customizable colors, brightness, and atmospheric sounds">
-    <meta name="keywords" content="ambient light, mood lighting, relaxation, focus, cozy">
-    <meta name="author" content="Cozy Light App">
     
-    <!-- Open Graph Meta Tags -->
-    <meta property="og:title" content="Cozy Light - Perfect Ambient Lighting">
-    <meta property="og:description" content="Create your perfect atmosphere with customizable lighting">
-    <meta property="og:type" content="website">
-    <meta property="og:image" content="https://picsum.photos/1200/630?blur=2">
-    
-    <!-- Fonts from Google Fonts API -->
+    <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Poppins:wght@300;400;500;600&family=Comfortaa:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
     
-    <!-- Icons from multiple sources -->
+    <!-- Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@iconify/iconify@3.1.1/dist/iconify.min.css">
-    
-    <!-- CSS Libraries -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/15.7.1/nouislider.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css">
-    
-    <!-- Custom CSS -->
-    <link rel="stylesheet" href="src/css/main.css">
-    <link rel="stylesheet" href="src/css/components.css">
-    <link rel="stylesheet" href="src/css/responsive.css">
-    <link rel="stylesheet" href="src/css/animations.css">
-    <link rel="stylesheet" href="src/css/api-enhancements.css">
     
     <style>
-        /* Critical CSS for immediate loading */
         :root {
             --primary-color: #ff6b6b;
             --secondary-color: #4ecdc4;
@@ -58,7 +31,6 @@
             --text-secondary: #cccccc;
             --border-color: rgba(255, 255, 255, 0.1);
             --shadow-color: rgba(0, 0, 0, 0.3);
-            --accent-color-rgb: 69, 183, 209;
         }
 
         * {
@@ -73,8 +45,388 @@
             color: var(--text-primary);
             min-height: 100vh;
             overflow-x: hidden;
+            transition: all 0.3s ease;
         }
 
+        .app-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .app-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .app-header h1 {
+            font-size: 3rem;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .app-header p {
+            color: var(--text-secondary);
+            font-size: 1.2rem;
+        }
+
+        .light-display {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 3rem 0;
+        }
+
+        .light-bulb {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            background: radial-gradient(circle, #ffffff 0%, #f0f0f0 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            transition: all 0.5s ease;
+            box-shadow: 0 0 50px rgba(255, 255, 255, 0.3);
+            cursor: pointer;
+        }
+
+        .light-bulb.off {
+            background: radial-gradient(circle, #333 0%, #222 100%);
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+        }
+
+        .light-bulb i {
+            font-size: 4rem;
+            color: #333;
+            transition: all 0.3s ease;
+        }
+
+        .light-bulb.off i {
+            color: #666;
+        }
+
+        .light-info {
+            margin-top: 1rem;
+            text-align: center;
+        }
+
+        .current-preset {
+            font-size: 1.2rem;
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+
+        .power-status {
+            color: var(--secondary-color);
+            font-weight: 600;
+        }
+
+        .presets-container {
+            margin: 3rem 0;
+        }
+
+        .presets-container h3 {
+            text-align: center;
+            margin-bottom: 2rem;
+            color: var(--text-secondary);
+        }
+
+        .preset-buttons {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .preset-btn {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid var(--border-color);
+            border-radius: 15px;
+            padding: 1.5rem 1rem;
+            color: var(--text-primary);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        .preset-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .preset-btn.active {
+            background: var(--accent-color);
+            border-color: var(--accent-color);
+        }
+
+        .preset-btn i {
+            font-size: 1.5rem;
+        }
+
+        .controls-container {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            padding: 2rem;
+            margin: 2rem 0;
+        }
+
+        .control-group {
+            margin-bottom: 2rem;
+        }
+
+        .control-group label {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+            font-weight: 500;
+        }
+
+        .control-value {
+            margin-left: auto;
+            color: var(--accent-color);
+            font-weight: 600;
+        }
+
+        .slider-container {
+            position: relative;
+        }
+
+        .slider {
+            width: 100%;
+            height: 8px;
+            border-radius: 4px;
+            background: rgba(255, 255, 255, 0.2);
+            outline: none;
+            -webkit-appearance: none;
+            appearance: none;
+        }
+
+        .slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: var(--accent-color);
+            cursor: pointer;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .slider::-moz-range-thumb {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: var(--accent-color);
+            cursor: pointer;
+            border: none;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .color-picker-container {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .color-input {
+            width: 60px;
+            height: 60px;
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            background: none;
+        }
+
+        .power-control {
+            text-align: center;
+        }
+
+        .power-btn {
+            background: var(--primary-color);
+            border: none;
+            border-radius: 50%;
+            width: 80px;
+            height: 80px;
+            color: white;
+            font-size: 2rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto;
+        }
+
+        .power-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 5px 20px rgba(255, 107, 107, 0.4);
+        }
+
+        .power-btn.off {
+            background: #666;
+        }
+
+        .timer-container {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            padding: 2rem;
+            margin: 2rem 0;
+            text-align: center;
+        }
+
+        .timer-container h3 {
+            margin-bottom: 1.5rem;
+            color: var(--text-secondary);
+        }
+
+        .timer-controls {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .timer-input-group {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .timer-input-group input,
+        .timer-input-group select {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 0.8rem;
+            color: var(--text-primary);
+            font-size: 1rem;
+        }
+
+        .timer-buttons {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .timer-btn {
+            background: var(--accent-color);
+            border: none;
+            border-radius: 10px;
+            padding: 0.8rem 1.5rem;
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .timer-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(69, 183, 209, 0.4);
+        }
+
+        .timer-btn.secondary {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .timer-display {
+            margin-top: 2rem;
+        }
+
+        .timer-circle {
+            position: relative;
+            width: 150px;
+            height: 150px;
+            margin: 0 auto;
+        }
+
+        .timer-svg {
+            width: 100%;
+            height: 100%;
+            transform: rotate(-90deg);
+        }
+
+        .timer-bg {
+            fill: none;
+            stroke: rgba(255, 255, 255, 0.1);
+            stroke-width: 4;
+        }
+
+        .timer-progress {
+            fill: none;
+            stroke: var(--accent-color);
+            stroke-width: 4;
+            stroke-linecap: round;
+            stroke-dasharray: 283;
+            stroke-dashoffset: 283;
+            transition: stroke-dashoffset 1s ease;
+        }
+
+        .timer-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+        }
+
+        .timer-text span {
+            display: block;
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+
+        .timer-text small {
+            color: var(--text-secondary);
+            font-size: 0.8rem;
+        }
+
+        @media (max-width: 768px) {
+            .app-container {
+                padding: 1rem;
+            }
+
+            .app-header h1 {
+                font-size: 2rem;
+            }
+
+            .light-bulb {
+                width: 150px;
+                height: 150px;
+            }
+
+            .light-bulb i {
+                font-size: 3rem;
+            }
+
+            .preset-buttons {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .timer-input-group {
+                flex-direction: column;
+            }
+
+            .timer-buttons {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+        }
+
+        /* Loading animation */
         .loading-screen {
             position: fixed;
             top: 0;
@@ -86,6 +438,12 @@
             align-items: center;
             justify-content: center;
             z-index: 9999;
+            transition: opacity 0.5s ease;
+        }
+
+        .loading-screen.hidden {
+            opacity: 0;
+            pointer-events: none;
         }
 
         .loading-spinner {
@@ -107,326 +465,115 @@
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
-
-        .app-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 2rem;
-            position: relative;
-            z-index: 1;
-        }
     </style>
 </head>
 <body>
-    <!-- Background Images from Unsplash API -->
-    <div id="backgroundImages" class="background-container">
-        <div class="background-image" data-scene="cozy" style="background-image: url('https://source.unsplash.com/1920x1080/?fireplace,cozy'); opacity: 0;"></div>
-        <div class="background-image" data-scene="focus" style="background-image: url('https://source.unsplash.com/1920x1080/?office,minimal'); opacity: 0;"></div>
-        <div class="background-image" data-scene="relax" style="background-image: url('https://source.unsplash.com/1920x1080/?bedroom,peaceful'); opacity: 0;"></div>
-        <div class="background-image" data-scene="romantic" style="background-image: url('https://source.unsplash.com/1920x1080/?candles,romantic'); opacity: 0;"></div>
-        <div class="background-image" data-scene="nature" style="background-image: url('https://source.unsplash.com/1920x1080/?forest,nature'); opacity: 0;"></div>
-        <div class="background-image" data-scene="sunset" style="background-image: url('https://source.unsplash.com/1920x1080/?sunset,golden'); opacity: 0;"></div>
-    </div>
-
     <!-- Loading Screen -->
     <div id="loadingScreen" class="loading-screen">
         <div class="loading-spinner">
             <div class="spinner"></div>
             <p>Preparing your ambient experience...</p>
-            <div class="loading-progress">
-                <div class="progress-bar" id="loadingProgress"></div>
-            </div>
         </div>
     </div>
 
     <!-- App Container -->
     <div class="app-container" id="appContainer" style="display: none;">
         <!-- Header -->
-        <header class="app-header animate__animated animate__fadeInDown" data-aos="fade-down">
-            <div class="header-content">
-                <h1>
-                    <iconify-icon icon="noto:candle"></iconify-icon>
-                    Cozy Light
-                </h1>
-                <p>Create your perfect atmosphere</p>
-                <div class="header-actions">
-                    <button class="icon-btn" id="weatherBtn" title="Weather Integration">
-                        <iconify-icon icon="fluent:weather-partly-cloudy-day-24-filled"></iconify-icon>
-                    </button>
-                    <button class="icon-btn" id="backgroundBtn" title="Background Images">
-                        <iconify-icon icon="material-symbols:image"></iconify-icon>
-                    </button>
-                    <button class="icon-btn" id="nasaBtn" title="NASA Space Background">
-                        <iconify-icon icon="material-symbols:rocket-launch"></iconify-icon>
-                    </button>
-                    <button class="icon-btn" id="artBtn" title="Museum Art Background">
-                        <iconify-icon icon="material-symbols:palette"></iconify-icon>
-                    </button>
-                    <button class="icon-btn" id="fullscreenBtn" title="Toggle Fullscreen">
-                        <iconify-icon icon="material-symbols:fullscreen"></iconify-icon>
-                    </button>
-                    <button class="icon-btn" id="settingsBtn" title="Settings">
-                        <iconify-icon icon="material-symbols:settings"></iconify-icon>
-                    </button>
-                    <button class="icon-btn" id="shareBtn" title="Share">
-                        <iconify-icon icon="material-symbols:share"></iconify-icon>
-                    </button>
-                </div>
-            </div>
+        <header class="app-header">
+            <h1>🕯️ Cozy Light</h1>
+            <p>Create your perfect atmosphere</p>
         </header>
 
-        <!-- Weather Widget -->
-        <div class="weather-widget" id="weatherWidget" style="display: none;" data-aos="fade-in">
-            <div class="weather-info">
-                <div class="weather-icon" id="weatherIcon">
-                    <iconify-icon icon="fluent:weather-partly-cloudy-day-24-filled"></iconify-icon>
-                </div>
-                <div class="weather-details">
-                    <span class="temperature" id="temperature">--°</span>
-                    <span class="description" id="weatherDescription">Loading...</span>
-                    <span class="location" id="weatherLocation">--</span>
-                </div>
-                <button class="refresh-weather" id="refreshWeather" title="Refresh Weather">
-                    <iconify-icon icon="material-symbols:refresh"></iconify-icon>
-                </button>
-            </div>
-        </div>
-
         <!-- Main Light Display -->
-        <div class="light-display animate__animated animate__zoomIn" id="lightDisplay" data-aos="zoom-in">
+        <div class="light-display">
             <div class="light-bulb" id="lightBulb">
-                <div class="light-glow" id="lightGlow"></div>
-                <div class="light-core" id="lightCore"></div>
-                <canvas id="particleCanvas" class="particle-canvas"></canvas>
+                <i class="fas fa-lightbulb"></i>
             </div>
-            <div class="light-info" id="lightInfo">
+            <div class="light-info">
                 <span class="current-preset" id="currentPreset">Custom</span>
                 <span class="power-status" id="powerStatus">ON</span>
-                <div class="color-info" id="colorInfo">#FFFFFF</div>
             </div>
         </div>
 
         <!-- Quick Presets -->
-        <div class="presets-container animate__animated animate__fadeInUp" data-aos="fade-up">
-            <h3>
-                <iconify-icon icon="material-symbols:palette"></iconify-icon>
-                Quick Scenes
-            </h3>
+        <div class="presets-container">
+            <h3>🎨 Quick Scenes</h3>
             <div class="preset-buttons">
-                <button class="preset-btn" data-preset="cozy" data-tooltip="Warm orange glow">
-                    <iconify-icon icon="noto:fire"></iconify-icon>
+                <button class="preset-btn" data-preset="cozy">
+                    <i class="fas fa-fire"></i>
                     <span>Cozy</span>
                 </button>
-                <button class="preset-btn" data-preset="focus" data-tooltip="Bright white light">
-                    <iconify-icon icon="noto:light-bulb"></iconify-icon>
+                <button class="preset-btn" data-preset="focus">
+                    <i class="fas fa-lightbulb"></i>
                     <span>Focus</span>
                 </button>
-                <button class="preset-btn" data-preset="relax" data-tooltip="Soft blue ambiance">
-                    <iconify-icon icon="noto:crescent-moon"></iconify-icon>
+                <button class="preset-btn" data-preset="relax">
+                    <i class="fas fa-moon"></i>
                     <span>Relax</span>
                 </button>
-                <button class="preset-btn" data-preset="romantic" data-tooltip="Gentle pink warmth">
-                    <iconify-icon icon="noto:red-heart"></iconify-icon>
+                <button class="preset-btn" data-preset="romantic">
+                    <i class="fas fa-heart"></i>
                     <span>Romantic</span>
                 </button>
-                <button class="preset-btn" data-preset="nature" data-tooltip="Fresh green vibes">
-                    <iconify-icon icon="noto:deciduous-tree"></iconify-icon>
+                <button class="preset-btn" data-preset="nature">
+                    <i class="fas fa-tree"></i>
                     <span>Nature</span>
                 </button>
-                <button class="preset-btn" data-preset="sunset" data-tooltip="Golden hour magic">
-                    <iconify-icon icon="noto:sun"></iconify-icon>
+                <button class="preset-btn" data-preset="sunset">
+                    <i class="fas fa-sun"></i>
                     <span>Sunset</span>
                 </button>
             </div>
         </div>
 
-        <!-- API-powered Sound Library -->
-        <div class="sound-container animate__animated animate__fadeInUp" data-aos="fade-up">
-            <h3>
-                <iconify-icon icon="material-symbols:music-note"></iconify-icon>
-                Ambient Sounds
-                <button class="refresh-sounds" id="refreshSounds" title="Load New Sounds">
-                    <iconify-icon icon="material-symbols:refresh"></iconify-icon>
-                </button>
-            </h3>
-            
-            <!-- Sound Categories -->
-            <div class="sound-categories">
-                <button class="category-btn active" data-category="nature">Nature</button>
-                <button class="category-btn" data-category="urban">Urban</button>
-                <button class="category-btn" data-category="ambient">Ambient</button>
-                <button class="category-btn" data-category="meditation">Meditation</button>
-            </div>
-
-            <!-- Sound Controls -->
-            <div class="sound-controls" id="soundControls">
-                <!-- Sounds will be loaded from APIs -->
-                <div class="sound-loading">
-                    <iconify-icon icon="line-md:loading-twotone-loop"></iconify-icon>
-                    Loading sounds...
-                </div>
-            </div>
-
-            <!-- Volume and Mixing Controls -->
-            <div class="audio-mixer">
-                <div class="volume-control">
-                    <label for="masterVolume">
-                        <iconify-icon icon="material-symbols:volume-up"></iconify-icon>
-                        Master Volume
-                        <span class="control-value" id="volumeValue">50%</span>
-                    </label>
-                    <div class="slider-container">
-                        <input type="range" id="masterVolume" min="0" max="100" value="50" class="slider">
-                        <div class="slider-track"></div>
-                    </div>
-                </div>
-
-                <div class="equalizer" id="equalizer">
-                    <!-- EQ controls for different frequency bands -->
-                    <div class="eq-band">
-                        <label>Bass</label>
-                        <input type="range" min="-12" max="12" value="0" class="eq-slider" data-frequency="60">
-                        <span class="eq-value">0dB</span>
-                    </div>
-                    <div class="eq-band">
-                        <label>Mid</label>
-                        <input type="range" min="-12" max="12" value="0" class="eq-slider" data-frequency="1000">
-                        <span class="eq-value">0dB</span>
-                    </div>
-                    <div class="eq-band">
-                        <label>High</label>
-                        <input type="range" min="-12" max="12" value="0" class="eq-slider" data-frequency="8000">
-                        <span class="eq-value">0dB</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-
         <!-- Main Controls -->
-        <div class="controls-container animate__animated animate__fadeInUp" data-aos="fade-up">
+        <div class="controls-container">
             <!-- Power Control -->
             <div class="control-group power-control">
                 <button class="power-btn" id="powerBtn">
-                    <iconify-icon icon="material-symbols:power-settings-new"></iconify-icon>
-                    <span>Power</span>
+                    <i class="fas fa-power-off"></i>
                 </button>
             </div>
 
             <!-- Brightness Control -->
             <div class="control-group">
                 <label for="brightness">
-                    <iconify-icon icon="material-symbols:light-mode"></iconify-icon>
+                    <i class="fas fa-sun"></i>
                     Brightness
                     <span class="control-value" id="brightnessValue">50%</span>
                 </label>
                 <div class="slider-container">
                     <input type="range" id="brightness" min="0" max="100" value="50" class="slider">
-                    <div class="slider-track"></div>
                 </div>
             </div>
 
-            <!-- Advanced Color Picker with API -->
+            <!-- Color Picker -->
             <div class="control-group">
                 <label>
-                    <iconify-icon icon="material-symbols:palette"></iconify-icon>
-                    Color Palette
+                    <i class="fas fa-palette"></i>
+                    Color
                 </label>
                 <div class="color-picker-container">
                     <input type="color" id="colorPicker" value="#ffffff" class="color-input">
-                    
-                    <!-- Color Palette from API -->
-                    <div class="palette-selector">
-                        <button class="palette-btn" id="generatePalette">
-                            <iconify-icon icon="material-symbols:refresh"></iconify-icon>
-                            Generate New Palette
-                        </button>
-                    </div>
-                    
-                    <!-- Dynamic color presets from Color API -->
-                    <div class="preset-colors" id="colorPalette">
-                        <!-- Colors will be loaded from Color API -->
-                    </div>
                 </div>
             </div>
 
             <!-- Warmth Control -->
             <div class="control-group">
                 <label for="warmth">
-                    <iconify-icon icon="material-symbols:device-thermostat"></iconify-icon>
+                    <i class="fas fa-thermometer-half"></i>
                     Warmth
                     <span class="control-value" id="warmthValue">50%</span>
                 </label>
                 <div class="slider-container">
-                    <input type="range" id="warmth" min="0" max="100" value="50" class="slider warmth-slider">
-                    <div class="slider-track"></div>
-                </div>
-            </div>
-
-            <!-- Advanced Controls -->
-            <div class="advanced-section">
-                <button class="toggle-advanced" id="toggleAdvanced">
-                    <iconify-icon icon="material-symbols:settings"></iconify-icon>
-                    Advanced Controls
-                    <iconify-icon icon="material-symbols:expand-more" class="toggle-icon"></iconify-icon>
-                </button>
-                <div class="advanced-controls" id="advancedControls">
-                    <div class="control-group">
-                        <label for="saturation">
-                            <iconify-icon icon="material-symbols:tune"></iconify-icon>
-                            Saturation
-                            <span class="control-value" id="saturationValue">50%</span>
-                        </label>
-                        <div class="slider-container">
-                            <input type="range" id="saturation" min="0" max="100" value="50" class="slider">
-                            <div class="slider-track"></div>
-                        </div>
-                    </div>
-
-                    <div class="control-group">
-                        <label for="flicker">
-                            <iconify-icon icon="material-symbols:electric-bolt"></iconify-icon>
-                            Flicker Effect
-                            <span class="control-value" id="flickerValue">0%</span>
-                        </label>
-                        <div class="slider-container">
-                            <input type="range" id="flicker" min="0" max="10" value="0" class="slider">
-                            <div class="slider-track"></div>
-                        </div>
-                    </div>
-
-                    <div class="control-group">
-                        <label for="breathe">
-                            <iconify-icon icon="material-symbols:air"></iconify-icon>
-                            Breathing Effect
-                            <span class="control-value" id="breatheValue">0%</span>
-                        </label>
-                        <div class="slider-container">
-                            <input type="range" id="breathe" min="0" max="10" value="0" class="slider">
-                            <div class="slider-track"></div>
-                        </div>
-                    </div>
-
-                    <div class="control-group">
-                        <label for="hue">
-                            <iconify-icon icon="material-symbols:color-lens"></iconify-icon>
-                            Hue Shift
-                            <span class="control-value" id="hueValue">0°</span>
-                        </label>
-                        <div class="slider-container">
-                            <input type="range" id="hue" min="0" max="360" value="0" class="slider hue-slider">
-                            <div class="slider-track"></div>
-                        </div>
-                    </div>
+                    <input type="range" id="warmth" min="0" max="100" value="50" class="slider">
                 </div>
             </div>
         </div>
 
-        <!-- Enhanced Timer Section -->
-        <div class="timer-container animate__animated animate__fadeInUp" data-aos="fade-up">
-            <h3>
-                <iconify-icon icon="material-symbols:schedule"></iconify-icon>
-                Sleep Timer
-            </h3>
+        <!-- Timer Section -->
+        <div class="timer-container">
+            <h3>⏰ Sleep Timer</h3>
             <div class="timer-controls">
                 <div class="timer-input-group">
                     <input type="number" id="timerMinutes" min="1" max="480" value="30" placeholder="Minutes">
@@ -434,21 +581,19 @@
                         <option value="off">Turn Off</option>
                         <option value="dim">Dim to 10%</option>
                         <option value="cozy">Switch to Cozy</option>
-                        <option value="fade">Fade Out</option>
-                        <option value="sunrise">Sunrise Effect</option>
                     </select>
                 </div>
                 <div class="timer-buttons">
                     <button id="startTimer" class="timer-btn">
-                        <iconify-icon icon="material-symbols:play-arrow"></iconify-icon>
+                        <i class="fas fa-play"></i>
                         Start
                     </button>
                     <button id="pauseTimer" class="timer-btn secondary">
-                        <iconify-icon icon="material-symbols:pause"></iconify-icon>
+                        <i class="fas fa-pause"></i>
                         Pause
                     </button>
                     <button id="stopTimer" class="timer-btn secondary">
-                        <iconify-icon icon="material-symbols:stop"></iconify-icon>
+                        <i class="fas fa-stop"></i>
                         Stop
                     </button>
                 </div>
@@ -466,557 +611,301 @@
                 </div>
             </div>
         </div>
-
-        <!-- Quote of the Day from API -->
-        <div class="quote-container" data-aos="fade-up">
-            <div class="quote-content" id="quoteContent">
-                <blockquote id="quoteText">Loading inspirational quote...</blockquote>
-                <cite id="quoteAuthor">--</cite>
-            </div>
-            <div class="quote-actions">
-                <button class="refresh-quote" id="refreshQuote" title="New Quote">
-                    <iconify-icon icon="material-symbols:refresh"></iconify-icon>
-                </button>
-                <button class="save-quote" id="saveQuote" title="Save Quote">
-                    <iconify-icon icon="material-symbols:bookmark"></iconify-icon>
-                </button>
-                <button class="share-quote" id="shareQuote" title="Share Quote">
-                    <iconify-icon icon="material-symbols:share"></iconify-icon>
-                </button>
-            </div>
-        </div>
-
-        <!-- Custom Presets -->
-        <div class="custom-presets-container animate__animated animate__fadeInUp" data-aos="fade-up">
-            <h3>
-                <iconify-icon icon="material-symbols:bookmark"></iconify-icon>
-                My Presets
-            </h3>
-            <div class="custom-presets" id="customPresets">
-                <button class="add-preset-btn" id="addPresetBtn">
-                    <iconify-icon icon="material-symbols:add"></iconify-icon>
-                    Save Current
-                </button>
-            </div>
-        </div>
-
-        <!-- API Status Indicator -->
-        <div class="api-status" id="apiStatus">
-            <div class="status-item" data-api="weather">
-                <iconify-icon icon="fluent:weather-partly-cloudy-day-24-filled"></iconify-icon>
-                <span class="status-dot"></span>
-            </div>
-            <div class="status-item" data-api="sounds">
-                <iconify-icon icon="material-symbols:music-note"></iconify-icon>
-                <span class="status-dot"></span>
-            </div>
-            <div class="status-item" data-api="images">
-                <iconify-icon icon="material-symbols:image"></iconify-icon>
-                <span class="status-dot"></span>
-            </div>
-            <div class="status-item" data-api="quotes">
-                <iconify-icon icon="material-symbols:format-quote"></iconify-icon>
-                <span class="status-dot"></span>
-            </div>
-        </div>
     </div>
 
-    <!-- Enhanced Settings Modal -->
-    <div class="modal" id="settingsModal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3>
-                    <iconify-icon icon="material-symbols:settings"></iconify-icon>
-                    Settings
-                </h3>
-                <button class="close-btn" id="closeSettings">
-                    <iconify-icon icon="material-symbols:close"></iconify-icon>
-                </button>
-            </div>
-            <div class="modal-body">
-                <div class="settings-tabs">
-                    <button class="tab-btn active" data-tab="general">General</button>
-                    <button class="tab-btn" data-tab="audio">Audio</button>
-                    <button class="tab-btn" data-tab="visual">Visual</button>
-                    <button class="tab-btn" data-tab="api">API Keys</button>
-                    <button class="tab-btn" data-tab="advanced">Advanced</button>
-                </div>
-                
-                <div class="tab-content">
-                    <div class="tab-pane active" id="generalTab">
-                        <div class="setting-group">
-                            <label>
-                                <input type="checkbox" id="autoSave"> Auto-save settings
-                            </label>
-                        </div>
-                        <div class="setting-group">
-                            <label>
-                                <input type="checkbox" id="smoothTransitions" checked> Smooth transitions
-                            </label>
-                        </div>
-                        <div class="setting-group">
-                            <label>
-                                <input type="checkbox" id="keyboardShortcuts" checked> Keyboard shortcuts
-                            </label>
-                        </div>
-                        <div class="setting-group">
-                            <label>Theme:</label>
-                            <select id="themeSelect">
-                                <option value="dark">Dark</option>
-                                <option value="light">Light</option>
-                                <option value="auto">Auto</option>
-                            </select>
-                        </div>
-                        <div class="setting-group">
-                            <label>Language:</label>
-                            <select id="languageSelect">
-                                <option value="en">English</option>
-                                <option value="es">Español</option>
-                                <option value="fr">Français</option>
-                                <option value="de">Deutsch</option>
-                            </select>
-                        </div>
-                    </div>
-                    
-                    <div class="tab-pane" id="audioTab">
-                        <div class="setting-group">
-                            <label>
-                                <input type="checkbox" id="enableAudio" checked> Enable Audio
-                            </label>
-                        </div>
-                        <div class="setting-group">
-                            <label>Audio Quality:</label>
-                            <select id="audioQuality">
-                                <option value="low">Low (Faster)</option>
-                                <option value="medium" selected>Medium</option>
-                                <option value="high">High (Slower)</option>
-                            </select>
-                        </div>
-                        <div class="setting-group">
-                            <label>
-                                <input type="checkbox" id="crossfade" checked> Crossfade between sounds
-                            </label>
-                        </div>
-                        <div class="setting-group">
-                            <label>
-                                <input type="checkbox" id="spatialAudio"> Spatial audio effects
-                            </label>
-                        </div>
-                    </div>
-                    
-                    <div class="tab-pane" id="visualTab">
-                        <div class="setting-group">
-                            <label>
-                                <input type="checkbox" id="particleEffects" checked> Particle effects
-                            </label>
-                        </div>
-                        <div class="setting-group">
-                            <label>
-                                <input type="checkbox" id="backgroundImages" checked> Background images
-                            </label>
-                        </div>
-                        <div class="setting-group">
-                            <label>
-                                <input type="checkbox" id="lightReflections" checked> Light reflections
-                            </label>
-                        </div>
-                        <div class="setting-group">
-                            <label>Animation Speed:</label>
-                            <select id="animationSpeed">
-                                <option value="slow">Slow</option>
-                                <option value="normal" selected>Normal</option>
-                                <option value="fast">Fast</option>
-                            </select>
-                        </div>
-                    </div>
-                    
-                    <div class="tab-pane" id="apiTab">
-                        <div class="setting-group">
-                            <label>OpenWeather API Key (Optional):</label>
-                            <input type="text" id="weatherApiKey" placeholder="Enter API key for weather features">
-                            <small>Get free key from <a href="https://openweathermap.org/api" target="_blank">OpenWeatherMap</a></small>
-                        </div>
-                        <div class="setting-group">
-                            <label>Freesound API Key (Optional):</label>
-                            <input type="text" id="freesoundApiKey" placeholder="Enter API key for more sounds">
-                            <small>Get free key from <a href="https://freesound.org/apiv2/" target="_blank">Freesound</a></small>
-                        </div>
-                        <div class="setting-group">
-                            <label>Unsplash API Key (Optional):</label>
-                            <input type="text" id="unsplashApiKey" placeholder="Enter API key for more images">
-                            <small>Get free key from <a href="https://unsplash.com/developers" target="_blank">Unsplash</a></small>
-                        </div>
-                        <div class="api-status-section">
-                            <h4>API Status</h4>
-                            <div class="api-status-list">
-                                <div class="api-item">
-                                    <span>Weather API</span>
-                                    <span class="status-indicator" id="weatherStatus">●</span>
-                                </div>
-                                <div class="api-item">
-                                    <span>Sound API</span>
-                                    <span class="status-indicator" id="soundStatus">●</span>
-                                </div>
-                                <div class="api-item">
-                                    <span>Image API</span>
-                                    <span class="status-indicator" id="imageStatus">●</span>
-                                </div>
-                                <div class="api-item">
-                                    <span>Quote API</span>
-                                    <span class="status-indicator" id="quoteStatus">●</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="tab-pane" id="advancedTab">
-                        <div class="setting-group">
-                            <label>
-                                <input type="checkbox" id="debugMode"> Debug mode
-                            </label>
-                        </div>
-                        <div class="setting-group">
-                            <label>
-                                <input type="checkbox" id="performanceMode"> Performance mode
-                            </label>
-                        </div>
-                        <div class="setting-group">
-                            <label>Cache Size Limit (MB):</label>
-                            <input type="number" id="cacheLimit" min="10" max="500" value="100">
-                        </div>
-                        <div class="setting-group">
-                            <button class="btn secondary" id="clearCache">Clear Cache</button>
-                            <button class="btn secondary" id="resetSettings">Reset All Settings</button>
-                            <button class="btn secondary" id="exportSettings">Export Settings</button>
-                            <button class="btn secondary" id="importSettings">Import Settings</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Save Preset Modal -->
-    <div class="modal" id="savePresetModal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3>
-                    <iconify-icon icon="material-symbols:bookmark"></iconify-icon>
-                    Save Preset
-                </h3>
-                <button class="close-btn" id="closeSavePreset">
-                    <iconify-icon icon="material-symbols:close"></iconify-icon>
-                </button>
-            </div>
-            <div class="modal-body">
-                <input type="text" id="presetName" placeholder="Enter preset name..." maxlength="20">
-                <div class="preset-preview" id="presetPreview"></div>
-                <button class="save-btn" id="savePresetBtn">
-                    <iconify-icon icon="material-symbols:save"></iconify-icon>
-                    Save Preset
-                </button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Saved Quotes Modal -->
-    <div class="modal" id="savedQuotesModal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3>
-                    <iconify-icon icon="material-symbols:bookmark"></iconify-icon>
-                    Saved Quotes
-                </h3>
-                <button class="close-btn" id="closeSavedQuotes">
-                    <iconify-icon icon="material-symbols:close"></iconify-icon>
-                </button>
-            </div>
-            <div class="modal-body">
-                <div id="savedQuotesList">
-                    <!-- Saved quotes will be populated here -->
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Notifications -->
-    <div id="notificationContainer" class="notification-container"></div>
-
-    <!-- Hidden Audio Elements for API sounds -->
-    <div id="audioElements" style="display: none;">
-        <!-- Audio elements will be dynamically created for API sounds -->
-    </div>
-
-    <!-- Hidden file input for custom backgrounds -->
-    <input type="file" id="customBackgroundInput" accept="image/*" style="display: none;">
-
-    <!-- JavaScript Libraries -->
-    <!-- Core Libraries -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/15.7.1/nouislider.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/hammer.js/2.0.8/hammer.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
-    
-    <!-- Color Libraries -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/chroma-js/2.4.2/chroma.min.js"></script>
-    
-    <!-- Audio Libraries -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/howler/2.2.3/howler.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.7.77/Tone.js"></script>
-    
-    <!-- Utility Libraries -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.21/lodash.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.5.0/axios.min.js"></script>
-    
-    <!-- Iconify for dynamic icons -->
-    <script src="https://code.iconify.design/3/3.1.1/iconify.min.js"></script>
-
-    <!-- PWA Support -->
     <script>
+        // Simple Cozy Light App
+        class CozyLight {
+            constructor() {
+                this.isOn = true;
+                this.brightness = 50;
+                this.warmth = 50;
+                this.color = '#ffffff';
+                this.currentPreset = 'custom';
+                this.timer = null;
+                this.timerDuration = 0;
+                this.timerRemaining = 0;
+                
+                this.presets = {
+                    cozy: { color: '#ff8c42', brightness: 70, warmth: 80 },
+                    focus: { color: '#ffffff', brightness: 90, warmth: 20 },
+                    relax: { color: '#4fc3f7', brightness: 40, warmth: 30 },
+                    romantic: { color: '#f48fb1', brightness: 30, warmth: 90 },
+                    nature: { color: '#81c784', brightness: 60, warmth: 40 },
+                    sunset: { color: '#ffab40', brightness: 50, warmth: 95 }
+                };
+                
+                this.init();
+            }
+            
+            init() {
+                this.bindEvents();
+                this.updateDisplay();
+                this.hideLoading();
+            }
+            
+            hideLoading() {
+                setTimeout(() => {
+                    document.getElementById('loadingScreen').classList.add('hidden');
+                    document.getElementById('appContainer').style.display = 'block';
+                }, 1500);
+            }
+            
+            bindEvents() {
+                // Power button
+                document.getElementById('powerBtn').addEventListener('click', () => {
+                    this.togglePower();
+                });
+                
+                // Light bulb click
+                document.getElementById('lightBulb').addEventListener('click', () => {
+                    this.togglePower();
+                });
+                
+                // Brightness slider
+                document.getElementById('brightness').addEventListener('input', (e) => {
+                    this.setBrightness(e.target.value);
+                });
+                
+                // Warmth slider
+                document.getElementById('warmth').addEventListener('input', (e) => {
+                    this.setWarmth(e.target.value);
+                });
+                
+                // Color picker
+                document.getElementById('colorPicker').addEventListener('input', (e) => {
+                    this.setColor(e.target.value);
+                });
+                
+                // Preset buttons
+                document.querySelectorAll('.preset-btn').forEach(btn => {
+                    btn.addEventListener('click', () => {
+                        const preset = btn.dataset.preset;
+                        this.setPreset(preset);
+                    });
+                });
+                
+                // Timer controls
+                document.getElementById('startTimer').addEventListener('click', () => {
+                    this.startTimer();
+                });
+                
+                document.getElementById('pauseTimer').addEventListener('click', () => {
+                    this.pauseTimer();
+                });
+                
+                document.getElementById('stopTimer').addEventListener('click', () => {
+                    this.stopTimer();
+                });
+                
+                // Keyboard shortcuts
+                document.addEventListener('keydown', (e) => {
+                    if (e.code === 'Space') {
+                        e.preventDefault();
+                        this.togglePower();
+                    } else if (e.key >= '1' && e.key <= '6') {
+                        const presets = ['cozy', 'focus', 'relax', 'romantic', 'nature', 'sunset'];
+                        this.setPreset(presets[e.key - 1]);
+                    }
+                });
+            }
+            
+            togglePower() {
+                this.isOn = !this.isOn;
+                this.updateDisplay();
+            }
+            
+            setBrightness(value) {
+                this.brightness = parseInt(value);
+                this.updateDisplay();
+            }
+            
+            setWarmth(value) {
+                this.warmth = parseInt(value);
+                this.updateDisplay();
+            }
+            
+            setColor(color) {
+                this.color = color;
+                this.currentPreset = 'custom';
+                this.updateDisplay();
+            }
+            
+            setPreset(presetName) {
+                if (this.presets[presetName]) {
+                    const preset = this.presets[presetName];
+                    this.color = preset.color;
+                    this.brightness = preset.brightness;
+                    this.warmth = preset.warmth;
+                    this.currentPreset = presetName;
+                    
+                    // Update controls
+                    document.getElementById('colorPicker').value = preset.color;
+                    document.getElementById('brightness').value = preset.brightness;
+                    document.getElementById('warmth').value = preset.warmth;
+                    
+                    this.updateDisplay();
+                    this.updatePresetButtons();
+                }
+            }
+            
+            updateDisplay() {
+                const lightBulb = document.getElementById('lightBulb');
+                const powerStatus = document.getElementById('powerStatus');
+                const currentPreset = document.getElementById('currentPreset');
+                const brightnessValue = document.getElementById('brightnessValue');
+                const warmthValue = document.getElementById('warmthValue');
+                const powerBtn = document.getElementById('powerBtn');
+                
+                // Update power status
+                powerStatus.textContent = this.isOn ? 'ON' : 'OFF';
+                currentPreset.textContent = this.currentPreset.charAt(0).toUpperCase() + this.currentPreset.slice(1);
+                
+                // Update values
+                brightnessValue.textContent = `${this.brightness}%`;
+                warmthValue.textContent = `${this.warmth}%`;
+                
+                if (this.isOn) {
+                    // Calculate final color with warmth
+                    const finalColor = this.applyWarmth(this.color, this.warmth);
+                    const opacity = this.brightness / 100;
+                    
+                    lightBulb.classList.remove('off');
+                    lightBulb.style.background = `radial-gradient(circle, ${finalColor} 0%, ${this.darkenColor(finalColor, 20)} 100%)`;
+                    lightBulb.style.boxShadow = `0 0 ${50 + this.brightness}px ${finalColor}${Math.floor(opacity * 255).toString(16).padStart(2, '0')}`;
+                    
+                    powerBtn.classList.remove('off');
+                    
+                    // Update body background
+                    document.body.style.background = `linear-gradient(135deg, ${this.darkenColor(finalColor, 80)} 0%, ${this.darkenColor(finalColor, 90)} 100%)`;
+                } else {
+                    lightBulb.classList.add('off');
+                    powerBtn.classList.add('off');
+                    document.body.style.background = 'linear-gradient(135deg, #0f0f0f 0%, #1a1a1a 100%)';
+                }
+            }
+            
+            updatePresetButtons() {
+                document.querySelectorAll('.preset-btn').forEach(btn => {
+                    btn.classList.remove('active');
+                    if (btn.dataset.preset === this.currentPreset) {
+                        btn.classList.add('active');
+                    }
+                });
+            }
+            
+            applyWarmth(color, warmth) {
+                // Convert hex to RGB
+                const r = parseInt(color.substr(1, 2), 16);
+                const g = parseInt(color.substr(3, 2), 16);
+                const b = parseInt(color.substr(5, 2), 16);
+                
+                // Apply warmth (increase red/yellow, decrease blue)
+                const warmthFactor = warmth / 100;
+                const newR = Math.min(255, r + (255 - r) * warmthFactor * 0.3);
+                const newG = Math.min(255, g + (255 - g) * warmthFactor * 0.1);
+                const newB = Math.max(0, b - b * warmthFactor * 0.4);
+                
+                return `rgb(${Math.round(newR)}, ${Math.round(newG)}, ${Math.round(newB)})`;
+            }
+            
+            darkenColor(color, percent) {
+                // Simple color darkening
+                if (color.startsWith('rgb')) {
+                    const values = color.match(/\d+/g);
+                    const r = Math.max(0, values[0] * (100 - percent) / 100);
+                    const g = Math.max(0, values[1] * (100 - percent) / 100);
+                    const b = Math.max(0, values[2] * (100 - percent) / 100);
+                    return `rgb(${Math.round(r)}, ${Math.round(g)}, ${Math.round(b)})`;
+                }
+                return color;
+            }
+            
+            startTimer() {
+                const minutes = parseInt(document.getElementById('timerMinutes').value);
+                const action = document.getElementById('timerAction').value;
+                
+                if (minutes > 0) {
+                    this.timerDuration = minutes * 60; // Convert to seconds
+                    this.timerRemaining = this.timerDuration;
+                    
+                    document.getElementById('timerDisplay').style.display = 'block';
+                    document.getElementById('timerActionText').textContent = 
+                        action === 'off' ? 'Turn Off' :
+                        action === 'dim' ? 'Dim to 10%' :
+                        action === 'cozy' ? 'Switch to Cozy' : 'Fade Out';
+                    
+                    this.timer = setInterval(() => {
+                        this.timerRemaining--;
+                        this.updateTimerDisplay();
+                        
+                        if (this.timerRemaining <= 0) {
+                            this.executeTimerAction(action);
+                            this.stopTimer();
+                        }
+                    }, 1000);
+                }
+            }
+            
+            pauseTimer() {
+                if (this.timer) {
+                    clearInterval(this.timer);
+                    this.timer = null;
+                }
+            }
+            
+            stopTimer() {
+                if (this.timer) {
+                    clearInterval(this.timer);
+                    this.timer = null;
+                }
+                document.getElementById('timerDisplay').style.display = 'none';
+                this.timerRemaining = 0;
+            }
+            
+            updateTimerDisplay() {
+                const minutes = Math.floor(this.timerRemaining / 60);
+                const seconds = this.timerRemaining % 60;
+                const timeString = `${minutes}:${seconds.toString().padStart(2, '0')}`;
+                
+                document.getElementById('timeRemaining').textContent = timeString;
+                
+                // Update progress circle
+                const progress = (this.timerDuration - this.timerRemaining) / this.timerDuration;
+                const circumference = 2 * Math.PI * 45; // radius = 45
+                const offset = circumference - (progress * circumference);
+                document.getElementById('timerProgress').style.strokeDashoffset = offset;
+            }
+            
+            executeTimerAction(action) {
+                switch (action) {
+                    case 'off':
+                        this.isOn = false;
+                        break;
+                    case 'dim':
+                        this.brightness = 10;
+                        document.getElementById('brightness').value = 10;
+                        break;
+                    case 'cozy':
+                        this.setPreset('cozy');
+                        break;
+                }
+                this.updateDisplay();
+            }
+        }
+        
         // Service Worker Registration
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
-                navigator.serviceWorker.register('/sw.js')
+                navigator.serviceWorker.register('./sw.js')
                     .then(registration => console.log('SW registered'))
                     .catch(error => console.log('SW registration failed'));
             });
         }
-
-        // Initialize AOS animations
+        
+        // Initialize app
         document.addEventListener('DOMContentLoaded', () => {
-            AOS.init({
-                duration: 800,
-                easing: 'ease-in-out',
-                once: true,
-                offset: 100
-            });
-        });
-    </script>
-
-    <!-- API Configuration -->
-    <script>
-        // API Endpoints (Free APIs)
-        const API_CONFIG = {
-            // Weather API (OpenWeatherMap - Free tier)
-            weather: {
-                baseUrl: 'https://api.openweathermap.org/data/2.5',
-                key: localStorage.getItem('weatherApiKey') || 'demo_key'
-            },
-            
-            // Color Palettes API
-            colors: {
-                baseUrl: 'https://www.colr.org/json',
-                coolors: 'https://coolors.co/generate.json'
-            },
-            
-            // Quotes API (Quotable)
-            quotes: {
-                baseUrl: 'https://api.quotable.io'
-            },
-            
-            // Free Sound Effects
-            sounds: {
-                freesound: {
-                    baseUrl: 'https://freesound.org/apiv2',
-                    key: localStorage.getItem('freesoundApiKey') || null
-                },
-                // Fallback sound sources
-                fallback: {
-                    nature: [
-                        'https://www.soundjay.com/misc/sounds-767.mp3',
-                        'https://www.soundjay.com/misc/rain-01.mp3'
-                    ],
-                    urban: [
-                        'https://www.soundjay.com/misc/beep-07a.mp3'
-                    ],
-                    ambient: [
-                        'https://www.soundjay.com/misc/wind-chimes-01.mp3'
-                    ],
-                    meditation: [
-                        'https://www.soundjay.com/misc/bell-ringing-05.mp3'
-                    ]
-                }
-            },
-            
-            // Background Images
-            images: {
-                unsplash: {
-                    source: 'https://source.unsplash.com',
-                    api: 'https://api.unsplash.com',
-                    key: localStorage.getItem('unsplashApiKey') || null
-                },
-                picsum: 'https://picsum.photos'
-            },
-            
-            // NASA Astronomy Picture of the Day
-            nasa: {
-                apod: 'https://api.nasa.gov/planetary/apod?api_key=DEMO_KEY'
-            },
-            
-            // Metropolitan Museum of Art
-            met: {
-                baseUrl: 'https://collectionapi.metmuseum.org/public/collection/v1'
-            }
-        };
-
-        // Global error handler for API failures
-        window.addEventListener('unhandledrejection', event => {
-            console.warn('API request failed:', event.reason);
-            // Don't prevent default to allow graceful fallbacks
-        });
-    </script>
-
-    <!-- Custom Scripts -->
-    <script src="src/js/api/weatherAPI.js"></script>
-    <script src="src/js/api/soundAPI.js"></script>
-    <script src="src/js/api/colorAPI.js"></script>
-    <script src="src/js/api/quoteAPI.js"></script>
-    <script src="src/js/api/imageAPI.js"></script>
-    <script src="src/js/utils.js"></script>
-    <script src="src/js/storage.js"></script>
-    <script src="src/js/settings.js"></script>
-    <script src="src/js/presets.js"></script>
-    <script src="src/js/particles.js"></script>
-    <script src="src/js/audioManager.js"></script>
-    <script src="src/js/timerManager.js"></script>
-    <script src="src/js/lightController.js"></script>
-    <script src="src/js/gestureHandler.js"></script>
-    <script src="src/js/notifications.js"></script>
-    <script src="src/js/backgroundManager.js"></script>
-    <script src="src/js/main.js"></script>
-
-    <!-- Additional Features Script -->
-    <script>
-        // Additional event listeners for new features
-        document.addEventListener('DOMContentLoaded', () => {
-            // NASA background button
-            const nasaBtn = document.getElementById('nasaBtn');
-            if (nasaBtn) {
-                nasaBtn.addEventListener('click', () => {
-                    if (window.backgroundManager) {
-                        window.backgroundManager.setNASABackground();
-                    }
-                });
-            }
-
-            // Art background button
-            const artBtn = document.getElementById('artBtn');
-            if (artBtn) {
-                artBtn.addEventListener('click', () => {
-                    if (window.backgroundManager) {
-                        window.backgroundManager.setArtBackground();
-                    }
-                });
-            }
-
-            // Refresh weather button
-            const refreshWeatherBtn = document.getElementById('refreshWeather');
-            if (refreshWeatherBtn) {
-                refreshWeatherBtn.addEventListener('click', () => {
-                    if (window.weatherAPI) {
-                        window.weatherAPI.getCurrentWeather();
-                    }
-                });
-            }
-
-            // Save quote button
-            const saveQuoteBtn = document.getElementById('saveQuote');
-            if (saveQuoteBtn) {
-                saveQuoteBtn.addEventListener('click', () => {
-                    if (window.quoteAPI) {
-                        window.quoteAPI.saveQuote();
-                    }
-                });
-            }
-
-            // Share quote button
-            const shareQuoteBtn = document.getElementById('shareQuote');
-            if (shareQuoteBtn) {
-                shareQuoteBtn.addEventListener('click', () => {
-                    if (window.quoteAPI) {
-                        window.quoteAPI.shareQuote();
-                    }
-                });
-            }
-
-            // Fullscreen toggle
-            const fullscreenBtn = document.getElementById('fullscreenBtn');
-            if (fullscreenBtn) {
-                fullscreenBtn.addEventListener('click', () => {
-                    if (!document.fullscreenElement) {
-                        document.documentElement.requestFullscreen();
-                        fullscreenBtn.querySelector('iconify-icon').setAttribute('icon', 'material-symbols:fullscreen-exit');
-                    } else {
-                        document.exitFullscreen();
-                        fullscreenBtn.querySelector('iconify-icon').setAttribute('icon', 'material-symbols:fullscreen');
-                    }
-                });
-            }
-
-            // EQ sliders
-            const eqSliders = document.querySelectorAll('.eq-slider');
-            eqSliders.forEach(slider => {
-                slider.addEventListener('input', (e) => {
-                    const value = e.target.value;
-                    const frequency = e.target.dataset.frequency;
-                    const valueSpan = e.target.parentNode.querySelector('.eq-value');
-                    
-                    if (valueSpan) {
-                        valueSpan.textContent = `${value}dB`;
-                    }
-                    
-                    if (window.soundAPI) {
-                        const band = frequency === '60' ? 'bass' : 
-                                   frequency === '1000' ? 'mid' : 'high';
-                        window.soundAPI.setEqualizer(band, parseFloat(value));
-                    }
-                });
-            });
-
-            // Master volume control
-            const masterVolumeSlider = document.getElementById('masterVolume');
-            if (masterVolumeSlider) {
-                masterVolumeSlider.addEventListener('input', (e) => {
-                    const value = e.target.value;
-                    document.getElementById('volumeValue').textContent = `${value}%`;
-                    
-                    if (window.soundAPI) {
-                        window.soundAPI.setMasterVolume(value / 100);
-                    }
-                });
-            }
-
-            // Advanced controls toggle
-            const toggleAdvancedBtn = document.getElementById('toggleAdvanced');
-            const advancedControls = document.getElementById('advancedControls');
-            if (toggleAdvancedBtn && advancedControls) {
-                toggleAdvancedBtn.addEventListener('click', () => {
-                    const isExpanded = advancedControls.style.display === 'block';
-                    advancedControls.style.display = isExpanded ? 'none' : 'block';
-                    
-                    const toggleIcon = toggleAdvancedBtn.querySelector('.toggle-icon');
-                    if (toggleIcon) {
-                        toggleIcon.setAttribute('icon', 
-                            isExpanded ? 'material-symbols:expand-more' : 'material-symbols:expand-less'
-                        );
-                    }
-                });
-            }
-        });
-
-        // Keyboard shortcuts help
-        document.addEventListener('keydown', (e) => {
-            if (e.key === '?' && e.shiftKey) {
-                // Show keyboard shortcuts help
-                if (window.notificationManager) {
-                    window.notificationManager.show({
-                        title: '⌨️ Keyboard Shortcuts',
-                        message: 'Space: Power | 1-6: Presets | F: Fullscreen | Ctrl+S: Save | Ctrl+R: Refresh Quote',
-                        type: 'info',
-                        duration: 8000
-                    });
-                }
-            }
+            window.cozyLight = new CozyLight();
         });
     </script>
 </body>
