@@ -9,6 +9,8 @@ Create the perfect ambient lighting atmosphere for any mood with customizable co
 **Thanatsitt Santisamranwilai**  
 🤖 AI Content Developer & Multilingual Specialist  
 📍 Kamphaeng Phet, Thailand  
+
+
 src/
 ├── css/
 │   ├── main.css
