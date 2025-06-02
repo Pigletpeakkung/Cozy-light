@@ -4,62 +4,347 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>🕯️ Cozy Light - Perfect Ambient Lighting</title>
+    
+    <!-- PWA Manifest -->
     <link rel="manifest" href="manifest.json">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" sizes="32x32" href="https://api.iconify.design/noto/candle.svg">
+    <link rel="icon" type="image/png" sizes="16x16" href="https://api.iconify.design/noto/candle.svg">
+    <link rel="apple-touch-icon" href="https://api.iconify.design/noto/candle.svg">
+    
+    <!-- Meta Tags -->
+    <meta name="theme-color" content="#1a1a1a">
+    <meta name="description" content="Create perfect ambient lighting with customizable colors, brightness, and atmospheric sounds">
+    <meta name="keywords" content="ambient light, mood lighting, relaxation, focus, cozy">
+    <meta name="author" content="Cozy Light App">
+    
+    <!-- Open Graph Meta Tags -->
+    <meta property="og:title" content="Cozy Light - Perfect Ambient Lighting">
+    <meta property="og:description" content="Create your perfect atmosphere with customizable lighting">
+    <meta property="og:type" content="website">
+    <meta property="og:image" content="https://picsum.photos/1200/630?blur=2">
+    
+    <!-- Fonts from Google Fonts API -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Poppins:wght@300;400;500;600&family=Comfortaa:wght@300;400;500;600&display=swap" rel="stylesheet">
+    
+    <!-- Icons from multiple sources -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@iconify/iconify@3.1.1/dist/iconify.min.css">
+    
+    <!-- CSS Libraries -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/15.7.1/nouislider.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css">
+    
+    <!-- Custom CSS -->
     <link rel="stylesheet" href="src/css/main.css">
     <link rel="stylesheet" href="src/css/components.css">
     <link rel="stylesheet" href="src/css/responsive.css">
-    <meta name="theme-color" content="#1a1a1a">
+    <link rel="stylesheet" href="src/css/animations.css">
+    <link rel="stylesheet" href="src/css/api-enhancements.css">
+    
+    <style>
+        /* Critical CSS for immediate loading */
+        :root {
+            --primary-color: #ff6b6b;
+            --secondary-color: #4ecdc4;
+            --accent-color: #45b7d1;
+            --bg-primary: #0f0f0f;
+            --bg-secondary: #1a1a1a;
+            --text-primary: #ffffff;
+            --text-secondary: #cccccc;
+            --border-color: rgba(255, 255, 255, 0.1);
+            --shadow-color: rgba(0, 0, 0, 0.3);
+            --accent-color-rgb: 69, 183, 209;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
+            color: var(--text-primary);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .loading-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #0f0f0f 0%, #1a1a1a 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+        }
+
+        .loading-spinner {
+            text-align: center;
+            color: var(--text-primary);
+        }
+
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 3px solid rgba(255, 255, 255, 0.1);
+            border-top: 3px solid var(--accent-color);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 1rem;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .app-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+            position: relative;
+            z-index: 1;
+        }
+    </style>
 </head>
 <body>
-    <div class="app-container">
+    <!-- Background Images from Unsplash API -->
+    <div id="backgroundImages" class="background-container">
+        <div class="background-image" data-scene="cozy" style="background-image: url('https://source.unsplash.com/1920x1080/?fireplace,cozy'); opacity: 0;"></div>
+        <div class="background-image" data-scene="focus" style="background-image: url('https://source.unsplash.com/1920x1080/?office,minimal'); opacity: 0;"></div>
+        <div class="background-image" data-scene="relax" style="background-image: url('https://source.unsplash.com/1920x1080/?bedroom,peaceful'); opacity: 0;"></div>
+        <div class="background-image" data-scene="romantic" style="background-image: url('https://source.unsplash.com/1920x1080/?candles,romantic'); opacity: 0;"></div>
+        <div class="background-image" data-scene="nature" style="background-image: url('https://source.unsplash.com/1920x1080/?forest,nature'); opacity: 0;"></div>
+        <div class="background-image" data-scene="sunset" style="background-image: url('https://source.unsplash.com/1920x1080/?sunset,golden'); opacity: 0;"></div>
+    </div>
+
+    <!-- Loading Screen -->
+    <div id="loadingScreen" class="loading-screen">
+        <div class="loading-spinner">
+            <div class="spinner"></div>
+            <p>Preparing your ambient experience...</p>
+            <div class="loading-progress">
+                <div class="progress-bar" id="loadingProgress"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- App Container -->
+    <div class="app-container" id="appContainer" style="display: none;">
         <!-- Header -->
-        <header class="app-header">
-            <h1>🕯️ Cozy Light</h1>
-            <p>Create your perfect atmosphere</p>
+        <header class="app-header animate__animated animate__fadeInDown" data-aos="fade-down">
+            <div class="header-content">
+                <h1>
+                    <iconify-icon icon="noto:candle"></iconify-icon>
+                    Cozy Light
+                </h1>
+                <p>Create your perfect atmosphere</p>
+                <div class="header-actions">
+                    <button class="icon-btn" id="weatherBtn" title="Weather Integration">
+                        <iconify-icon icon="fluent:weather-partly-cloudy-day-24-filled"></iconify-icon>
+                    </button>
+                    <button class="icon-btn" id="backgroundBtn" title="Background Images">
+                        <iconify-icon icon="material-symbols:image"></iconify-icon>
+                    </button>
+                    <button class="icon-btn" id="nasaBtn" title="NASA Space Background">
+                        <iconify-icon icon="material-symbols:rocket-launch"></iconify-icon>
+                    </button>
+                    <button class="icon-btn" id="artBtn" title="Museum Art Background">
+                        <iconify-icon icon="material-symbols:palette"></iconify-icon>
+                    </button>
+                    <button class="icon-btn" id="fullscreenBtn" title="Toggle Fullscreen">
+                        <iconify-icon icon="material-symbols:fullscreen"></iconify-icon>
+                    </button>
+                    <button class="icon-btn" id="settingsBtn" title="Settings">
+                        <iconify-icon icon="material-symbols:settings"></iconify-icon>
+                    </button>
+                    <button class="icon-btn" id="shareBtn" title="Share">
+                        <iconify-icon icon="material-symbols:share"></iconify-icon>
+                    </button>
+                </div>
+            </div>
         </header>
 
+        <!-- Weather Widget -->
+        <div class="weather-widget" id="weatherWidget" style="display: none;" data-aos="fade-in">
+            <div class="weather-info">
+                <div class="weather-icon" id="weatherIcon">
+                    <iconify-icon icon="fluent:weather-partly-cloudy-day-24-filled"></iconify-icon>
+                </div>
+                <div class="weather-details">
+                    <span class="temperature" id="temperature">--°</span>
+                    <span class="description" id="weatherDescription">Loading...</span>
+                    <span class="location" id="weatherLocation">--</span>
+                </div>
+                <button class="refresh-weather" id="refreshWeather" title="Refresh Weather">
+                    <iconify-icon icon="material-symbols:refresh"></iconify-icon>
+                </button>
+            </div>
+        </div>
+
         <!-- Main Light Display -->
-        <div class="light-display" id="lightDisplay">
+        <div class="light-display animate__animated animate__zoomIn" id="lightDisplay" data-aos="zoom-in">
             <div class="light-bulb" id="lightBulb">
                 <div class="light-glow" id="lightGlow"></div>
+                <div class="light-core" id="lightCore"></div>
+                <canvas id="particleCanvas" class="particle-canvas"></canvas>
+            </div>
+            <div class="light-info" id="lightInfo">
+                <span class="current-preset" id="currentPreset">Custom</span>
+                <span class="power-status" id="powerStatus">ON</span>
+                <div class="color-info" id="colorInfo">#FFFFFF</div>
             </div>
         </div>
 
         <!-- Quick Presets -->
-        <div class="presets-container">
-            <h3>Quick Scenes</h3>
+        <div class="presets-container animate__animated animate__fadeInUp" data-aos="fade-up">
+            <h3>
+                <iconify-icon icon="material-symbols:palette"></iconify-icon>
+                Quick Scenes
+            </h3>
             <div class="preset-buttons">
-                <button class="preset-btn" data-preset="cozy">🔥 Cozy</button>
-                <button class="preset-btn" data-preset="focus">💡 Focus</button>
-                <button class="preset-btn" data-preset="relax">🌙 Relax</button>
-                <button class="preset-btn" data-preset="romantic">💕 Romantic</button>
+                <button class="preset-btn" data-preset="cozy" data-tooltip="Warm orange glow">
+                    <iconify-icon icon="noto:fire"></iconify-icon>
+                    <span>Cozy</span>
+                </button>
+                <button class="preset-btn" data-preset="focus" data-tooltip="Bright white light">
+                    <iconify-icon icon="noto:light-bulb"></iconify-icon>
+                    <span>Focus</span>
+                </button>
+                <button class="preset-btn" data-preset="relax" data-tooltip="Soft blue ambiance">
+                    <iconify-icon icon="noto:crescent-moon"></iconify-icon>
+                    <span>Relax</span>
+                </button>
+                <button class="preset-btn" data-preset="romantic" data-tooltip="Gentle pink warmth">
+                    <iconify-icon icon="noto:red-heart"></iconify-icon>
+                    <span>Romantic</span>
+                </button>
+                <button class="preset-btn" data-preset="nature" data-tooltip="Fresh green vibes">
+                    <iconify-icon icon="noto:deciduous-tree"></iconify-icon>
+                    <span>Nature</span>
+                </button>
+                <button class="preset-btn" data-preset="sunset" data-tooltip="Golden hour magic">
+                    <iconify-icon icon="noto:sun"></iconify-icon>
+                    <span>Sunset</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- API-powered Sound Library -->
+        <div class="sound-container animate__animated animate__fadeInUp" data-aos="fade-up">
+            <h3>
+                <iconify-icon icon="material-symbols:music-note"></iconify-icon>
+                Ambient Sounds
+                <button class="refresh-sounds" id="refreshSounds" title="Load New Sounds">
+                    <iconify-icon icon="material-symbols:refresh"></iconify-icon>
+                </button>
+            </h3>
+            
+            <!-- Sound Categories -->
+            <div class="sound-categories">
+                <button class="category-btn active" data-category="nature">Nature</button>
+                <button class="category-btn" data-category="urban">Urban</button>
+                <button class="category-btn" data-category="ambient">Ambient</button>
+                <button class="category-btn" data-category="meditation">Meditation</button>
+            </div>
+
+            <!-- Sound Controls -->
+            <div class="sound-controls" id="soundControls">
+                <!-- Sounds will be loaded from APIs -->
+                <div class="sound-loading">
+                    <iconify-icon icon="line-md:loading-twotone-loop"></iconify-icon>
+                    Loading sounds...
+                </div>
+            </div>
+
+            <!-- Volume and Mixing Controls -->
+            <div class="audio-mixer">
+                <div class="volume-control">
+                    <label for="masterVolume">
+                        <iconify-icon icon="material-symbols:volume-up"></iconify-icon>
+                        Master Volume
+                        <span class="control-value" id="volumeValue">50%</span>
+                    </label>
+                    <div class="slider-container">
+                        <input type="range" id="masterVolume" min="0" max="100" value="50" class="slider">
+                        <div class="slider-track"></div>
+                    </div>
+                </div>
+
+                <div class="equalizer" id="equalizer">
+                    <!-- EQ controls for different frequency bands -->
+                    <div class="eq-band">
+                        <label>Bass</label>
+                        <input type="range" min="-12" max="12" value="0" class="eq-slider" data-frequency="60">
+                        <span class="eq-value">0dB</span>
+                    </div>
+                    <div class="eq-band">
+                        <label>Mid</label>
+                        <input type="range" min="-12" max="12" value="0" class="eq-slider" data-frequency="1000">
+                        <span class="eq-value">0dB</span>
+                    </div>
+                    <div class="eq-band">
+                        <label>High</label>
+                        <input type="range" min="-12" max="12" value="0" class="eq-slider" data-frequency="8000">
+                        <span class="eq-value">0dB</span>
+                    </div>
+                </div>
             </div>
         </div>
 
         <!-- Main Controls -->
-        <div class="controls-container">
+        <div class="controls-container animate__animated animate__fadeInUp" data-aos="fade-up">
+            <!-- Power Control -->
+            <div class="control-group power-control">
+                <button class="power-btn" id="powerBtn">
+                    <iconify-icon icon="material-symbols:power-settings-new"></iconify-icon>
+                    <span>Power</span>
+                </button>
+            </div>
+
             <!-- Brightness Control -->
             <div class="control-group">
                 <label for="brightness">
-                    <span class="control-icon">☀️</span>
+                    <iconify-icon icon="material-symbols:light-mode"></iconify-icon>
                     Brightness
                     <span class="control-value" id="brightnessValue">50%</span>
                 </label>
-                <input type="range" id="brightness" min="0" max="100" value="50" class="slider">
+                <div class="slider-container">
+                    <input type="range" id="brightness" min="0" max="100" value="50" class="slider">
+                    <div class="slider-track"></div>
+                </div>
             </div>
 
-            <!-- Color Control -->
+            <!-- Advanced Color Picker with API -->
             <div class="control-group">
-                <label>🎨 Color</label>
+                <label>
+                    <iconify-icon icon="material-symbols:palette"></iconify-icon>
+                    Color Palette
+                </label>
                 <div class="color-picker-container">
                     <input type="color" id="colorPicker" value="#ffffff" class="color-input">
-                    <div class="preset-colors">
-                        <div class="color-preset" data-color="#ff6b6b" style="background: #ff6b6b;"></div>
-                        <div class="color-preset" data-color="#4ecdc4" style="background: #4ecdc4;"></div>
-                        <div class="color-preset" data-color="#45b7d1" style="background: #45b7d1;"></div>
-                        <div class="color-preset" data-color="#96ceb4" style="background: #96ceb4;"></div>
-                        <div class="color-preset" data-color="#feca57" style="background: #feca57;"></div>
-                        <div class="color-preset" data-color="#ff9ff3" style="background: #ff9ff3;"></div>
+                    
+                    <!-- Color Palette from API -->
+                    <div class="palette-selector">
+                        <button class="palette-btn" id="generatePalette">
+                            <iconify-icon icon="material-symbols:refresh"></iconify-icon>
+                            Generate New Palette
+                        </button>
+                    </div>
+                    
+                    <!-- Dynamic color presets from Color API -->
+                    <div class="preset-colors" id="colorPalette">
+                        <!-- Colors will be loaded from Color API -->
                     </div>
                 </div>
             </div>
@@ -67,82 +352,672 @@
             <!-- Warmth Control -->
             <div class="control-group">
                 <label for="warmth">
-                    <span class="control-icon">🌡️</span>
+                    <iconify-icon icon="material-symbols:device-thermostat"></iconify-icon>
                     Warmth
                     <span class="control-value" id="warmthValue">50%</span>
                 </label>
-                <input type="range" id="warmth" min="0" max="100" value="50" class="slider warmth-slider">
+                <div class="slider-container">
+                    <input type="range" id="warmth" min="0" max="100" value="50" class="slider warmth-slider">
+                    <div class="slider-track"></div>
+                </div>
             </div>
 
-            <!-- Advanced Controls (Collapsible) -->
+            <!-- Advanced Controls -->
             <div class="advanced-section">
                 <button class="toggle-advanced" id="toggleAdvanced">
-                    ⚙️ Advanced Controls
-                    <span class="toggle-icon">▼</span>
+                    <iconify-icon icon="material-symbols:settings"></iconify-icon>
+                    Advanced Controls
+                    <iconify-icon icon="material-symbols:expand-more" class="toggle-icon"></iconify-icon>
                 </button>
                 <div class="advanced-controls" id="advancedControls">
                     <div class="control-group">
                         <label for="saturation">
-                            <span class="control-icon">🌈</span>
+                            <iconify-icon icon="material-symbols:tune"></iconify-icon>
                             Saturation
                             <span class="control-value" id="saturationValue">50%</span>
                         </label>
-                        <input type="range" id="saturation" min="0" max="100" value="50" class="slider">
+                        <div class="slider-container">
+                            <input type="range" id="saturation" min="0" max="100" value="50" class="slider">
+                            <div class="slider-track"></div>
+                        </div>
                     </div>
 
                     <div class="control-group">
                         <label for="flicker">
-                            <span class="control-icon">✨</span>
+                            <iconify-icon icon="material-symbols:electric-bolt"></iconify-icon>
                             Flicker Effect
                             <span class="control-value" id="flickerValue">0%</span>
                         </label>
-                        <input type="range" id="flicker" min="0" max="10" value="0" class="slider">
+                        <div class="slider-container">
+                            <input type="range" id="flicker" min="0" max="10" value="0" class="slider">
+                            <div class="slider-track"></div>
+                        </div>
+                    </div>
+
+                    <div class="control-group">
+                        <label for="breathe">
+                            <iconify-icon icon="material-symbols:air"></iconify-icon>
+                            Breathing Effect
+                            <span class="control-value" id="breatheValue">0%</span>
+                        </label>
+                        <div class="slider-container">
+                            <input type="range" id="breathe" min="0" max="10" value="0" class="slider">
+                            <div class="slider-track"></div>
+                        </div>
+                    </div>
+
+                    <div class="control-group">
+                        <label for="hue">
+                            <iconify-icon icon="material-symbols:color-lens"></iconify-icon>
+                            Hue Shift
+                            <span class="control-value" id="hueValue">0°</span>
+                        </label>
+                        <div class="slider-container">
+                            <input type="range" id="hue" min="0" max="360" value="0" class="slider hue-slider">
+                            <div class="slider-track"></div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- Timer Section -->
-        <div class="timer-container">
-            <h3>⏰ Timer</h3>
+        <!-- Enhanced Timer Section -->
+        <div class="timer-container animate__animated animate__fadeInUp" data-aos="fade-up">
+            <h3>
+                <iconify-icon icon="material-symbols:schedule"></iconify-icon>
+                Sleep Timer
+            </h3>
             <div class="timer-controls">
-                <input type="number" id="timerMinutes" min="1" max="480" value="30" placeholder="Minutes">
-                <select id="timerAction">
-                    <option value="off">Turn Off</option>
-                    <option value="dim">Dim to 10%</option>
-                    <option value="cozy">Switch to Cozy</option>
-                </select>
-                <button id="startTimer" class="timer-btn">Start Timer</button>
-                <button id="stopTimer" class="timer-btn secondary">Stop</button>
+                <div class="timer-input-group">
+                    <input type="number" id="timerMinutes" min="1" max="480" value="30" placeholder="Minutes">
+                    <select id="timerAction">
+                        <option value="off">Turn Off</option>
+                        <option value="dim">Dim to 10%</option>
+                        <option value="cozy">Switch to Cozy</option>
+                        <option value="fade">Fade Out</option>
+                        <option value="sunrise">Sunrise Effect</option>
+                    </select>
+                </div>
+                <div class="timer-buttons">
+                    <button id="startTimer" class="timer-btn">
+                        <iconify-icon icon="material-symbols:play-arrow"></iconify-icon>
+                        Start
+                    </button>
+                    <button id="pauseTimer" class="timer-btn secondary">
+                        <iconify-icon icon="material-symbols:pause"></iconify-icon>
+                        Pause
+                    </button>
+                    <button id="stopTimer" class="timer-btn secondary">
+                        <iconify-icon icon="material-symbols:stop"></iconify-icon>
+                        Stop
+                    </button>
+                </div>
             </div>
             <div class="timer-display" id="timerDisplay" style="display: none;">
-                <span id="timeRemaining">30:00</span>
+                <div class="timer-circle">
+                    <svg class="timer-svg" viewBox="0 0 100 100">
+                        <circle cx="50" cy="50" r="45" class="timer-bg"></circle>
+                        <circle cx="50" cy="50" r="45" class="timer-progress" id="timerProgress"></circle>
+                    </svg>
+                    <div class="timer-text">
+                        <span id="timeRemaining">30:00</span>
+                        <small id="timerActionText">Turn Off</small>
+                    </div>
+                </div>
             </div>
         </div>
 
-        <!-- Sound Controls -->
-        <div class="sound-container">
-            <h3>🎵 Ambient Sounds</h3>
-            <div class="sound-controls">
-                <button class="sound-btn" data-sound="rain">🌧️ Rain</button>
-                <button class="sound-btn" data-sound="fire">🔥 Fireplace</button>
-                <button class="sound-btn" data-sound="nature">🌿 Nature</button>
-                <button class="sound-btn" data-sound="off">🔇 Off</button>
+        <!-- Quote of the Day from API -->
+        <div class="quote-container" data-aos="fade-up">
+            <div class="quote-content" id="quoteContent">
+                <blockquote id="quoteText">Loading inspirational quote...</blockquote>
+                <cite id="quoteAuthor">--</cite>
             </div>
-            <div class="volume-control">
-                <label for="soundVolume">Volume</label>
-                <input type="range" id="soundVolume" min="0" max="100" value="30" class="slider">
+            <div class="quote-actions">
+                <button class="refresh-quote" id="refreshQuote" title="New Quote">
+                    <iconify-icon icon="material-symbols:refresh"></iconify-icon>
+                </button>
+                <button class="save-quote" id="saveQuote" title="Save Quote">
+                    <iconify-icon icon="material-symbols:bookmark"></iconify-icon>
+                </button>
+                <button class="share-quote" id="shareQuote" title="Share Quote">
+                    <iconify-icon icon="material-symbols:share"></iconify-icon>
+                </button>
+            </div>
+        </div>
+
+        <!-- Custom Presets -->
+        <div class="custom-presets-container animate__animated animate__fadeInUp" data-aos="fade-up">
+            <h3>
+                <iconify-icon icon="material-symbols:bookmark"></iconify-icon>
+                My Presets
+            </h3>
+            <div class="custom-presets" id="customPresets">
+                <button class="add-preset-btn" id="addPresetBtn">
+                    <iconify-icon icon="material-symbols:add"></iconify-icon>
+                    Save Current
+                </button>
+            </div>
+        </div>
+
+        <!-- API Status Indicator -->
+        <div class="api-status" id="apiStatus">
+            <div class="status-item" data-api="weather">
+                <iconify-icon icon="fluent:weather-partly-cloudy-day-24-filled"></iconify-icon>
+                <span class="status-dot"></span>
+            </div>
+            <div class="status-item" data-api="sounds">
+                <iconify-icon icon="material-symbols:music-note"></iconify-icon>
+                <span class="status-dot"></span>
+            </div>
+            <div class="status-item" data-api="images">
+                <iconify-icon icon="material-symbols:image"></iconify-icon>
+                <span class="status-dot"></span>
+            </div>
+            <div class="status-item" data-api="quotes">
+                <iconify-icon icon="material-symbols:format-quote"></iconify-icon>
+                <span class="status-dot"></span>
             </div>
         </div>
     </div>
 
-    <!-- Error/Success Messages -->
-    <div id="messageContainer" class="message-container"></div>
+    <!-- Enhanced Settings Modal -->
+    <div class="modal" id="settingsModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>
+                    <iconify-icon icon="material-symbols:settings"></iconify-icon>
+                    Settings
+                </h3>
+                <button class="close-btn" id="closeSettings">
+                    <iconify-icon icon="material-symbols:close"></iconify-icon>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="settings-tabs">
+                    <button class="tab-btn active" data-tab="general">General</button>
+                    <button class="tab-btn" data-tab="audio">Audio</button>
+                    <button class="tab-btn" data-tab="visual">Visual</button>
+                    <button class="tab-btn" data-tab="api">API Keys</button>
+                    <button class="tab-btn" data-tab="advanced">Advanced</button>
+                </div>
+                
+                <div class="tab-content">
+                    <div class="tab-pane active" id="generalTab">
+                        <div class="setting-group">
+                            <label>
+                                <input type="checkbox" id="autoSave"> Auto-save settings
+                            </label>
+                        </div>
+                        <div class="setting-group">
+                            <label>
+                                <input type="checkbox" id="smoothTransitions" checked> Smooth transitions
+                            </label>
+                        </div>
+                        <div class="setting-group">
+                            <label>
+                                <input type="checkbox" id="keyboardShortcuts" checked> Keyboard shortcuts
+                            </label>
+                        </div>
+                        <div class="setting-group">
+                            <label>Theme:</label>
+                            <select id="themeSelect">
+                                <option value="dark">Dark</option>
+                                <option value="light">Light</option>
+                                <option value="auto">Auto</option>
+                            </select>
+                        </div>
+                        <div class="setting-group">
+                            <label>Language:</label>
+                            <select id="languageSelect">
+                                <option value="en">English</option>
+                                <option value="es">Español</option>
+                                <option value="fr">Français</option>
+                                <option value="de">Deutsch</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="tab-pane" id="audioTab">
+                        <div class="setting-group">
+                            <label>
+                                <input type="checkbox" id="enableAudio" checked> Enable Audio
+                            </label>
+                        </div>
+                        <div class="setting-group">
+                            <label>Audio Quality:</label>
+                            <select id="audioQuality">
+                                <option value="low">Low (Faster)</option>
+                                <option value="medium" selected>Medium</option>
+                                <option value="high">High (Slower)</option>
+                            </select>
+                        </div>
+                        <div class="setting-group">
+                            <label>
+                                <input type="checkbox" id="crossfade" checked> Crossfade between sounds
+                            </label>
+                        </div>
+                        <div class="setting-group">
+                            <label>
+                                <input type="checkbox" id="spatialAudio"> Spatial audio effects
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <div class="tab-pane" id="visualTab">
+                        <div class="setting-group">
+                            <label>
+                                <input type="checkbox" id="particleEffects" checked> Particle effects
+                            </label>
+                        </div>
+                        <div class="setting-group">
+                            <label>
+                                <input type="checkbox" id="backgroundImages" checked> Background images
+                            </label>
+                        </div>
+                        <div class="setting-group">
+                            <label>
+                                <input type="checkbox" id="lightReflections" checked> Light reflections
+                            </label>
+                        </div>
+                        <div class="setting-group">
+                            <label>Animation Speed:</label>
+                            <select id="animationSpeed">
+                                <option value="slow">Slow</option>
+                                <option value="normal" selected>Normal</option>
+                                <option value="fast">Fast</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="tab-pane" id="apiTab">
+                        <div class="setting-group">
+                            <label>OpenWeather API Key (Optional):</label>
+                            <input type="text" id="weatherApiKey" placeholder="Enter API key for weather features">
+                            <small>Get free key from <a href="https://openweathermap.org/api" target="_blank">OpenWeatherMap</a></small>
+                        </div>
+                        <div class="setting-group">
+                            <label>Freesound API Key (Optional):</label>
+                            <input type="text" id="freesoundApiKey" placeholder="Enter API key for more sounds">
+                            <small>Get free key from <a href="https://freesound.org/apiv2/" target="_blank">Freesound</a></small>
+                        </div>
+                        <div class="setting-group">
+                            <label>Unsplash API Key (Optional):</label>
+                            <input type="text" id="unsplashApiKey" placeholder="Enter API key for more images">
+                            <small>Get free key from <a href="https://unsplash.com/developers" target="_blank">Unsplash</a></small>
+                        </div>
+                        <div class="api-status-section">
+                            <h4>API Status</h4>
+                            <div class="api-status-list">
+                                <div class="api-item">
+                                    <span>Weather API</span>
+                                    <span class="status-indicator" id="weatherStatus">●</span>
+                                </div>
+                                <div class="api-item">
+                                    <span>Sound API</span>
+                                    <span class="status-indicator" id="soundStatus">●</span>
+                                </div>
+                                <div class="api-item">
+                                    <span>Image API</span>
+                                    <span class="status-indicator" id="imageStatus">●</span>
+                                </div>
+                                <div class="api-item">
+                                    <span>Quote API</span>
+                                    <span class="status-indicator" id="quoteStatus">●</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="tab-pane" id="advancedTab">
+                        <div class="setting-group">
+                            <label>
+                                <input type="checkbox" id="debugMode"> Debug mode
+                            </label>
+                        </div>
+                        <div class="setting-group">
+                            <label>
+                                <input type="checkbox" id="performanceMode"> Performance mode
+                            </label>
+                        </div>
+                        <div class="setting-group">
+                            <label>Cache Size Limit (MB):</label>
+                            <input type="number" id="cacheLimit" min="10" max="500" value="100">
+                        </div>
+                        <div class="setting-group">
+                            <button class="btn secondary" id="clearCache">Clear Cache</button>
+                            <button class="btn secondary" id="resetSettings">Reset All Settings</button>
+                            <button class="btn secondary" id="exportSettings">Export Settings</button>
+                            <button class="btn secondary" id="importSettings">Import Settings</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
-    <!-- Scripts -->
+    <!-- Save Preset Modal -->
+    <div class="modal" id="savePresetModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>
+                    <iconify-icon icon="material-symbols:bookmark"></iconify-icon>
+                    Save Preset
+                </h3>
+                <button class="close-btn" id="closeSavePreset">
+                    <iconify-icon icon="material-symbols:close"></iconify-icon>
+                </button>
+            </div>
+            <div class="modal-body">
+                <input type="text" id="presetName" placeholder="Enter preset name..." maxlength="20">
+                <div class="preset-preview" id="presetPreview"></div>
+                <button class="save-btn" id="savePresetBtn">
+                    <iconify-icon icon="material-symbols:save"></iconify-icon>
+                    Save Preset
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Saved Quotes Modal -->
+    <div class="modal" id="savedQuotesModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>
+                    <iconify-icon icon="material-symbols:bookmark"></iconify-icon>
+                    Saved Quotes
+                </h3>
+                <button class="close-btn" id="closeSavedQuotes">
+                    <iconify-icon icon="material-symbols:close"></iconify-icon>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div id="savedQuotesList">
+                    <!-- Saved quotes will be populated here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Notifications -->
+    <div id="notificationContainer" class="notification-container"></div>
+
+    <!-- Hidden Audio Elements for API sounds -->
+    <div id="audioElements" style="display: none;">
+        <!-- Audio elements will be dynamically created for API sounds -->
+    </div>
+
+    <!-- Hidden file input for custom backgrounds -->
+    <input type="file" id="customBackgroundInput" accept="image/*" style="display: none;">
+
+    <!-- JavaScript Libraries -->
+    <!-- Core Libraries -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/15.7.1/nouislider.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/hammer.js/2.0.8/hammer.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+    
+    <!-- Color Libraries -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/chroma-js/2.4.2/chroma.min.js"></script>
+    
+    <!-- Audio Libraries -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/howler/2.2.3/howler.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.7.77/Tone.js"></script>
+    
+    <!-- Utility Libraries -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.21/lodash.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.5.0/axios.min.js"></script>
+    
+    <!-- Iconify for dynamic icons -->
+    <script src="https://code.iconify.design/3/3.1.1/iconify.min.js"></script>
+
+    <!-- PWA Support -->
+    <script>
+        // Service Worker Registration
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/sw.js')
+                    .then(registration => console.log('SW registered'))
+                    .catch(error => console.log('SW registration failed'));
+            });
+        }
+
+        // Initialize AOS animations
+        document.addEventListener('DOMContentLoaded', () => {
+            AOS.init({
+                duration: 800,
+                easing: 'ease-in-out',
+                once: true,
+                offset: 100
+            });
+        });
+    </script>
+
+    <!-- API Configuration -->
+    <script>
+        // API Endpoints (Free APIs)
+        const API_CONFIG = {
+            // Weather API (OpenWeatherMap - Free tier)
+            weather: {
+                baseUrl: 'https://api.openweathermap.org/data/2.5',
+                key: localStorage.getItem('weatherApiKey') || 'demo_key'
+            },
+            
+            // Color Palettes API
+            colors: {
+                baseUrl: 'https://www.colr.org/json',
+                coolors: 'https://coolors.co/generate.json'
+            },
+            
+            // Quotes API (Quotable)
+            quotes: {
+                baseUrl: 'https://api.quotable.io'
+            },
+            
+            // Free Sound Effects
+            sounds: {
+                freesound: {
+                    baseUrl: 'https://freesound.org/apiv2',
+                    key: localStorage.getItem('freesoundApiKey') || null
+                },
+                // Fallback sound sources
+                fallback: {
+                    nature: [
+                        'https://www.soundjay.com/misc/sounds-767.mp3',
+                        'https://www.soundjay.com/misc/rain-01.mp3'
+                    ],
+                    urban: [
+                        'https://www.soundjay.com/misc/beep-07a.mp3'
+                    ],
+                    ambient: [
+                        'https://www.soundjay.com/misc/wind-chimes-01.mp3'
+                    ],
+                    meditation: [
+                        'https://www.soundjay.com/misc/bell-ringing-05.mp3'
+                    ]
+                }
+            },
+            
+            // Background Images
+            images: {
+                unsplash: {
+                    source: 'https://source.unsplash.com',
+                    api: 'https://api.unsplash.com',
+                    key: localStorage.getItem('unsplashApiKey') || null
+                },
+                picsum: 'https://picsum.photos'
+            },
+            
+            // NASA Astronomy Picture of the Day
+            nasa: {
+                apod: 'https://api.nasa.gov/planetary/apod?api_key=DEMO_KEY'
+            },
+            
+            // Metropolitan Museum of Art
+            met: {
+                baseUrl: 'https://collectionapi.metmuseum.org/public/collection/v1'
+            }
+        };
+
+        // Global error handler for API failures
+        window.addEventListener('unhandledrejection', event => {
+            console.warn('API request failed:', event.reason);
+            // Don't prevent default to allow graceful fallbacks
+        });
+    </script>
+
+    <!-- Custom Scripts -->
+    <script src="src/js/api/weatherAPI.js"></script>
+    <script src="src/js/api/soundAPI.js"></script>
+    <script src="src/js/api/colorAPI.js"></script>
+    <script src="src/js/api/quoteAPI.js"></script>
+    <script src="src/js/api/imageAPI.js"></script>
+    <script src="src/js/utils.js"></script>
+    <script src="src/js/storage.js"></script>
     <script src="src/js/settings.js"></script>
     <script src="src/js/presets.js"></script>
+    <script src="src/js/particles.js"></script>
+    <script src="src/js/audioManager.js"></script>
+    <script src="src/js/timerManager.js"></script>
     <script src="src/js/lightController.js"></script>
+    <script src="src/js/gestureHandler.js"></script>
+    <script src="src/js/notifications.js"></script>
+    <script src="src/js/backgroundManager.js"></script>
     <script src="src/js/main.js"></script>
+
+    <!-- Additional Features Script -->
+    <script>
+        // Additional event listeners for new features
+        document.addEventListener('DOMContentLoaded', () => {
+            // NASA background button
+            const nasaBtn = document.getElementById('nasaBtn');
+            if (nasaBtn) {
+                nasaBtn.addEventListener('click', () => {
+                    if (window.backgroundManager) {
+                        window.backgroundManager.setNASABackground();
+                    }
+                });
+            }
+
+            // Art background button
+            const artBtn = document.getElementById('artBtn');
+            if (artBtn) {
+                artBtn.addEventListener('click', () => {
+                    if (window.backgroundManager) {
+                        window.backgroundManager.setArtBackground();
+                    }
+                });
+            }
+
+            // Refresh weather button
+            const refreshWeatherBtn = document.getElementById('refreshWeather');
+            if (refreshWeatherBtn) {
+                refreshWeatherBtn.addEventListener('click', () => {
+                    if (window.weatherAPI) {
+                        window.weatherAPI.getCurrentWeather();
+                    }
+                });
+            }
+
+            // Save quote button
+            const saveQuoteBtn = document.getElementById('saveQuote');
+            if (saveQuoteBtn) {
+                saveQuoteBtn.addEventListener('click', () => {
+                    if (window.quoteAPI) {
+                        window.quoteAPI.saveQuote();
+                    }
+                });
+            }
+
+            // Share quote button
+            const shareQuoteBtn = document.getElementById('shareQuote');
+            if (shareQuoteBtn) {
+                shareQuoteBtn.addEventListener('click', () => {
+                    if (window.quoteAPI) {
+                        window.quoteAPI.shareQuote();
+                    }
+                });
+            }
+
+            // Fullscreen toggle
+            const fullscreenBtn = document.getElementById('fullscreenBtn');
+            if (fullscreenBtn) {
+                fullscreenBtn.addEventListener('click', () => {
+                    if (!document.fullscreenElement) {
+                        document.documentElement.requestFullscreen();
+                        fullscreenBtn.querySelector('iconify-icon').setAttribute('icon', 'material-symbols:fullscreen-exit');
+                    } else {
+                        document.exitFullscreen();
+                        fullscreenBtn.querySelector('iconify-icon').setAttribute('icon', 'material-symbols:fullscreen');
+                    }
+                });
+            }
+
+            // EQ sliders
+            const eqSliders = document.querySelectorAll('.eq-slider');
+            eqSliders.forEach(slider => {
+                slider.addEventListener('input', (e) => {
+                    const value = e.target.value;
+                    const frequency = e.target.dataset.frequency;
+                    const valueSpan = e.target.parentNode.querySelector('.eq-value');
+                    
+                    if (valueSpan) {
+                        valueSpan.textContent = `${value}dB`;
+                    }
+                    
+                    if (window.soundAPI) {
+                        const band = frequency === '60' ? 'bass' : 
+                                   frequency === '1000' ? 'mid' : 'high';
+                        window.soundAPI.setEqualizer(band, parseFloat(value));
+                    }
+                });
+            });
+
+            // Master volume control
+            const masterVolumeSlider = document.getElementById('masterVolume');
+            if (masterVolumeSlider) {
+                masterVolumeSlider.addEventListener('input', (e) => {
+                    const value = e.target.value;
+                    document.getElementById('volumeValue').textContent = `${value}%`;
+                    
+                    if (window.soundAPI) {
+                        window.soundAPI.setMasterVolume(value / 100);
+                    }
+                });
+            }
+
+            // Advanced controls toggle
+            const toggleAdvancedBtn = document.getElementById('toggleAdvanced');
+            const advancedControls = document.getElementById('advancedControls');
+            if (toggleAdvancedBtn && advancedControls) {
+                toggleAdvancedBtn.addEventListener('click', () => {
+                    const isExpanded = advancedControls.style.display === 'block';
+                    advancedControls.style.display = isExpanded ? 'none' : 'block';
+                    
+                    const toggleIcon = toggleAdvancedBtn.querySelector('.toggle-icon');
+                    if (toggleIcon) {
+                        toggleIcon.setAttribute('icon', 
+                            isExpanded ? 'material-symbols:expand-more' : 'material-symbols:expand-less'
+                        );
+                    }
+                });
+            }
+        });
+
+        // Keyboard shortcuts help
+        document.addEventListener('keydown', (e) => {
+            if (e.key === '?' && e.shiftKey) {
+                // Show keyboard shortcuts help
+                if (window.notificationManager) {
+                    window.notificationManager.show({
+                        title: '⌨️ Keyboard Shortcuts',
+                        message: 'Space: Power | 1-6: Presets | F: Fullscreen | Ctrl+S: Save | Ctrl+R: Refresh Quote',
+                        type: 'info',
+                        duration: 8000
+                    });
+                }
+            }
+        });
+    </script>
 </body>
 </html>
