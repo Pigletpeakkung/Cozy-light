@@ -1,0 +1,661 @@
+/**
+ * Cozy Light - Responsive CSS
+ * Mobile-first responsive design for all screen sizes
+ * Version 2.0.0
+ */
+
+/* ===== MOBILE FIRST BASE (320px+) ===== */
+/* Base styles are already mobile-first in main.css */
+
+/* ===== SMALL MOBILE (375px+) ===== */
+@media (min-width: 375px) {
+    .light-bulb {
+        width: 200px;
+        height: 200px;
+    }
+    
+    .light-bulb iconify-icon,
+    .light-bulb i {
+        font-size: 3.5rem;
+    }
+    
+    .preset-buttons {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+/* ===== LARGE MOBILE (414px+) ===== */
+@media (min-width: 414px) {
+    .app-container {
+        padding: var(--spacing-lg);
+    }
+    
+    .timer-input-group {
+        flex-direction: row;
+        flex-wrap: nowrap;
+    }
+    
+    .timer-buttons {
+        flex-wrap: nowrap;
+    }
+}
+
+/* ===== SMALL TABLETS (576px+) ===== */
+@media (min-width: 576px) {
+    .app-header h1 {
+        font-size: var(--font-size-4xl);
+    }
+    
+    .light-bulb {
+        width: 220px;
+        height: 220px;
+    }
+    
+    .light-bulb iconify-icon,
+    .light-bulb i {
+        font-size: 4rem;
+    }
+    
+    .preset-buttons {
+        grid-template-columns: repeat(3, 1fr);
+    }
+    
+    .controls-container {
+        padding: var(--spacing-xxl);
+    }
+    
+    .color-picker-container {
+        flex-wrap: nowrap;
+    }
+    
+    .timer-circle {
+        width: 200px;
+        height: 200px;
+    }
+    
+    .custom-presets {
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    }
+}
+
+/* ===== TABLETS (768px+) ===== */
+@media (min-width: 768px) {
+    .app-container {
+        padding: var(--spacing-xl);
+    }
+    
+    .app-header h1 {
+        font-size: var(--font-size-5xl);
+    }
+    
+    .light-bulb {
+        width: 250px;
+        height: 250px;
+    }
+    
+    .preset-buttons {
+        grid-template-columns: repeat(6, 1fr);
+        gap: var(--spacing-xl);
+    }
+    
+    .preset-btn {
+        padding: var(--spacing-xl);
+    }
+    
+    .preset-btn iconify-icon,
+    .preset-btn i {
+        font-size: 2.5rem;
+    }
+    
+    /* Two-column layout for controls */
+    .controls-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: var(--spacing-xl);
+    }
+    
+    .control-group.full-width {
+        grid-column: 1 / -1;
+    }
+    
+    .power-control {
+        grid-column: 1 / -1;
+        margin-bottom: var(--spacing-xl);
+    }
+    
+    .timer-input-group {
+        gap: var(--spacing-lg);
+    }
+    
+    .timer-input-group input,
+    .timer-input-group select {
+        min-width: 150px;
+    }
+    
+    /* Side-by-side layout for timer */
+    .timer-layout {
+        display: grid;
+        grid-template-columns: 1fr auto;
+        gap: var(--spacing-xxl);
+        align-items: center;
+    }
+    
+    .timer-controls {
+        align-items: flex-start;
+    }
+    
+    .timer-display {
+        margin-top: 0;
+    }
+}
+
+/* ===== LARGE TABLETS (992px+) ===== */
+@media (min-width: 992px) {
+    .app-container {
+        padding: var(--spacing-xxl);
+    }
+    
+    .light-bulb {
+        width: 280px;
+        height: 280px;
+    }
+    
+    .light-bulb iconify-icon,
+    .light-bulb i {
+        font-size: 5rem;
+    }
+    
+    .power-btn {
+        width: 120px;
+        height: 120px;
+        font-size: 3rem;
+    }
+    
+    /* Three-column layout for advanced controls */
+    .advanced-controls .controls-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+    
+    .color-picker-container {
+        justify-content: space-between;
+    }
+    
+    .preset-colors {
+        justify-content: center;
+    }
+    
+    .custom-presets {
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    }
+    
+    /* Header actions layout */
+    .header-actions {
+        gap: var(--spacing-md);
+    }
+    
+    .icon-btn {
+        width: 56px;
+        height: 56px;
+    }
+    
+    .icon-btn iconify-icon {
+        font-size: 1.5rem;
+    }
+}
+
+/* ===== DESKTOP (1200px+) ===== */
+@media (min-width: 1200px) {
+    .app-container {
+        max-width: 1400px;
+    }
+    
+    .light-bulb {
+        width: 320px;
+        height: 320px;
+    }
+    
+    .light-bulb iconify-icon,
+    .light-bulb i {
+        font-size: 6rem;
+    }
+    
+    /* Main layout grid */
+    .main-layout {
+        display: grid;
+        grid-template-columns: 1fr 400px;
+        gap: var(--spacing-xxl);
+        align-items: start;
+    }
+    
+    .main-content {
+        grid-column: 1;
+    }
+    
+    .sidebar-content {
+        grid-column: 2;
+        position: sticky;
+        top: var(--spacing-xl);
+    }
+    
+    /* Four-column preset layout */
+    .preset-buttons {
+        grid-template-columns: repeat(3, 1fr);
+        max-width: 600px;
+        margin: 0 auto var(--spacing-xl);
+    }
+    
+    /* Enhanced controls layout */
+    .controls-container {
+        max-width: 800px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+    
+    .controls-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: var(--spacing-xxl);
+    }
+    
+    .advanced-controls .controls-grid {
+        grid-template-columns: repeat(4, 1fr);
+    }
+    
+    /* Timer enhancements */
+    .timer-circle {
+        width: 240px;
+        height: 240px;
+    }
+    
+    .timer-text span {
+        font-size: var(--font-size-4xl);
+    }
+}
+
+/* ===== LARGE DESKTOP (1400px+) ===== */
+@media (min-width: 1400px) {
+    .app-container {
+        max-width: 1600px;
+    }
+    
+    .light-bulb {
+        width: 350px;
+        height: 350px;
+    }
+    
+    .light-bulb iconify-icon,
+    .light-bulb i {
+        font-size: 7rem;
+    }
+    
+    /* Three-column main layout */
+    .main-layout {
+        grid-template-columns: 300px 1fr 300px;
+    }
+    
+    .left-sidebar {
+        grid-column: 1;
+    }
+    
+    .main-content {
+        grid-column: 2;
+    }
+    
+    .right-sidebar {
+        grid-column: 3;
+    }
+    
+    .preset-buttons {
+        grid-template-columns: repeat(6, 1fr);
+        max-width: none;
+    }
+}
+
+/* ===== ULTRA-WIDE (1600px+) ===== */
+@media (min-width: 1600px) {
+    .app-container {
+        max-width: 1800px;
+    }
+    
+    .controls-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+    
+    .advanced-controls .controls-grid {
+        grid-template-columns: repeat(6, 1fr);
+    }
+}
+
+/* ===== LANDSCAPE ORIENTATION ===== */
+@media (orientation: landscape) and (max-height: 600px) {
+    .app-header {
+        margin-bottom: var(--spacing-lg);
+    }
+    
+    .app-header h1 {
+        font-size: var(--font-size-3xl);
+        margin-bottom: var(--spacing-sm);
+    }
+    
+    .light-display {
+        margin: var(--spacing-lg) 0;
+    }
+    
+    .light-bulb {
+        width: 150px;
+        height: 150px;
+    }
+    
+    .light-bulb iconify-icon,
+    .light-bulb i {
+        font-size: 2.5rem;
+    }
+    
+    .power-btn {
+        width: 70px;
+        height: 70px;
+        font-size: 1.8rem;
+    }
+    
+    .preset-buttons {
+        grid-template-columns: repeat(6, 1fr);
+        gap: var(--spacing-sm);
+    }
+    
+    .preset-btn {
+        padding: var(--spacing-md) var(--spacing-sm);
+    }
+    
+    .preset-btn iconify-icon,
+    .preset-btn i {
+        font-size: 1.5rem;
+    }
+    
+    .controls-container,
+    .timer-container,
+    .custom-presets-container {
+        padding: var(--spacing-lg);
+        margin: var(--spacing-lg) 0;
+    }
+    
+    .timer-circle {
+        width: 120px;
+        height: 120px;
+    }
+    
+    .timer-text span {
+        font-size: var(--font-size-xl);
+    }
+}
+
+/* ===== PORTRAIT ORIENTATION ===== */
+@media (orientation: portrait) and (max-width: 768px) {
+    .preset-buttons {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .timer-layout {
+        grid-template-columns: 1fr;
+        gap: var(--spacing-lg);
+    }
+    
+    .timer-controls {
+        align-items: center;
+    }
+    
+    .controls-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* ===== HIGH DPI DISPLAYS ===== */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+    .light-bulb {
+        border-width: 2px;
+    }
+    
+    .preset-btn {
+        border-width: 1px;
+    }
+    
+    .icon-btn {
+        border-width: 1px;
+    }
+}
+
+/* ===== TOUCH DEVICES ===== */
+@media (hover: none) and (pointer: coarse) {
+    /* Increase touch targets */
+    .preset-btn {
+        min-height: 80px;
+        padding: var(--spacing-lg);
+    }
+    
+    .icon-btn {
+        width: 56px;
+        height: 56px;
+    }
+    
+    .power-btn {
+        width: 100px;
+        height: 100px;
+    }
+    
+    .slider {
+        height: 12px;
+    }
+    
+    .slider::-webkit-slider-thumb {
+        width: 28px;
+        height: 28px;
+    }
+    
+    .slider::-moz-range-thumb {
+        width: 28px;
+        height: 28px;
+    }
+    
+    .color-input {
+        width: 60px;
+        height: 60px;
+    }
+    
+    .color-preset {
+        width: 48px;
+        height: 48px;
+    }
+    
+    .timer-btn {
+        min-height: 48px;
+        padding: var(--spacing-md) var(--spacing-lg);
+    }
+    
+    /* Remove hover effects on touch devices */
+    .preset-btn:hover,
+    .icon-btn:hover,
+    .power-btn:hover,
+    .timer-btn:hover,
+    .custom-preset-item:hover {
+        transform: none;
+    }
+    
+    /* Add active states for touch feedback */
+    .preset-btn:active {
+        transform: scale(0.95);
+    }
+    
+    .icon-btn:active {
+        transform: scale(0.9);
+    }
+    
+    .power-btn:active {
+        transform: scale(0.95);
+    }
+}
+
+/* ===== MOUSE/TRACKPAD DEVICES ===== */
+@media (hover: hover) and (pointer: fine) {
+    /* Enhanced hover effects for precise pointing devices */
+    .light-bulb:hover {
+        transform: scale(1.05);
+    }
+    
+    .preset-btn:hover {
+        transform: translateY(-4px) scale(1.02);
+    }
+    
+    .custom-preset-item:hover {
+        transform: translateY(-4px) scale(1.02);
+    }
+}
+
+/* ===== REDUCED MOTION ===== */
+@media (prefers-reduced-motion: reduce) {
+    .light-bulb,
+    .preset-btn,
+    .icon-btn,
+    .power-btn,
+    .timer-btn,
+    .custom-preset-item {
+        transition: none;
+    }
+    
+    .light-bulb::before {
+        animation: none;
+    }
+    
+    .light-bulb.flickering {
+        animation: none;
+    }
+    
+    .light-bulb.breathing {
+        animation: none;
+    }
+    
+    .timer-progress {
+        transition: none;
+    }
+    
+    .component-loading::after {
+        animation: none;
+    }
+}
+
+/* ===== PRINT STYLES ===== */
+@media print {
+    .app-container {
+        max-width: none;
+        padding: 0;
+    }
+    
+    .header-actions,
+    .timer-container,
+    .controls-container {
+        display: none;
+    }
+    
+    .light-display {
+        margin: var(--spacing-lg) 0;
+    }
+    
+    .preset-buttons {
+        grid-template-columns: repeat(3, 1fr);
+        gap: var(--spacing-sm);
+    }
+    
+    .preset-btn {
+        border: 2px solid #000;
+        background: #fff;
+        color: #000;
+    }
+}
+
+/* ===== ACCESSIBILITY ENHANCEMENTS ===== */
+@media (prefers-contrast: high) {
+    .light-bulb {
+        border-width: 3px;
+    }
+    
+    .preset-btn {
+        border-width: 2px;
+    }
+    
+    .controls-container,
+    .timer-container,
+    .custom-presets-container {
+        border-width: 2px;
+    }
+}
+
+/* ===== DARK MODE ADJUSTMENTS ===== */
+@media (prefers-color-scheme: dark) {
+    /* Dark mode is default, but we can add specific adjustments here */
+    .light-bulb.off {
+        background: radial-gradient(circle, #1a1a1a 0%, #0f0f0f 100%);
+    }
+}
+
+/* ===== LIGHT MODE RESPONSIVE ===== */
+@media (prefers-color-scheme: light) {
+    .light-bulb {
+        border-color: rgba(0, 0, 0, 0.1);
+    }
+    
+    .light-bulb.off {
+        background: radial-gradient(circle, #e0e0e0 0%, #bdbdbd 100%);
+        border-color: rgba(0, 0, 0, 0.2);
+    }
+}
+
+/* ===== CONTAINER QUERIES (Future-proofing) ===== */
+@supports (container-type: inline-size) {
+    .controls-container {
+        container-type: inline-size;
+    }
+    
+    @container (min-width: 600px) {
+        .controls-grid {
+            grid-template-columns: repeat(2, 1fr);
+        }
+    }
+    
+    @container (min-width: 900px) {
+        .controls-grid {
+            grid-template-columns: repeat(3, 1fr);
+        }
+    }
+}
+
+/* ===== FOLDABLE DEVICES ===== */
+@media (spanning: single-fold-vertical) {
+    .main-layout {
+        grid-template-columns: 1fr 1fr;
+        gap: var(--spacing-xxl);
+    }
+    
+    .light-display {
+        grid-column: 1;
+    }
+    
+    .controls-container {
+        grid-column: 2;
+    }
+}
+
+@media (spanning: single-fold-horizontal) {
+    .app-container {
+        display: grid;
+        grid-template-rows: 1fr 1fr;
+        height: 100vh;
+        gap: var(--spacing-lg);
+    }
+    
+    .light-display {
+        grid-row: 1;
+        align-self: center;
+    }
+    
+    .controls-container {
+        grid-row: 2;
+        overflow-y: auto;
+    }
+}
